@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Offres Speciales — EMBF Boutique</title>
+<meta name="description" content="Profitez de nos meilleures offres sur les smartphones, ordinateurs et gadgets tech. Livraison rapide en Afrique de l'Ouest.">
+<meta property="og:title" content="🔥 Offres Speciales EMBF Boutique">
+<meta property="og:description" content="Smartphones, Ordinateurs, Gadgets au meilleur prix ! Livraison au Burkina Faso et toute l'Afrique.">
+<meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+:root{--bg:#03030a;--s1:#0c0c1d;--a1:#00e5ff;--a2:#8b5cf6;--a3:#f43f5e;--gold:#fbbf24;--txt:#f1f1ff;--muted:#8888aa;--border:rgba(0,229,255,0.12);--green:#22c55e;}
+body{background:var(--bg);color:var(--txt);font-family:'Outfit',sans-serif;min-height:100vh;}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 16px;text-align:center;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(244,63,94,.15),transparent 70%),radial-gradient(ellipse 60% 50% at 80% 100%,rgba(139,92,246,.12),transparent 60%);pointer-events:none;}
+.logo-area{margin-bottom:20px;}
+.fire-badge{background:linear-gradient(135deg,var(--a3),#f97316);color:white;font-size:.75rem;font-weight:800;padding:6px 16px;border-radius:50px;letter-spacing:.08em;text-transform:uppercase;display:inline-block;margin-bottom:16px;animation:pulse2 2s ease infinite;}
+@keyframes pulse2{0%,100%{box-shadow:0 0 0 0 rgba(244,63,94,.4);}50%{box-shadow:0 0 0 12px rgba(244,63,94,0);}}
+.hero h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,12vw,6rem);letter-spacing:.04em;line-height:1;margin-bottom:12px;}
+.hero h1 .accent{background:linear-gradient(90deg,var(--a1),var(--a2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hero-sub{color:var(--muted);font-size:clamp(.9rem,3vw,1.1rem);line-height:1.65;max-width:480px;margin:0 auto 28px;}
+.hero-sub strong{color:var(--txt);}
+
+/* FEATURES */
+.features{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-bottom:28px;}
+.feat{background:rgba(255,255,255,.06);border:1px solid var(--border);border-radius:50px;padding:8px 16px;font-size:.8rem;font-weight:700;display:flex;align-items:center;gap:6px;}
+
+/* CTA */
+.cta-group{display:flex;flex-direction:column;gap:10px;width:100%;max-width:360px;margin:0 auto 32px;}
+.cta-main{background:#25d366;border:none;color:white;padding:18px 24px;border-radius:16px;font-family:'Outfit',sans-serif;font-weight:800;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;transition:background .2s;}
+.cta-main:active{background:#1da851;}
+.cta-sec{background:linear-gradient(135deg,var(--a1),var(--a2));border:none;color:#000;padding:16px 24px;border-radius:16px;font-family:'Outfit',sans-serif;font-weight:800;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;}
+
+/* COUNTERS */
+.counters{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;max-width:420px;margin:0 auto 32px;}
+.counter-card{background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:14px 10px;text-align:center;}
+.counter-num{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:.04em;}
+.counter-num.c1{color:var(--a1);}
+.counter-num.c2{color:var(--gold);}
+.counter-num.c3{color:var(--green);}
+.counter-lbl{font-size:.7rem;color:var(--muted);margin-top:2px;}
+
+/* PAYMENT */
+.payment-section{padding:32px 16px;background:var(--s1);border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
+.payment-inner{max-width:600px;margin:0 auto;text-align:center;}
+.payment-title{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;letter-spacing:.04em;margin-bottom:6px;}
+.payment-sub{color:var(--muted);font-size:.85rem;margin-bottom:16px;}
+.pay-icons{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;}
+.pay-icon{background:rgba(255,255,255,.06);border:1px solid var(--border);border-radius:10px;padding:8px 14px;font-size:.8rem;font-weight:700;}
+
+/* COVERAGE */
+.coverage{padding:32px 16px;max-width:600px;margin:0 auto;text-align:center;}
+.coverage-title{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;letter-spacing:.04em;margin-bottom:16px;}
+.countries{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:20px;}
+.country{background:var(--s1);border:1px solid var(--border);border-radius:10px;padding:8px 14px;font-size:.82rem;font-weight:600;}
+
+/* FINAL CTA */
+.final-cta{padding:40px 16px;text-align:center;background:linear-gradient(135deg,rgba(0,229,255,.06),rgba(139,92,246,.06));}
+.final-cta h2{font-family:'Bebas Neue',sans-serif;font-size:clamp(1.8rem,7vw,3rem);letter-spacing:.04em;margin-bottom:8px;}
+.final-cta p{color:var(--muted);font-size:.9rem;margin-bottom:20px;}
+
+/* SHARE FLOAT */
+.share-float{position:fixed;bottom:20px;right:14px;z-index:100;display:flex;flex-direction:column;gap:8px;align-items:flex-end;}
+.sf-wa{width:56px;height:56px;border-radius:50%;background:#25d366;color:white;display:flex;align-items:center;justify-content:center;font-size:1.6rem;text-decoration:none;box-shadow:0 4px 20px rgba(37,211,102,.5);}
+.sf-share{background:linear-gradient(135deg,var(--a2),var(--a1));border:none;border-radius:50px;padding:10px 16px;color:white;font-family:'Outfit',sans-serif;font-weight:700;font-size:.8rem;cursor:pointer;white-space:nowrap;}
+
+/* TOAST */
+.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(30px);background:#25d366;color:white;padding:10px 22px;border-radius:50px;font-weight:700;font-size:.85rem;z-index:900;opacity:0;transition:all .3s;white-space:nowrap;}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1;}
+
+@media(min-width:600px){
+  .cta-group{flex-direction:row;}
+  .cta-main,.cta-sec{flex:1;}
+}
+</style>
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FW2C4K6SCW"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-FW2C4K6SCW');
+</script>
+</head>
+<body>
+
+<div class="hero">
+  <div class="logo-area">
+    <a href="index.html" style="color:var(--a1);text-decoration:none;font-size:.85rem;font-weight:700;">← EMBF Boutique</a>
+  </div>
+  <div class="fire-badge">🔥 Offres Speciales</div>
+  <h1>TECH PREMIUM<br><span class="accent">PRIX IMBATTABLES</span></h1>
+  <p class="hero-sub">Smartphones, ordinateurs, gadgets et accessoires tech de qualité. <strong>Livraison rapide</strong> partout en Afrique de l'Ouest. Paiement simple via mobile money.</p>
+
+  <div class="features">
+    <div class="feat">✅ 100% Authentique</div>
+    <div class="feat">🚀 Livraison 24-72H</div>
+    <div class="feat">💳 Orange Money / Wave</div>
+    <div class="feat">💬 Support WhatsApp</div>
+    <div class="feat">🔄 Retour 7 jours</div>
+  </div>
+
+  <div class="counters">
+    <div class="counter-card">
+      <div class="counter-num c1" id="prodCount">10+</div>
+      <div class="counter-lbl">Produits</div>
+    </div>
+    <div class="counter-card">
+      <div class="counter-num c2">8+</div>
+      <div class="counter-lbl">Pays livrés</div>
+    </div>
+    <div class="counter-card">
+      <div class="counter-num c3">24H</div>
+      <div class="counter-lbl">Livraison</div>
+    </div>
+  </div>
+
+  <div class="cta-group">
+    <a class="cta-main" href="https://wa.me/22655300868?text=Bonjour%20EMBF%20Boutique%20!%20Je%20voudrais%20voir%20vos%20produits." target="_blank">
+      💬 Commander sur WhatsApp
+    </a>
+    <a class="cta-sec" href="produits.html">
+      🛍️ Voir le catalogue →
+    </a>
+  </div>
+</div>
+
+<!-- PAYMENT -->
+<div class="payment-section">
+  <div class="payment-inner">
+    <div class="payment-title">💳 MOYENS DE PAIEMENT</div>
+    <div class="payment-sub">Payez facilement avec votre mobile money ou en espèces</div>
+    <div class="pay-icons">
+      <div class="pay-icon">🟠 Orange Money</div>
+      <div class="pay-icon">🔵 Moov Money</div>
+      <div class="pay-icon">🌊 Wave</div>
+      <div class="pay-icon">💵 Espèces</div>
+      <div class="pay-icon">🏦 Virement</div>
+    </div>
+  </div>
+</div>
+
+<!-- COVERAGE -->
+<div class="coverage">
+  <div class="coverage-title">🌍 NOUS LIVRONS DANS</div>
+  <div class="countries">
+    <div class="country">🇧🇫 Burkina Faso</div>
+    <div class="country">🇨🇮 Côte d'Ivoire</div>
+    <div class="country">🇸🇳 Sénégal</div>
+    <div class="country">🇲🇱 Mali</div>
+    <div class="country">🇹🇬 Togo</div>
+    <div class="country">🇧🇯 Bénin</div>
+    <div class="country">🇬🇭 Ghana</div>
+    <div class="country">🇳🇪 Niger</div>
+  </div>
+</div>
+
+<!-- FINAL CTA -->
+<div class="final-cta">
+  <h2>PRÊT À COMMANDER ?</h2>
+  <p>Contactez-nous maintenant sur WhatsApp — réponse en moins de 30 minutes !</p>
+  <div class="cta-group" style="max-width:360px;">
+    <a class="cta-main" href="https://wa.me/22655300868?text=Bonjour%20EMBF%20Boutique%20!%20Je%20voudrais%20passer%20une%20commande." target="_blank">
+      💬 Commander maintenant
+    </a>
+  </div>
+  <p style="margin-top:14px;font-size:.78rem;color:var(--muted);">Ou partagez cette page avec vos amis 👇</p>
+  <button class="sf-share" onclick="sharePage()" style="margin-top:8px;">↗ Partager cette page</button>
+</div>
+
+<!-- FLOAT BUTTONS -->
+<div class="share-float">
+  <a class="sf-wa" href="https://wa.me/22655300868" target="_blank">💬</a>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+function sharePage() {
+  var text = "🔥 EMBF Boutique — Tech Premium Afrique\n\n" +
+    "Smartphones, Ordinateurs, Gadgets au meilleur prix !\n" +
+    "Livraison partout en Afrique de l'Ouest 🌍\n" +
+    "Paiement Orange Money, Wave, Moov Money\n\n" +
+    "🔗 https://embfboutique.netlify.app/promo.html\n\n" +
+    "Commander sur WhatsApp : +22655300868";
+  if (navigator.share) {
+    navigator.share({title:"EMBF Boutique", text:text, url:"" + SITE_URL + "/promo.html"});
+  } else if (navigator.clipboard) {
+    navigator.clipboard.writeText(SITE_URL + "/promo.html").then(function(){
+      showToast("✅ Lien copié !");
+    });
+  }
+}
+function showToast(msg) {
+  var t = document.getElementById("toast");
+  t.textContent = msg; t.classList.add("show");
+  setTimeout(function(){t.classList.remove("show");}, 2500);
+}
+// Load product count from cache
+try {
+  var cached = JSON.parse(localStorage.getItem("embf_products_v2") || "null");
+  if (cached && cached.data) {
+    document.getElementById("prodCount").textContent = cached.data.length + "+";
+  }
+} catch(e) {}
+</script>
+</body>
+</html>

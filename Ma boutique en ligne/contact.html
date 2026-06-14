@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>Contact — EMBF Boutique</title>
+<meta name="description" content="Contactez EMBF Boutique par WhatsApp ou email. Nous répondons rapidement à toutes vos questions.">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FW2C4K6SCW"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-FW2C4K6SCW');</script>
+<style>
+
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+:root{--bg:#03030a;--s1:#0c0c1d;--s2:#13132a;--a1:#00e5ff;--a2:#8b5cf6;--a3:#f43f5e;--gold:#fbbf24;--txt:#f1f1ff;--muted:#8888aa;--border:rgba(0,229,255,.12);--green:#22c55e;--nh:60px;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--txt);font-family:Outfit,sans-serif;overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+.nav{position:sticky;top:0;z-index:999;height:var(--nh);background:rgba(3,3,10,.97);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 16px;justify-content:space-between;gap:8px;}
+.nav-logo{font-family:Bebas\ Neue,sans-serif;font-size:1.4rem;letter-spacing:.08em;text-decoration:none;background:linear-gradient(90deg,var(--a1),var(--a2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;flex-shrink:0;}
+.nav-desktop{display:none;align-items:center;gap:4px;}
+.ndl{color:var(--muted);font-size:.82rem;font-weight:600;text-decoration:none;padding:6px 11px;border-radius:8px;transition:color .2s;}
+.ndl:hover,.ndl.act{color:var(--a1);}
+.nav-right{display:flex;align-items:center;gap:8px;}
+.nav-cart{background:linear-gradient(135deg,var(--a1),var(--a2));color:#000;padding:7px 13px;border-radius:50px;font-weight:800;font-size:.8rem;cursor:pointer;border:none;display:flex;align-items:center;gap:5px;flex-shrink:0;}
+.cbadge{background:#000;border-radius:50%;width:17px;height:17px;display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:800;}
+.burger{display:flex;background:none;border:none;color:var(--txt);font-size:1.4rem;cursor:pointer;padding:8px;line-height:1;flex-shrink:0;}
+.mmenu{display:none;position:fixed;top:var(--nh);left:0;right:0;background:rgba(10,10,26,.98);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);z-index:998;padding:12px;flex-direction:column;gap:6px;}
+.mmenu.open{display:flex;}
+.mmenu a{color:var(--muted);font-weight:600;font-size:.95rem;text-decoration:none;padding:13px 16px;border-radius:12px;display:flex;align-items:center;gap:10px;border:1px solid transparent;transition:all .2s;}
+.mmenu a:hover{color:var(--txt);background:rgba(255,255,255,.05);border-color:var(--border);}
+.mmenu .mwa{background:rgba(37,211,102,.1);border-color:rgba(37,211,102,.25);color:#25d366;}
+.mmenu .mdem{background:rgba(251,191,36,.08);border-color:rgba(251,191,36,.2);color:var(--gold);font-weight:800;}
+.trust{background:linear-gradient(90deg,rgba(0,229,255,.06),rgba(139,92,246,.04));border-bottom:1px solid var(--border);padding:6px 16px;display:flex;gap:16px;overflow-x:auto;scrollbar-width:none;}
+.trust::-webkit-scrollbar{display:none;}
+.ti{font-size:.7rem;font-weight:700;white-space:nowrap;color:var(--muted);display:flex;align-items:center;gap:5px;}
+.ti b{color:var(--txt);}
+footer{background:var(--s1);border-top:1px solid var(--border);padding:24px 16px 70px;}
+.flinks{display:flex;gap:12px;flex-wrap:wrap;margin:8px 0 12px;}
+.flinks a{color:var(--muted);text-decoration:none;font-size:.8rem;}
+.flinks a:hover{color:var(--a1);}
+.fcopy{color:var(--muted);font-size:.72rem;}
+.waf{position:fixed;bottom:18px;right:14px;z-index:400;width:52px;height:52px;border-radius:50%;background:#25d366;color:white;display:flex;align-items:center;justify-content:center;font-size:1.5rem;text-decoration:none;box-shadow:0 4px 18px rgba(37,211,102,.5);}
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .55s ease,transform .55s ease;}
+.reveal.vis{opacity:1;transform:translateY(0);}
+.spinner{width:36px;height:36px;border:3px solid var(--border);border-top-color:var(--a1);border-radius:50%;animation:spin .8s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(40px);padding:10px 22px;border-radius:50px;font-weight:700;font-size:.84rem;z-index:2000;transition:all .3s;opacity:0;white-space:nowrap;}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1;}
+.toast.ok{background:var(--green);color:#fff;}
+.toast.err{background:var(--a3);color:#fff;}
+@media(min-width:900px){:root{--nh:68px;}.nav{padding:0 40px;}.nav-desktop{display:flex;}.burger{display:none!important;}}
+
+
+.hero{padding:36px 16px 28px;background:linear-gradient(180deg,rgba(0,229,255,.07),transparent);border-bottom:1px solid var(--border);text-align:center;}
+.hero h1{font-family:Bebas\ Neue,sans-serif;font-size:clamp(2.2rem,9vw,4rem);letter-spacing:.03em;}
+.hero h1 span{background:linear-gradient(90deg,var(--a1),var(--a2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hero p{color:var(--muted);font-size:.9rem;margin-top:8px;max-width:480px;margin-left:auto;margin-right:auto;}
+.body{max-width:900px;margin:0 auto;padding:28px 16px 80px;}
+.contact-grid{display:grid;grid-template-columns:1fr;gap:14px;margin-bottom:28px;}
+.contact-card{background:var(--s1);border:1px solid var(--border);border-radius:16px;padding:18px;display:flex;align-items:center;gap:14px;text-decoration:none;color:var(--txt);transition:border-color .2s;}
+.contact-card:active{border-color:var(--a1);}
+.cc-icon{width:50px;height:50px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:1.6rem;flex-shrink:0;}
+.cc-icon.wa{background:rgba(37,211,102,.12);}
+.cc-icon.mail{background:rgba(0,229,255,.1);}
+.cc-icon.loc{background:rgba(139,92,246,.1);}
+.cc-title{font-weight:800;font-size:.95rem;margin-bottom:2px;}
+.cc-sub{font-size:.8rem;color:var(--muted);}
+.form-sec{background:var(--s1);border:1px solid var(--border);border-radius:18px;padding:20px 16px;}
+.form-title{font-family:Bebas\ Neue,sans-serif;font-size:1.4rem;letter-spacing:.04em;margin-bottom:14px;}
+.fg{display:flex;flex-direction:column;gap:5px;margin-bottom:12px;}
+.fg label{font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;font-weight:700;}
+.finput{background:var(--s2);border:1px solid var(--border);color:var(--txt);padding:12px 14px;border-radius:11px;font-family:Outfit,sans-serif;font-size:.9rem;outline:none;transition:border-color .2s;}
+.finput:focus{border-color:var(--a1);}
+.finput::placeholder{color:var(--muted);}
+textarea.finput{min-height:100px;resize:vertical;line-height:1.6;}
+.btn-submit{width:100%;background:#25d366;border:none;color:#fff;padding:14px;border-radius:12px;font-family:Outfit,sans-serif;font-weight:800;font-size:.96rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;}
+.btn-submit:active{background:#1da851;}
+.faq-item{background:var(--s1);border:1px solid var(--border);border-radius:13px;padding:14px 16px;margin-bottom:9px;cursor:pointer;}
+.faq-q{font-weight:700;font-size:.88rem;display:flex;justify-content:space-between;align-items:center;}
+.faq-a{font-size:.84rem;color:var(--muted);line-height:1.7;margin-top:10px;display:none;}
+.faq-item.open .faq-a{display:block;}
+.faq-item.open .faq-arrow{transform:rotate(180deg);}
+.faq-arrow{transition:transform .2s;color:var(--a1);}
+.sec-title{font-family:Bebas\ Neue,sans-serif;font-size:1.4rem;letter-spacing:.04em;margin:28px 0 14px;}
+@media(min-width:600px){.contact-grid{grid-template-columns:1fr 1fr 1fr;}}
+@media(min-width:900px){.hero{padding-left:40px;padding-right:40px;}.body{padding-left:40px;padding-right:40px;}}
+
+</style>
+</head>
+<body>
+<div class="trust">
+  <div class="ti">✅ <b>100% Authentique</b></div>
+  <div class="ti">🚀 <b>Livraison 24-72H</b></div>
+  <div class="ti">🔄 <b>Retour 7 jours</b></div>
+  <div class="ti">💬 <b>Support WhatsApp</b></div>
+</div>
+<nav class="nav">
+  <a href="index.html" class="nav-logo">EMBF BOUTIQUE</a>
+  <div class="nav-desktop"><a href="index.html" class="ndl ">Accueil</a><a href="produits.html" class="ndl ">Produits</a><a href="contact.html" class="ndl act">Contact</a><a href="apropos.html" class="ndl ">À Propos</a><a href="demande.html" class="ndl" style="color:var(--gold);font-weight:800;">✨ Demande</a>
+    <a href="https://wa.me/22655300868" target="_blank" style="background:rgba(37,211,102,.14);border:1px solid rgba(37,211,102,.3);color:#25d366;padding:6px 12px;border-radius:50px;font-weight:700;font-size:.8rem;text-decoration:none;">💬 WhatsApp</a>
+  </div>
+  <button class="burger" id="burgerBtn" onclick="toggleMenu()">☰</button>
+</nav>
+<div class="mmenu" id="mmenu"><a href="index.html">Accueil</a><a href="produits.html">Produits</a><a href="contact.html">Contact</a><a href="apropos.html">À Propos</a><a href="demande.html" class="mdem">✨ Faire une demande</a><a href="https://wa.me/22655300868" target="_blank" class="mwa">💬 WhatsApp</a></div>
+
+<div class="hero">
+  <h1>CONTACTEZ <span>NOUS</span></h1>
+  <p>Une question ? Une commande ? Notre équipe vous répond rapidement, généralement en moins de 30 minutes pendant les heures d'ouverture.</p>
+</div>
+
+<div class="body">
+  <div class="contact-grid reveal">
+    <a href="https://wa.me/22655300868" target="_blank" class="contact-card">
+      <div class="cc-icon wa">💬</div>
+      <div><div class="cc-title">WhatsApp</div><div class="cc-sub">+226 55 30 08 68</div></div>
+    </a>
+    <a href="mailto:aminepare931@gmail.com" class="contact-card">
+      <div class="cc-icon mail">📧</div>
+      <div><div class="cc-title">Email</div><div class="cc-sub">aminepare931@gmail.com</div></div>
+    </a>
+    <a href="https://wa.me/22655300868" target="_blank" class="contact-card">
+      <div class="cc-icon loc">📍</div>
+      <div><div class="cc-title">Localisation</div><div class="cc-sub">Bobo-Dioulasso, Burkina Faso</div></div>
+    </a>
+  </div>
+
+  <div class="form-sec reveal">
+    <div class="form-title">ENVOYEZ-NOUS UN MESSAGE</div>
+    <div class="fg"><label>Votre nom *</label><input class="finput" type="text" id="cName" placeholder="Ex: Mamadou Traoré"></div>
+    <div class="fg"><label>WhatsApp / Téléphone *</label><input class="finput" type="tel" id="cPhone" placeholder="+226 70 00 00 00"></div>
+    <div class="fg"><label>Sujet</label>
+      <select class="finput" id="cSubject">
+        <option>Question sur un produit</option>
+        <option>Suivi de commande</option>
+        <option>Problème / Réclamation</option>
+        <option>Partenariat</option>
+        <option>Autre</option>
+      </select>
+    </div>
+    <div class="fg"><label>Message *</label><textarea class="finput" id="cMsg" placeholder="Votre message..."></textarea></div>
+    <button class="btn-submit" onclick="sendContact()">💬 Envoyer sur WhatsApp</button>
+  </div>
+
+  <div class="sec-title reveal">QUESTIONS FRÉQUENTES</div>
+  <div class="reveal">
+    <div class="faq-item" onclick="this.classList.toggle('open')">
+      <div class="faq-q">Comment passer une commande ? <span class="faq-arrow">▼</span></div>
+      <div class="faq-a">Parcourez notre catalogue, cliquez sur "Commander sur WhatsApp" pour le produit qui vous intéresse, remplissez vos informations et envoyez. Nous confirmons rapidement !</div>
+    </div>
+    <div class="faq-item" onclick="this.classList.toggle('open')">
+      <div class="faq-q">Quels moyens de paiement acceptez-vous ? <span class="faq-arrow">▼</span></div>
+      <div class="faq-a">Orange Money, Moov Money, Wave, virement bancaire et espèces à la livraison.</div>
+    </div>
+    <div class="faq-item" onclick="this.classList.toggle('open')">
+      <div class="faq-q">Quels sont les délais de livraison ? <span class="faq-arrow">▼</span></div>
+      <div class="faq-a">24H pour Ouagadougou et grandes villes, 48-72H pour les autres villes et pays voisins.</div>
+    </div>
+    <div class="faq-item" onclick="this.classList.toggle('open')">
+      <div class="faq-q">Puis-je retourner un produit ? <span class="faq-arrow">▼</span></div>
+      <div class="faq-a">Oui, vous avez 7 jours pour retourner un produit dans son état d'origine.</div>
+    </div>
+    <div class="faq-item" onclick="this.classList.toggle('open')">
+      <div class="faq-q">Vous n'avez pas le produit que je cherche ? <span class="faq-arrow">▼</span></div>
+      <div class="faq-a">Faites une <a href="demande.html" style="color:var(--a1);">demande personnalisée</a> — nous importons n'importe quel produit tech depuis la Chine avec devis gratuit sous 24H !</div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div style="max-width:1100px;margin:0 auto;">
+    <div style="font-family:Bebas\ Neue,sans-serif;font-size:1.2rem;letter-spacing:.08em;background:linear-gradient(90deg,var(--a1),var(--a2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:6px;">EMBF BOUTIQUE</div>
+    <div class="flinks">
+      <a href="index.html">Accueil</a><a href="produits.html">Produits</a>
+      <a href="demande.html">Demande</a><a href="apropos.html">À Propos</a>
+      <a href="cgv.html">CGV</a><a href="confidentialite.html">Confidentialité</a>
+      <a href="mentions-legales.html">Mentions légales</a><a href="livraison.html">Livraison</a>
+    </div>
+    <div class="fcopy">© 2025 EMBF Boutique — aminepare931@gmail.com</div>
+  </div>
+</footer>
+<a class="waf" href="https://wa.me/22655300868" target="_blank">💬</a>
+<div class="toast" id="toast"></div>
+<script>
+function toggleMenu(){var m=document.getElementById("mmenu"),b=document.getElementById("burgerBtn");var o=m.classList.toggle("open");b.textContent=o?"✕":"☰";}
+document.querySelectorAll(".mmenu a").forEach(function(a){a.addEventListener("click",function(){document.getElementById("mmenu").classList.remove("open");document.getElementById("burgerBtn").textContent="☰";});});
+function showToast(msg,ok){var t=document.getElementById("toast");if(!t)return;t.textContent=msg;t.className="toast show "+(ok!==false?"ok":"err");clearTimeout(t._to);t._to=setTimeout(function(){t.classList.remove("show");},2800);}
+</script>
+<script>
+function sendContact(){
+  var name=document.getElementById("cName").value.trim();
+  var phone=document.getElementById("cPhone").value.trim();
+  var subject=document.getElementById("cSubject").value;
+  var msg=document.getElementById("cMsg").value.trim();
+  if(!name){document.getElementById("cName").style.borderColor="var(--a3)";document.getElementById("cName").focus();showToast("Entrez votre nom",false);return;}
+  if(!phone){document.getElementById("cPhone").style.borderColor="var(--a3)";document.getElementById("cPhone").focus();showToast("Entrez votre numéro",false);return;}
+  if(!msg){document.getElementById("cMsg").style.borderColor="var(--a3)";document.getElementById("cMsg").focus();showToast("Entrez votre message",false);return;}
+  var text="Bonjour EMBF Boutique ! 👋\n\n📩 *NOUVEAU MESSAGE*\n━━━━━━━━━━━━━━\n👤 *Nom :* "+name+"\n📱 *Tél :* "+phone+"\n📋 *Sujet :* "+subject+"\n\n💬 *Message :*\n"+msg;
+  var url="https://wa.me/22655300868?text="+encodeURIComponent(text);
+  if(/Mobi|Android/i.test(navigator.userAgent))window.location.href=url;else window.open(url,"_blank");
+  showToast("✅ Message envoyé !");
+}
+var obs=new IntersectionObserver(function(e){e.forEach(function(x){if(x.isIntersecting)x.target.classList.add("vis");});},{threshold:.07});
+document.querySelectorAll(".reveal").forEach(function(el){obs.observe(el);});
+</script>
+</body>
+</html>

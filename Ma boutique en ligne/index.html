@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>EMBF Boutique — Tech Premium Afrique</title>
+<meta name="description" content="Smartphones, ordinateurs, gadgets au meilleur prix en Afrique de l'Ouest. Livraison 24-72H. Paiement Orange Money, Wave, Moov.">
+<meta property="og:title" content="EMBF Boutique — Tech Premium Afrique">
+<meta property="og:description" content="Smartphones, ordinateurs, gadgets au meilleur prix. Livraison rapide partout en Afrique.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FW2C4K6SCW"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-FW2C4K6SCW');</script>
+<style>
+
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+:root{--bg:#03030a;--s1:#0c0c1d;--s2:#13132a;--a1:#00e5ff;--a2:#8b5cf6;--a3:#f43f5e;--gold:#fbbf24;--txt:#f1f1ff;--muted:#8888aa;--border:rgba(0,229,255,.12);--green:#22c55e;--nh:60px;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--txt);font-family:Outfit,sans-serif;overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+.nav{position:sticky;top:0;z-index:999;height:var(--nh);background:rgba(3,3,10,.97);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 16px;justify-content:space-between;gap:8px;}
+.nav-logo{font-family:Bebas\ Neue,sans-serif;font-size:1.4rem;letter-spacing:.08em;text-decoration:none;background:linear-gradient(90deg,var(--a1),var(--a2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;flex-shrink:0;}
+.nav-desktop{display:none;align-items:center;gap:4px;}
+.ndl{color:var(--muted);font-size:.82rem;font-weight:600;text-decoration:none;padding:6px 11px;border-radius:8px;transition:color .2s;}
+.ndl:hover,.ndl.act{color:var(--a1);}
+.nav-right{display:flex;align-items:center;gap:8px;}
+.nav-cart{background:linear-gradient(135deg,var(--a1),var(--a2));color:#000;padding:7px 13px;border-radius:50px;font-weight:800;font-size:.8rem;cursor:pointer;border:none;display:flex;align-items:center;gap:5px;flex-shrink:0;}
+.cbadge{background:#000;border-radius:50%;width:17px;height:17px;display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:800;}
+.burger{display:flex;background:none;border:none;color:var(--txt);font-size:1.4rem;cursor:pointer;padding:8px;line-height:1;flex-shrink:0;}
+.mmenu{display:none;position:fixed;top:var(--nh);left:0;right:0;background:rgba(10,10,26,.98);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);z-index:998;padding:12px;flex-direction:column;gap:6px;}
+.mmenu.open{display:flex;}
+.mmenu a{color:var(--muted);font-weight:600;font-size:.95rem;text-decoration:none;padding:13px 16px;border-radius:12px;display:flex;align-items:center;gap:10px;border:1px solid transparent;transition:all .2s;}
+.mmenu a:hover{color:var(--txt);background:rgba(255,255,255,.05);border-color:var(--border);}
+.mmenu .mwa{background:rgba(37,211,102,.1);border-color:rgba(37,211,102,.25);color:#25d366;}
+.mmenu .mdem{background:rgba(251,191,36,.08);border-color:rgba(251,191,36,.2);color:var(--gold);font-weight:800;}
+.trust{background:linear-gradient(90deg,rgba(0,229,255,.06),rgba(139,92,246,.04));border-bottom:1px solid var(--border);padding:6px 16px;display:flex;gap:16px;overflow-x:auto;scrollbar-width:none;}
+.trust::-webkit-scrollbar{display:none;}
+.ti{font-size:.7rem;font-weight:700;white-space:nowrap;color:var(--muted);display:flex;align-items:center;gap:5px;}
+.ti b{color:var(--txt);}
+footer{background:var(--s1);border-top:1px solid var(--border);padding:24px 16px 70px;}
+.flinks{display:flex;gap:12px;flex-wrap:wrap;margin:8px 0 12px;}
+.flinks a{color:var(--muted);text-decoration:none;font-size:.8rem;}
+.flinks a:hover{color:var(--a1);}
+.fcopy{color:var(--muted);font-size:.72rem;}
+.waf{position:fixed;bottom:18px;right:14px;z-index:400;width:52px;height:52px;border-radius:50%;background:#25d366;color:white;display:flex;align-items:center;justify-content:center;font-size:1.5rem;text-decoration:none;box-shadow:0 4px 18px rgba(37,211,102,.5);}
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .55s ease,transform .55s ease;}
+.reveal.vis{opacity:1;transform:translateY(0);}
+.spinner{width:36px;height:36px;border:3px solid var(--border);border-top-color:var(--a1);border-radius:50%;animation:spin .8s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(40px);padding:10px 22px;border-radius:50px;font-weight:700;font-size:.84rem;z-index:2000;transition:all .3s;opacity:0;white-space:nowrap;}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1;}
+.toast.ok{background:var(--green);color:#fff;}
+.toast.err{background:var(--a3);color:#fff;}
+@media(min-width:900px){:root{--nh:68px;}.nav{padding:0 40px;}.nav-desktop{display:flex;}.burger{display:none!important;}}
+
+/* INDEX */
+.hero{min-height:92vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 16px;text-align:center;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(0,229,255,.1),transparent 70%),radial-gradient(ellipse 60% 50% at 80% 100%,rgba(139,92,246,.1),transparent 60%);pointer-events:none;}
+.hero-badge{background:linear-gradient(135deg,var(--a2),var(--a1));color:#000;font-size:.72rem;font-weight:800;padding:6px 16px;border-radius:50px;letter-spacing:.08em;text-transform:uppercase;display:inline-block;margin-bottom:16px;animation:badgePulse 2s ease infinite;}
+@keyframes badgePulse{0%,100%{box-shadow:0 0 0 0 rgba(0,229,255,.4);}50%{box-shadow:0 0 0 10px rgba(0,229,255,0);}}
+.hero h1{font-family:Bebas\ Neue,sans-serif;font-size:clamp(2.8rem,13vw,7rem);letter-spacing:.03em;line-height:1;margin-bottom:12px;}
+.hero h1 span{background:linear-gradient(90deg,var(--a1),var(--a2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hero-sub{color:var(--muted);font-size:clamp(.9rem,3vw,1.1rem);line-height:1.7;max-width:500px;margin:0 auto 28px;}
+.hero-sub b{color:var(--txt);}
+.hero-btns{display:flex;flex-direction:column;gap:10px;width:100%;max-width:360px;margin:0 auto 32px;}
+.btn-hero-main{background:linear-gradient(135deg,var(--a1),var(--a2));color:#000;padding:16px 24px;border-radius:16px;font-weight:800;font-size:1rem;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:8px;}
+.btn-hero-wa{background:#25d366;color:#fff;padding:15px 24px;border-radius:16px;font-weight:800;font-size:.96rem;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:8px;}
+.hero-feats{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;}
+.hfeat{background:rgba(255,255,255,.06);border:1px solid var(--border);border-radius:50px;padding:7px 14px;font-size:.77rem;font-weight:600;display:flex;align-items:center;gap:5px;}
+/* STATS */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;max-width:500px;margin:0 auto;padding:32px 16px;}
+.stat-card{background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:14px;text-align:center;}
+.stat-num{font-family:Bebas\ Neue,sans-serif;font-size:2rem;letter-spacing:.04em;}
+.stat-num.c1{color:var(--a1);}.stat-num.c2{color:var(--gold);}.stat-num.c3{color:var(--green);}
+.stat-lbl{font-size:.7rem;color:var(--muted);margin-top:2px;}
+/* TRENDING */
+.section{padding:24px 16px;}
+.sec-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+.sec-title{font-family:Bebas\ Neue,sans-serif;font-size:1.5rem;letter-spacing:.04em;}
+.sec-link{color:var(--a1);font-size:.82rem;font-weight:700;text-decoration:none;}
+.trend-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.tcard{background:var(--s1);border:1px solid var(--border);border-radius:16px;overflow:hidden;cursor:pointer;transition:border-color .2s;position:relative;}
+.tcard:active{border-color:rgba(0,229,255,.3);}
+.tcard-fire{position:absolute;top:8px;left:8px;background:linear-gradient(135deg,#f97316,var(--gold));color:#000;font-size:.58rem;font-weight:800;padding:3px 8px;border-radius:50px;z-index:2;text-transform:uppercase;letter-spacing:.05em;}
+.tcard-promo-badge{position:absolute;top:8px;right:8px;background:var(--a3);color:#fff;font-size:.58rem;font-weight:800;padding:3px 8px;border-radius:50px;z-index:2;}
+.tcard-img{aspect-ratio:1;background:var(--s2);display:flex;align-items:center;justify-content:center;font-size:2.5rem;overflow:hidden;}
+.tcard-img img{width:100%;height:100%;object-fit:cover;}
+.tcard-body{padding:10px;}
+.tcard-cat{font-size:.68rem;color:var(--a1);font-weight:700;margin-bottom:3px;}
+.tcard-name{font-weight:800;font-size:.85rem;margin-bottom:5px;display:-webkit-box;-webkit-line-clamp:2;line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.tcard-price{font-family:Bebas\ Neue,sans-serif;font-size:1.1rem;color:var(--gold);}
+.tcard-old{font-size:.68rem;color:var(--muted);text-decoration:line-through;margin-left:4px;}
+.tcard-btns{display:flex;gap:5px;margin-top:7px;}
+.tcard-wa{flex:1;background:#25d366;border:none;color:#fff;padding:8px;border-radius:9px;font-family:Outfit,sans-serif;font-weight:800;font-size:.72rem;cursor:pointer;}
+.tcard-wa:active{background:#1da851;}
+.tcard-det{background:rgba(0,229,255,.1);border:1px solid rgba(0,229,255,.2);color:var(--a1);padding:8px 10px;border-radius:9px;cursor:pointer;font-size:.75rem;}
+/* CATEGORIES */
+.cats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+.cat-card{background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:16px 10px;text-align:center;cursor:pointer;transition:all .2s;text-decoration:none;color:var(--txt);}
+.cat-card:active{border-color:var(--a1);background:rgba(0,229,255,.04);}
+.cat-icon{font-size:1.8rem;margin-bottom:6px;}
+.cat-name{font-weight:700;font-size:.8rem;}
+.cat-count{font-size:.68rem;color:var(--muted);margin-top:2px;}
+/* PROMO BANNER */
+.promo-banner{background:linear-gradient(135deg,rgba(244,63,94,.12),rgba(249,115,22,.08));border:1px solid rgba(244,63,94,.2);border-radius:16px;padding:18px 16px;margin:0 16px 24px;cursor:pointer;}
+.pb-label{font-size:.68rem;color:var(--a3);text-transform:uppercase;letter-spacing:.1em;font-weight:700;margin-bottom:4px;}
+.pb-title{font-family:Bebas\ Neue,sans-serif;font-size:1.4rem;letter-spacing:.04em;margin-bottom:10px;}
+.cd-inline{display:flex;gap:6px;}
+.cdi{background:rgba(244,63,94,.15);border:1px solid rgba(244,63,94,.2);border-radius:8px;padding:6px 10px;text-align:center;min-width:46px;}
+.cdi-n{font-family:Bebas\ Neue,sans-serif;font-size:1.4rem;color:var(--a3);line-height:1;display:block;}
+.cdi-l{font-size:.5rem;color:var(--muted);text-transform:uppercase;}
+.cdi-sep{font-family:Bebas\ Neue,sans-serif;font-size:1.1rem;color:rgba(244,63,94,.4);align-self:center;}
+/* WHY US */
+.why-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.why-card{background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:14px;}
+.why-icon{font-size:1.6rem;margin-bottom:8px;}
+.why-title{font-weight:800;font-size:.85rem;margin-bottom:4px;}
+.why-sub{font-size:.75rem;color:var(--muted);line-height:1.6;}
+/* DEMANDE CTA */
+.dem-cta{background:linear-gradient(135deg,rgba(251,191,36,.08),rgba(139,92,246,.06));border:1px solid rgba(251,191,36,.2);border-radius:20px;padding:28px 16px;margin:0 16px 32px;text-align:center;}
+.dem-cta h2{font-family:Bebas\ Neue,sans-serif;font-size:1.8rem;letter-spacing:.04em;margin-bottom:8px;}
+.dem-cta p{color:var(--muted);font-size:.87rem;line-height:1.65;margin-bottom:18px;max-width:400px;margin-left:auto;margin-right:auto;}
+.btn-dem{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,var(--gold),#f97316);color:#000;padding:13px 24px;border-radius:50px;font-weight:800;font-size:.92rem;text-decoration:none;}
+/* SHARE */
+.share-sec{background:linear-gradient(135deg,rgba(0,229,255,.06),rgba(139,92,246,.04));border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:28px 16px;text-align:center;margin-bottom:24px;}
+.share-sec h3{font-family:Bebas\ Neue,sans-serif;font-size:1.5rem;letter-spacing:.04em;margin-bottom:6px;}
+.share-sec p{color:var(--muted);font-size:.85rem;margin-bottom:16px;}
+.share-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+.btn-share-wa{background:#25d366;border:none;color:#fff;padding:12px 22px;border-radius:50px;font-family:Outfit,sans-serif;font-weight:800;font-size:.88rem;cursor:pointer;}
+.btn-share-copy{background:rgba(255,255,255,.08);border:1px solid var(--border);color:var(--txt);padding:12px 22px;border-radius:50px;font-family:Outfit,sans-serif;font-weight:700;font-size:.88rem;cursor:pointer;}
+/* EMPTY TRENDING */
+.trend-empty{grid-column:1/-1;text-align:center;padding:32px;color:var(--muted);}
+.trend-empty-icon{font-size:2.5rem;margin-bottom:8px;}
+@media(min-width:600px){.trend-grid{grid-template-columns:repeat(3,1fr);}.cats-grid{grid-template-columns:repeat(6,1fr);}}
+@media(min-width:900px){.hero-btns{flex-direction:row;}.trend-grid{grid-template-columns:repeat(4,1fr);}.section{padding:28px 40px;}.stats{padding:32px 40px;}.promo-banner{margin:0 40px 24px;}.dem-cta{margin:0 40px 32px;}.share-sec{padding:32px 40px;}}
+</style>
+</head>
+<body>
+<div class="trust">
+  <div class="ti">✅ <b>100% Authentique</b></div>
+  <div class="ti">🚀 <b>Livraison 24-72H</b></div>
+  <div class="ti">🔄 <b>Retour 7 jours</b></div>
+  <div class="ti">🔒 <b>Paiement sécurisé</b></div>
+  <div class="ti">💬 <b>Support WhatsApp</b></div>
+  <div class="ti">✨ <b>Import sur demande</b></div>
+</div>
+<nav class="nav">
+  <a href="index.html" class="nav-logo">EMBF BOUTIQUE</a>
+  <div class="nav-desktop">
+    <a href="index.html" class="ndl act">Accueil</a>
+    <a href="produits.html" class="ndl">Produits</a>
+    <a href="demande.html" class="ndl" style="color:var(--gold);font-weight:800;">✨ Demande</a>
+    <a href="contact.html" class="ndl">Contact</a>
+    <a href="https://wa.me/22655300868" target="_blank" style="background:rgba(37,211,102,.14);border:1px solid rgba(37,211,102,.3);color:#25d366;padding:6px 12px;border-radius:50px;font-weight:700;font-size:.8rem;text-decoration:none;">💬 WhatsApp</a>
+  </div>
+  <div class="nav-right">
+    <button class="nav-cart" onclick="toggleCart()">🛒 <span class="cbadge" id="cartCount">0</span></button>
+    <button class="burger" id="burgerBtn" onclick="toggleMenu()">☰</button>
+  </div>
+</nav>
+<div class="mmenu" id="mmenu">
+  <a href="index.html">🏠 Accueil</a>
+  <a href="produits.html">🛍️ Produits</a>
+  <a href="demande.html" class="mdem">✨ Faire une demande</a>
+  <a href="contact.html">📞 Contact</a>
+  <a href="apropos.html">ℹ️ À Propos</a>
+  <a href="https://wa.me/22655300868" target="_blank" class="mwa">💬 WhatsApp</a>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">🌍 Tech Premium Afrique de l'Ouest</div>
+  <h1>TECH PREMIUM<br><span>PRIX IMBATTABLES</span></h1>
+  <p class="hero-sub">Smartphones, ordinateurs, gadgets de qualité. <b>Livraison rapide</b> partout en Afrique. Paiement <b>Orange Money, Wave, Moov</b>.</p>
+  <div class="hero-btns">
+    <a href="produits.html" class="btn-hero-main">🛍️ Voir le catalogue →</a>
+    <a href="https://wa.me/22655300868" target="_blank" class="btn-hero-wa">💬 Commander sur WhatsApp</a>
+  </div>
+  <div class="hero-feats">
+    <div class="hfeat">✅ 100% Authentique</div>
+    <div class="hfeat">🚀 Livraison 24-72H</div>
+    <div class="hfeat">💳 Mobile Money</div>
+    <div class="hfeat">🔄 Retour 7 jours</div>
+    <div class="hfeat">✨ Import sur demande</div>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats reveal">
+  <div class="stat-card"><div class="stat-num c1" id="prodCount">10+</div><div class="stat-lbl">Produits</div></div>
+  <div class="stat-card"><div class="stat-num c2">8+</div><div class="stat-lbl">Pays livrés</div></div>
+  <div class="stat-card"><div class="stat-num c3">24H</div><div class="stat-lbl">Livraison</div></div>
+</div>
+
+<!-- PROMO COUNTDOWN -->
+<div class="promo-banner reveal" id="promoBanner" style="display:none" onclick="location.href='produits.html?cat=promo'">
+  <div class="pb-label">🔥 Offre limitée</div>
+  <div class="pb-title" id="promoTitle">PROMOTIONS EN COURS</div>
+  <div class="cd-inline">
+    <div class="cdi"><span class="cdi-n" id="pJ">00</span><div class="cdi-l">Jours</div></div>
+    <span class="cdi-sep">:</span>
+    <div class="cdi"><span class="cdi-n" id="pH">00</span><div class="cdi-l">Hrs</div></div>
+    <span class="cdi-sep">:</span>
+    <div class="cdi"><span class="cdi-n" id="pM">00</span><div class="cdi-l">Min</div></div>
+    <span class="cdi-sep">:</span>
+    <div class="cdi"><span class="cdi-n" id="pS">00</span><div class="cdi-l">Sec</div></div>
+  </div>
+</div>
+
+<!-- TRENDING -->
+<div class="section reveal">
+  <div class="sec-hdr">
+    <div class="sec-title">🔥 TENDANCES & PROMOS</div>
+    <a href="produits.html" class="sec-link">Tout voir →</a>
+  </div>
+  <div class="trend-grid" id="trendGrid">
+    <div style='background:var(--s1);border:1px solid var(--border);border-radius:16px;overflow:hidden;'><div style='aspect-ratio:1;background:var(--s2);animation:sk 1.5s ease infinite alternate;'></div><div style='padding:10px;'><div style='height:12px;background:var(--s2);border-radius:6px;margin-bottom:8px;animation:sk 1.5s ease infinite alternate;'></div><div style='height:10px;background:var(--s2);border-radius:6px;width:60%;animation:sk 1.5s ease infinite alternate;'></div></div></div><div style='background:var(--s1);border:1px solid var(--border);border-radius:16px;overflow:hidden;'><div style='aspect-ratio:1;background:var(--s2);animation:sk 1.5s ease infinite alternate;'></div><div style='padding:10px;'><div style='height:12px;background:var(--s2);border-radius:6px;margin-bottom:8px;animation:sk 1.5s ease infinite alternate;'></div><div style='height:10px;background:var(--s2);border-radius:6px;width:60%;animation:sk 1.5s ease infinite alternate;'></div></div></div><div style='background:var(--s1);border:1px solid var(--border);border-radius:16px;overflow:hidden;'><div style='aspect-ratio:1;background:var(--s2);animation:sk 1.5s ease infinite alternate;'></div><div style='padding:10px;'><div style='height:12px;background:var(--s2);border-radius:6px;margin-bottom:8px;animation:sk 1.5s ease infinite alternate;'></div><div style='height:10px;background:var(--s2);border-radius:6px;width:60%;animation:sk 1.5s ease infinite alternate;'></div></div></div><div style='background:var(--s1);border:1px solid var(--border);border-radius:16px;overflow:hidden;'><div style='aspect-ratio:1;background:var(--s2);animation:sk 1.5s ease infinite alternate;'></div><div style='padding:10px;'><div style='height:12px;background:var(--s2);border-radius:6px;margin-bottom:8px;animation:sk 1.5s ease infinite alternate;'></div><div style='height:10px;background:var(--s2);border-radius:6px;width:60%;animation:sk 1.5s ease infinite alternate;'></div></div></div>
+  </div>
+</div>
+
+<!-- CATEGORIES -->
+<div class="section reveal">
+  <div class="sec-hdr"><div class="sec-title">CATÉGORIES</div></div>
+  <div class="cats-grid">
+    <a href="produits.html?cat=Smartphone" class="cat-card"><div class="cat-icon">📱</div><div class="cat-name">Smartphones</div><div class="cat-count" id="cnt-Smartphone">...</div></a>
+    <a href="produits.html?cat=Ordinateur" class="cat-card"><div class="cat-icon">💻</div><div class="cat-name">Ordinateurs</div><div class="cat-count" id="cnt-Ordinateur">...</div></a>
+    <a href="produits.html?cat=Gadget" class="cat-card"><div class="cat-icon">🎮</div><div class="cat-name">Gadgets</div><div class="cat-count" id="cnt-Gadget">...</div></a>
+    <a href="produits.html?cat=Accessoires" class="cat-card"><div class="cat-icon">🎧</div><div class="cat-name">Accessoires</div><div class="cat-count" id="cnt-Accessoires">...</div></a>
+    <a href="produits.html?cat=Autre" class="cat-card"><div class="cat-icon">📦</div><div class="cat-name">Autres</div><div class="cat-count" id="cnt-Autre">...</div></a>
+    <a href="demande.html" class="cat-card" style="border-color:rgba(251,191,36,.2);background:rgba(251,191,36,.04);"><div class="cat-icon">✨</div><div class="cat-name" style="color:var(--gold);">Demande</div><div class="cat-count">Import</div></a>
+  </div>
+</div>
+
+<!-- WHY US -->
+<div class="section reveal">
+  <div class="sec-hdr"><div class="sec-title">POURQUOI NOUS CHOISIR ?</div></div>
+  <div class="why-grid">
+    <div class="why-card"><div class="why-icon">✅</div><div class="why-title">100% Authentique</div><div class="why-sub">Tous nos produits sont garantis authentiques.</div></div>
+    <div class="why-card"><div class="why-icon">🚀</div><div class="why-title">Livraison 24-72H</div><div class="why-sub">Livraison rapide partout en Afrique de l'Ouest.</div></div>
+    <div class="why-card"><div class="why-icon">💳</div><div class="why-title">Mobile Money</div><div class="why-sub">Orange Money, Wave, Moov, Espèces ou Virement.</div></div>
+    <div class="why-card"><div class="why-icon">✨</div><div class="why-title">Import sur Demande</div><div class="why-sub">On importe n'importe quel produit depuis Alibaba.</div></div>
+  </div>
+</div>
+
+<!-- DEMANDE CTA -->
+<div class="dem-cta reveal">
+  <h2>VOUS NE TROUVEZ PAS CE QUE VOUS VOULEZ ?</h2>
+  <p>Faites une demande personnalisée — nous importons tout produit tech pour vous depuis la Chine, avec devis gratuit sous 24H.</p>
+  <a href="demande.html" class="btn-dem">✨ Faire une demande gratuite →</a>
+</div>
+
+<!-- SHARE -->
+<div class="share-sec reveal">
+  <h3>🚀 PARTAGEZ EMBF BOUTIQUE</h3>
+  <p>Vous connaissez quelqu'un qui cherche un bon smartphone ou ordi ?</p>
+  <div class="share-btns">
+    <button class="btn-share-wa" onclick="shareWa()">💬 Partager sur WhatsApp</button>
+    <button class="btn-share-copy" onclick="copyLink()">🔗 Copier le lien</button>
+  </div>
+</div>
+
+<footer>
+  <div style="max-width:1100px;margin:0 auto;">
+    <div style="font-family:Bebas\ Neue,sans-serif;font-size:1.3rem;letter-spacing:.08em;background:linear-gradient(90deg,var(--a1),var(--a2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:6px;">EMBF BOUTIQUE</div>
+    <p style="color:var(--muted);font-size:.82rem;max-width:400px;line-height:1.6;margin-bottom:14px;">Votre boutique tech de confiance en Afrique de l'Ouest.</p>
+    <div class="flinks">
+      <a href="produits.html">Produits</a><a href="demande.html">Demande</a>
+      <a href="contact.html">Contact</a><a href="apropos.html">À Propos</a>
+      <a href="cgv.html">CGV</a><a href="livraison.html">Livraison</a>
+      <a href="confidentialite.html">Confidentialité</a>
+    </div>
+    <div class="fcopy">© 2025 EMBF Boutique — aminepare931@gmail.com</div>
+  </div>
+</footer>
+<a class="waf" href="https://wa.me/22655300868" target="_blank">💬</a>
+<div class="toast" id="toast"></div>
+
+<div id="cartOv" style="position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:500;opacity:0;visibility:hidden;transition:opacity .25s;" onclick="if(event.target===this)toggleCart()">
+  <div id="cartDrawer" style="position:fixed;bottom:0;left:0;right:0;background:var(--s1);border:1px solid var(--border);border-radius:22px 22px 0 0;max-height:85vh;display:flex;flex-direction:column;transform:translateY(100%);transition:transform .3s cubic-bezier(.23,1,.32,1);z-index:501;">
+    <div style="width:36px;height:4px;background:rgba(255,255,255,.13);border-radius:4px;margin:11px auto 0;"></div>
+    <div style="padding:10px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;">
+      <div style="font-family:Bebas\ Neue,sans-serif;font-size:1.2rem;letter-spacing:.04em;">🛒 MON PANIER</div>
+      <button onclick="toggleCart()" style="background:none;border:none;color:var(--muted);font-size:1.3rem;cursor:pointer;">✕</button>
+    </div>
+    <div id="cartList" style="flex:1;overflow-y:auto;padding:10px 16px;"></div>
+    <div style="padding:10px 16px 18px;border-top:1px solid var(--border);">
+      <div style="display:flex;justify-content:space-between;margin-bottom:9px;">
+        <span style="color:var(--muted);">Total</span>
+        <span style="font-family:Bebas\ Neue,sans-serif;font-size:1.3rem;color:var(--gold);" id="cartTotal">0 FCFA</span>
+      </div>
+      <button onclick="cartToWa()" style="width:100%;background:#25d366;border:none;color:white;padding:13px;border-radius:11px;font-family:Outfit,sans-serif;font-weight:800;font-size:.93rem;cursor:pointer;">💬 Commander le panier</button>
+    </div>
+  </div>
+</div>
+@keyframes sk{0%{opacity:.5;}100%{opacity:1;}}
+<script>
+
+var FB_DB="https://embf-b6bdb-default-rtdb.europe-west1.firebasedatabase.app";
+var FB_KEY="AIzaSyAt6csXKXx80miYqleP_tBIztgvWqZ-d_8";
+var WA="22655300868";
+var CE={"Ordinateur":"💻","Smartphone":"📱","Gadget":"🎮","Accessoires":"🎧","Autre":"📦"};
+function fmt(v){return Number(v).toLocaleString("fr-FR")+" FCFA";}
+function getImgs(p){try{return p.images?JSON.parse(p.images):[];}catch(e){return[];}}
+function toggleMenu(){var m=document.getElementById("mmenu"),b=document.getElementById("burgerBtn");var o=m.classList.toggle("open");b.textContent=o?"✕":"☰";}
+function showToast(msg,ok){var t=document.getElementById("toast");if(!t)return;t.textContent=msg;t.className="toast show "+(ok!==false?"ok":"err");clearTimeout(t._to);t._to=setTimeout(function(){t.classList.remove("show");},2800);}
+function initReveal(){var obs=new IntersectionObserver(function(e){e.forEach(function(x){if(x.isIntersecting)x.target.classList.add("vis");});},{threshold:.07});document.querySelectorAll(".reveal").forEach(function(el){obs.observe(el);});}
+document.querySelectorAll&&document.addEventListener("DOMContentLoaded",function(){document.querySelectorAll(".mmenu a").forEach(function(a){a.addEventListener("click",function(){document.getElementById("mmenu").classList.remove("open");document.getElementById("burgerBtn").textContent="☰";});});});
+async function fbGet(path){var r=await fetch(FB_DB+path+".json");if(!r.ok)throw new Error("FB "+r.status);var d=await r.json();return d;}
+async function fbSet(path,data){var r=await fetch(FB_DB+path+".json?auth="+FB_KEY,{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify(data)});if(!r.ok)throw new Error("FB write");return await r.json();}
+async function fbPush(path,data){var r=await fetch(FB_DB+path+".json?auth="+FB_KEY,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(data)});if(!r.ok)throw new Error("FB push");return await r.json();}
+async function fbUpdate(path,data){var r=await fetch(FB_DB+path+".json?auth="+FB_KEY,{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify(data)});if(!r.ok)throw new Error("FB update");return await r.json();}
+async function fbDelete(path){await fetch(FB_DB+path+".json?auth="+FB_KEY,{method:"DELETE"});}
+async function getProducts(){var d=await fbGet("/products");if(!d)return[];return Object.keys(d).map(function(k){var p=d[k];p._key=k;return p;}).sort(function(a,b){return(b.createdAt||0)-(a.createdAt||0);});}
+var CK="embf_fb_v1";
+function getCached(){try{var r=localStorage.getItem(CK);if(!r)return null;var o=JSON.parse(r);if(Date.now()-o.ts>3600000)return null;return o.data;}catch(e){return null;}}
+function setCache(d){try{localStorage.setItem(CK,JSON.stringify({data:d,ts:Date.now()}));}catch(e){}}
+function clearCache(){localStorage.removeItem(CK);}
+
+
+var cart=JSON.parse(localStorage.getItem("mb_cart")||"[]");
+function saveCart(){localStorage.setItem("mb_cart",JSON.stringify(cart));updateCartUI();}
+function updateCartUI(){
+  var total=cart.reduce(function(s,c){return s+c.qty;},0);
+  var el=document.getElementById("cartCount");if(el)el.textContent=total;
+  var list=document.getElementById("cartList");if(!list)return;
+  if(!cart.length){list.innerHTML='<div style="text-align:center;padding:26px;color:var(--muted);"><div style="font-size:2rem;margin-bottom:8px;">🛒</div><p>Panier vide</p></div>';document.getElementById("cartTotal").textContent="0 FCFA";return;}
+  list.innerHTML=cart.map(function(c){
+    return "<div style='display:flex;gap:9px;padding:9px;background:var(--s2);border-radius:11px;margin-bottom:7px;align-items:center;'>"+
+      (c.img?"<img src='"+c.img+"' style='width:42px;height:42px;border-radius:7px;object-fit:cover;flex-shrink:0;' alt=''>":"<div style='width:42px;height:42px;border-radius:7px;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;'>"+(CE[c.cat]||"📦")+"</div>")+
+      "<div style='flex:1;'><div style='font-weight:700;font-size:.83rem;margin-bottom:2px;'>"+c.name+"</div><div style='color:var(--gold);font-size:.87rem;font-weight:700;'>"+fmt(c.price)+"</div></div>"+
+      "<div style='display:flex;align-items:center;gap:5px;'>"+
+        "<button onclick='changeQty(\""+c.id+"\",-1)' style='background:var(--s1);border:1px solid var(--border);color:var(--txt);width:26px;height:26px;border-radius:6px;cursor:pointer;'>-</button>"+
+        "<span style='min-width:16px;text-align:center;'>"+c.qty+"</span>"+
+        "<button onclick='changeQty(\""+c.id+"\",1)' style='background:var(--s1);border:1px solid var(--border);color:var(--txt);width:26px;height:26px;border-radius:6px;cursor:pointer;'>+</button>"+
+      "</div></div>";
+  }).join("");
+  document.getElementById("cartTotal").textContent=fmt(cart.reduce(function(s,c){return s+c.price*c.qty;},0));
+}
+function changeQty(id,d){var i=cart.find(function(c){return c.id===id;});if(!i)return;i.qty+=d;if(i.qty<=0)cart=cart.filter(function(c){return c.id!==id;});saveCart();}
+function addToCart(id,name,price,img,cat){
+  var ex=cart.find(function(c){return c.id===id;});
+  if(ex)ex.qty++;else cart.push({id:id,name:name,price:price,img:img||"",cat:cat||"",qty:1});
+  saveCart();showToast("✓ "+name+" ajouté !");
+}
+function toggleCart(){
+  var ov=document.getElementById("cartOv"),dr=document.getElementById("cartDrawer");
+  var open=ov.style.visibility!=="visible";
+  ov.style.opacity=open?"1":"0";ov.style.visibility=open?"visible":"hidden";
+  dr.style.transform=open?"translateY(0)":"translateY(100%)";
+  document.body.style.overflow=open?"hidden":"";
+}
+function cartToWa(){
+  if(!cart.length)return;
+  var name=prompt("Votre nom ?")||"Un client";
+  var items=cart.map(function(c){return "• *"+c.name+"* x"+c.qty+" = "+fmt(c.price*c.qty);}).join("\n");
+  var total=fmt(cart.reduce(function(s,c){return s+c.price*c.qty;},0));
+  var url="https://wa.me/22655300868?text="+encodeURIComponent("Bonjour EMBF ! 👋\n\nJe suis *"+name+"* et je veux commander :\n\n"+items+"\n\n💰 *Total : "+total+"*\n\nMerci !");
+  if(/Mobi|Android/i.test(navigator.userAgent))window.location.href=url;else window.open(url,"_blank");
+}
+
+
+var allProds=[];
+
+// INIT — cache puis Firebase
+(function(){
+  var cached=getCached();
+  if(cached&&cached.length){
+    allProds=cached;
+    renderTrending();updateCounts();updateCartUI();
+  }
+  getProducts().then(function(prods){
+    if(!prods.length)return;
+    setCache(prods);allProds=prods;
+    renderTrending();updateCounts();updateCartUI();
+    var el=document.getElementById("prodCount");
+    if(el)el.textContent=prods.length+"+";
+  }).catch(function(){});
+  checkPromo();
+  initReveal();
+})();
+
+function renderTrending(){
+  var trending=allProds.filter(function(p){
+    return p.trending===true||p.trending==="true"||
+           (p.old_price&&Number(p.old_price)>Number(p.price));
+  }).slice(0,8);
+  var g=document.getElementById("trendGrid");
+  if(!trending.length){
+    g.innerHTML="<div class='trend-empty'><div class='trend-empty-icon'>🔥</div><p>Aucun produit tendance</p><p style='font-size:.75rem;margin-top:4px;color:var(--muted);'>Activez-les depuis l'admin.</p></div>";
+    return;
+  }
+  g.innerHTML=trending.map(function(p){
+    var imgs=getImgs(p);
+    var img=imgs[0]?"<img src='"+imgs[0]+"' alt='"+p.name+"'>":(CE[p.category]||"📦");
+    var isPromo=p.old_price&&Number(p.old_price)>Number(p.price);
+    var pct=isPromo?Math.round((1-p.price/p.old_price)*100):0;
+    return "<div class='tcard' onclick='location.href=\"produit.html?id="+(p._key||p.id)+"\"'>"+
+      (p.trending===true||p.trending==="true"?"<div class='tcard-fire'>🔥 Tendance</div>":"")+
+      (isPromo?"<div class='tcard-promo-badge'>-"+pct+"%</div>":"")+
+      "<div class='tcard-img'>"+img+"</div>"+
+      "<div class='tcard-body'>"+
+        "<div class='tcard-cat'>"+(CE[p.category]||"")+" "+p.category+"</div>"+
+        "<div class='tcard-name'>"+p.name+"</div>"+
+        "<div style='display:flex;align-items:baseline;gap:5px;'>"+
+          "<div class='tcard-price'>"+fmt(p.price)+"</div>"+
+          (isPromo?"<div class='tcard-old'>"+fmt(p.old_price)+"</div>":"")+
+        "</div>"+
+        "<div class='tcard-btns'>"+
+          "<button class='tcard-wa' onclick='event.stopPropagation();waQuick(\""+(p._key||p.id)+"\")'>💬 Commander</button>"+
+          "<button class='tcard-det' onclick='event.stopPropagation();location.href=\"produit.html?id="+(p._key||p.id)+"\"'>🔍</button>"+
+        "</div>"+
+      "</div></div>";
+  }).join("");
+}
+
+function waQuick(key){
+  var p=allProds.find(function(x){return(x._key||x.id)===key;});if(!p)return;
+  var text="Bonjour EMBF Boutique ! 👋\n\nJe suis intéressé par :\n📦 *"+p.name+"*\n💰 *"+fmt(p.price)+"*\n\nPouvez-vous me confirmer la disponibilité ? Merci !";
+  var url="https://wa.me/22655300868?text="+encodeURIComponent(text);
+  if(/Mobi|Android/i.test(navigator.userAgent))window.location.href=url;else window.open(url,"_blank");
+}
+
+function updateCounts(){
+  var cats=["Smartphone","Ordinateur","Gadget","Accessoires","Autre"];
+  cats.forEach(function(cat){
+    var n=allProds.filter(function(p){return p.category===cat;}).length;
+    var el=document.getElementById("cnt-"+cat);
+    if(el)el.textContent=n+" produit"+(n!==1?"s":"");
+  });
+}
+
+function checkPromo(){
+  var promo=JSON.parse(localStorage.getItem("mb_promo")||"null");
+  if(!promo||!promo.active||!promo.endDate)return;
+  var end=new Date(promo.endDate);if(end<=new Date())return;
+  var banner=document.getElementById("promoBanner");banner.style.display="block";
+  if(promo.title)document.getElementById("promoTitle").textContent=promo.title;
+  function tick(){
+    var diff=end-new Date();if(diff<=0){banner.style.display="none";return;}
+    document.getElementById("pJ").textContent=String(Math.floor(diff/86400000)).padStart(2,"0");
+    document.getElementById("pH").textContent=String(Math.floor((diff%86400000)/3600000)).padStart(2,"0");
+    document.getElementById("pM").textContent=String(Math.floor((diff%3600000)/60000)).padStart(2,"0");
+    document.getElementById("pS").textContent=String(Math.floor((diff%60000)/1000)).padStart(2,"0");
+  }
+  tick();setInterval(tick,1000);
+}
+
+function initReveal(){
+  var obs=new IntersectionObserver(function(e){e.forEach(function(x){if(x.isIntersecting)x.target.classList.add("vis");});},{threshold:.07});
+  document.querySelectorAll(".reveal").forEach(function(el){obs.observe(el);});
+}
+
+function shareWa(){
+  var text="👋 Hey ! J'ai trouvé une super boutique tech en Afrique de l'Ouest.\n\n🛍️ *EMBF Boutique* — Smartphones, Ordinateurs, Gadgets\n✅ Livraison rapide au Burkina et partout en Afrique\n💳 Paiement Orange Money, Wave, Moov\n\n🔗 https://embfboutique.netlify.app\n\nCommandez directement sur WhatsApp !";
+  var url="https://wa.me/?text="+encodeURIComponent(text);
+  if(/Mobi|Android/i.test(navigator.userAgent))window.location.href=url;else window.open(url,"_blank");
+}
+function copyLink(){
+  navigator.clipboard.writeText("https://embfboutique.netlify.app").then(function(){showToast("✅ Lien copié !");});
+}
+document.querySelectorAll(".mmenu a").forEach(function(a){a.addEventListener("click",function(){document.getElementById("mmenu").classList.remove("open");document.getElementById("burgerBtn").textContent="☰";});});
+updateCartUI();
+</script>
+</body>
+</html>

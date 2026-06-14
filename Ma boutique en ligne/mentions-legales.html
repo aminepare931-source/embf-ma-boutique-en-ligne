@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Mentions Legales — EMBF Boutique</title>
+<meta name="description" content="Mentions Legales de EMBF Boutique - Boutique tech en Afrique de l'Ouest.">
+<meta name="robots" content="index, follow">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FW2C4K6SCW"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-FW2C4K6SCW');</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+:root{--bg:#03030a;--s1:#0c0c1d;--s2:#13132a;--a1:#00e5ff;--a2:#8b5cf6;--a3:#f43f5e;--gold:#fbbf24;--txt:#f1f1ff;--muted:#8888aa;--border:rgba(0,229,255,.12);--green:#22c55e;--nh:60px;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--txt);font-family:Outfit,sans-serif;overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+.nav{position:sticky;top:0;z-index:999;height:var(--nh);background:rgba(3,3,10,.97);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 16px;justify-content:space-between;gap:8px;}
+.nav-logo{font-family:Bebas\ Neue,sans-serif;font-size:1.4rem;letter-spacing:.08em;text-decoration:none;background:linear-gradient(90deg,var(--a1),var(--a2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;flex-shrink:0;}
+.nav-desktop{display:none;align-items:center;gap:4px;}
+.ndl{color:var(--muted);font-size:.82rem;font-weight:600;text-decoration:none;padding:6px 11px;border-radius:8px;transition:color .2s;}
+.ndl:hover,.ndl.act{color:var(--a1);}
+.nav-right{display:flex;align-items:center;gap:8px;}
+.nav-cart{background:linear-gradient(135deg,var(--a1),var(--a2));color:#000;padding:7px 13px;border-radius:50px;font-weight:800;font-size:.8rem;cursor:pointer;border:none;display:flex;align-items:center;gap:5px;flex-shrink:0;}
+.cbadge{background:#000;border-radius:50%;width:17px;height:17px;display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:800;}
+.burger{display:flex;background:none;border:none;color:var(--txt);font-size:1.4rem;cursor:pointer;padding:8px;line-height:1;flex-shrink:0;}
+.mmenu{display:none;position:fixed;top:var(--nh);left:0;right:0;background:rgba(10,10,26,.98);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);z-index:998;padding:12px;flex-direction:column;gap:6px;}
+.mmenu.open{display:flex;}
+.mmenu a{color:var(--muted);font-weight:600;font-size:.95rem;text-decoration:none;padding:13px 16px;border-radius:12px;display:flex;align-items:center;gap:10px;border:1px solid transparent;transition:all .2s;}
+.mmenu a:hover{color:var(--txt);background:rgba(255,255,255,.05);border-color:var(--border);}
+.mmenu .mwa{background:rgba(37,211,102,.1);border-color:rgba(37,211,102,.25);color:#25d366;}
+.mmenu .mdem{background:rgba(251,191,36,.08);border-color:rgba(251,191,36,.2);color:var(--gold);font-weight:800;}
+.trust{background:linear-gradient(90deg,rgba(0,229,255,.06),rgba(139,92,246,.04));border-bottom:1px solid var(--border);padding:6px 16px;display:flex;gap:16px;overflow-x:auto;scrollbar-width:none;}
+.trust::-webkit-scrollbar{display:none;}
+.ti{font-size:.7rem;font-weight:700;white-space:nowrap;color:var(--muted);display:flex;align-items:center;gap:5px;}
+.ti b{color:var(--txt);}
+footer{background:var(--s1);border-top:1px solid var(--border);padding:24px 16px 70px;}
+.flinks{display:flex;gap:12px;flex-wrap:wrap;margin:8px 0 12px;}
+.flinks a{color:var(--muted);text-decoration:none;font-size:.8rem;}
+.flinks a:hover{color:var(--a1);}
+.fcopy{color:var(--muted);font-size:.72rem;}
+.waf{position:fixed;bottom:18px;right:14px;z-index:400;width:52px;height:52px;border-radius:50%;background:#25d366;color:white;display:flex;align-items:center;justify-content:center;font-size:1.5rem;text-decoration:none;box-shadow:0 4px 18px rgba(37,211,102,.5);}
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .55s ease,transform .55s ease;}
+.reveal.vis{opacity:1;transform:translateY(0);}
+.spinner{width:36px;height:36px;border:3px solid var(--border);border-top-color:var(--a1);border-radius:50%;animation:spin .8s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(40px);padding:10px 22px;border-radius:50px;font-weight:700;font-size:.84rem;z-index:2000;transition:all .3s;opacity:0;white-space:nowrap;}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1;}
+.toast.ok{background:var(--green);color:#fff;}
+.toast.err{background:var(--a3);color:#fff;}
+@media(min-width:900px){:root{--nh:68px;}.nav{padding:0 40px;}.nav-desktop{display:flex;}.burger{display:none!important;}}
+
+.hero{padding:36px 16px 28px;background:linear-gradient(180deg,rgba(0,229,255,.07),transparent);border-bottom:1px solid var(--border);text-align:center;}
+.hero h1{font-family:Bebas\ Neue,sans-serif;font-size:clamp(2.2rem,9vw,4rem);letter-spacing:.03em;}
+.hero h1 span{background:linear-gradient(90deg,var(--a1),var(--a2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hero p{color:var(--muted);font-size:.9rem;margin-top:8px;max-width:480px;margin-left:auto;margin-right:auto;}
+.hero-date{color:var(--muted);font-size:.8rem;margin-top:8px;}
+.bread{font-size:.78rem;color:var(--muted);margin-bottom:8px;}
+.bread a{color:var(--a1);text-decoration:none;}
+.bread span{color:var(--txt);font-weight:600;}
+.body{max-width:900px;margin:0 auto;padding:28px 16px 80px;}
+.hl{border-left:3px solid var(--a1);padding:14px 16px;background:rgba(0,229,255,.04);border-radius:0 12px 12px 0;margin-bottom:24px;}
+.hl p{font-size:.93rem;line-height:1.7;color:var(--txt);}
+.sec{margin-bottom:24px;}
+.sec h2{font-family:Bebas\ Neue,sans-serif;font-size:1.4rem;letter-spacing:.04em;color:var(--a1);margin-bottom:10px;}
+.sec p{font-size:.9rem;line-height:1.7;color:var(--muted);margin-bottom:8px;}
+.sec ul{list-style:none;padding:0;display:flex;flex-direction:column;gap:8px;}
+.sec li{background:var(--s1);border:1px solid var(--border);border-radius:12px;padding:12px 14px;font-size:.88rem;line-height:1.6;color:var(--muted);}
+.sec li strong{color:var(--txt);display:inline-block;margin-right:4px;}
+@media(min-width:900px){.hero{padding-left:40px;padding-right:40px;}.body{padding-left:40px;padding-right:40px;}}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="index.html" class="nav-logo"><span>EMBF BOUTIQUE</span></a>
+  <div class="nav-desktop">
+    <a href="index.html" class="ndl">Accueil</a>
+    <a href="produits.html" class="ndl">Produits</a>
+    <a href="demande.html" class="ndl" style="color:var(--gold);font-weight:800;">Demande</a>
+    <a href="contact.html" class="ndl">Contact</a>
+  </div>
+  <a href="produits.html" class="nav-cta">Voir les produits</a>
+  <button class="burger" id="burgerBtn" onclick="toggleMenu()">&#9776;</button>
+</nav>
+
+<div class="mmenu" id="mmenu">
+  <a href="index.html">🏠 Accueil</a>
+  <a href="produits.html">🛍️ Produits</a>
+  <a href="demande.html" style="color:var(--gold);">✨ Faire une demande</a>
+  <a href="contact.html">📞 Contact</a>
+  <a href="https://wa.me/22655300868" target="_blank" class="mwa">💬 WhatsApp</a>
+  <a href="produits.html" class="mcta">Voir les produits</a>
+</div>
+
+<div class="hero">
+  <div class="hero-in">
+    <div class="bread"><a href="index.html">Accueil</a> › <span>Mentions Legales</span></div>
+    <h1>MENTIONS<br><span>LEGALES</span></h1>
+    <div class="hero-date">📅 Dernière mise à jour : Mars 2026</div>
+  </div>
+</div>
+
+<div class="body">
+
+<div class="hl"><p>Conformement aux dispositions legales en vigueur, voici les informations relatives a EMBF Boutique.</p></div>
+<div class="sec">
+  <h2>Editeur du site</h2>
+  <ul>
+    <li><strong>Nom de la boutique :</strong> EMBF Boutique</li>
+    <li><strong>Responsable :</strong> Amine Pare</li>
+    <li><strong>Email :</strong> aminepare931@gmail.com</li>
+    <li><strong>Telephone / WhatsApp :</strong> +226 55 30 08 68</li>
+    <li><strong>Pays d'operation :</strong> Burkina Faso</li>
+    <li><strong>Activite :</strong> Commerce en ligne de produits technologiques</li>
+  </ul>
+</div>
+... (truncated) ...
+</body>
+</html>
