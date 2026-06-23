@@ -582,8 +582,8 @@ footer{background:var(--s1);border-top:1px solid var(--border);padding:24px 16px
 
 <script>
 
-var FB_DB="https://embf-b6bdb-default-rtdb.europe-west1.firebasedatabase.app";
-var FB_KEY="AIzaSyAt6csXKXx80miYqleP_tBIztgvWqZ-d_8";
+var FB_DB="https://boutique-embf-default-rtdb.europe-west1.firebasedatabase.app";
+var FB_KEY="AIzaSyA0UGFKeoatnMaCMAlaF3B3li9gFY4Dt0g";
 var WA="22655300868";
 var CE={"Ordinateur":"💻","Smartphone":"📱","Gadget":"🎮","Accessoires":"🎧","Autre":"📦"};
 function fmt(v){return Number(v).toLocaleString("fr-FR")+" FCFA";}
@@ -616,9 +616,9 @@ function updateCartUI(){
       (c.img?"<img src='"+c.img+"' style='width:42px;height:42px;border-radius:7px;object-fit:cover;flex-shrink:0;' alt=''>":"<div style='width:42px;height:42px;border-radius:7px;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;'>"+(CE[c.cat]||"📦")+"</div>")+
       "<div style='flex:1;'><div style='font-weight:700;font-size:.83rem;margin-bottom:2px;'>"+c.name+"</div><div style='color:var(--gold);font-size:.87rem;font-weight:700;'>"+fmt(c.price)+"</div></div>"+
       "<div style='display:flex;align-items:center;gap:5px;'>"+
-        "<button onclick='changeQty(\""+c.id+"\",-1)' style='background:var(--s1);border:1px solid var(--border);color:var(--txt);width:26px;height:26px;border-radius:6px;cursor:pointer;'>-</button>"+
+        "<button onclick=\"changeQty('"+c.id+"',-1)\" style='background:var(--s1);border:1px solid var(--border);color:var(--txt);width:26px;height:26px;border-radius:6px;cursor:pointer;'>-</button>"+
         "<span style='min-width:16px;text-align:center;'>"+c.qty+"</span>"+
-        "<button onclick='changeQty(\""+c.id+"\",1)' style='background:var(--s1);border:1px solid var(--border);color:var(--txt);width:26px;height:26px;border-radius:6px;cursor:pointer;'>+</button>"+
+        "<button onclick=\"changeQty('"+c.id+"',1)\" style='background:var(--s1);border:1px solid var(--border);color:var(--txt);width:26px;height:26px;border-radius:6px;cursor:pointer;'>+</button>"+
       "</div></div>";
   }).join("");
   document.getElementById("cartTotal").textContent=fmt(cart.reduce(function(s,c){return s+c.price*c.qty;},0));
@@ -931,21 +931,7 @@ function sendWa(){
   var qty=document.getElementById("waQty").value||1;
   var msg=document.getElementById("waMsg").value.trim();
   var p=cur;
-  var text="Bonjour EMBF Boutique ! 👋\n\n"+
-    "🛍️ *NOUVELLE COMMANDE*\n━━━━━━━━━━━━━━\n"+
-    "📦 *Produit :* "+p.name+"\n"+
-    "💰 *Prix :* "+fmt(p.price)+"\n"+
-    "🛒 *Quantité :* "+qty+"\n\n"+
-    "👤 *CLIENT*\n━━━━━━━━━━━━━━\n"+
-    "• Nom : *"+name+"*\n"+
-    "• Tél : *"+phone+"*\n"+
-    "• Type : *"+(selCTval==="comm"?"Commerçant":"Particulier")+"*\n"+
-    "• Pays : *"+pays+"*\n"+
-    "• Ville : *"+ville+"*"+
-    (document.getElementById("waQuart").value?"\n• Quartier : *"+document.getElementById("waQuart").value+"*":"")+
-    (selPayVal?"\n\n💳 *Paiement :* "+selPayVal:"")+
-    (msg?"\n\n📝 *Message :* "+msg:"")+
-    "\n\nMerci !";
+  var text="Bonjour EMBF Boutique ! 👋\n\n🛍️ *NOUVELLE COMMANDE*\n━━━━━━━━━━━━━━\n📦 *Produit :* "+p.name+"\n💰 *Prix :* "+fmt(p.price)+"\n🛒 *Quantité :* "+qty+"\n\n👤 *CLIENT*\n━━━━━━━━━━━━━━\n• Nom : *"+name+"*\n• Tél : *"+phone+"*\n• Type : *"+(selCTval==="comm"?"Commerçant":"Particulier")+"*\n• Pays : *"+pays+"*\n• Ville : *"+ville+"*"+(document.getElementById("waQuart").value?"\n• Quartier : *"+document.getElementById("waQuart").value+"*":"")+(selPayVal?"\n\n💳 *Paiement :* "+selPayVal:"")+(msg?"\n\n📝 *Message :* "+msg:"")+"\n\nMerci !";
   var url="https://wa.me/22655300868?text="+encodeURIComponent(text);
   if(/Mobi|Android/i.test(navigator.userAgent))window.location.href=url;else window.open(url,"_blank");
   closeWa();showToast("✅ Commande envoyée !");
@@ -985,14 +971,7 @@ function sendProof(){
   if(!name){document.getElementById("payName").style.borderColor="var(--a3)";document.getElementById("payName").focus();showToast("Entrez votre nom",false);return;}
   if(!phone){document.getElementById("payPhone").style.borderColor="var(--a3)";document.getElementById("payPhone").focus();showToast("Entrez votre numéro",false);return;}
   var m=payMeth?PAY_METHODS[payMeth]:{name:"Inconnu",icon:"💳"};
-  var text = "Bonjour EMBF Boutique ! 👋\n\n" +
-    "💳 *PREUVE DE PAIEMENT*\n━━━━━━━━━━━━━━\n" +
-    "📦 *Produit :* "+cur.name+"\n" +
-    "💰 *Montant :* "+fmt(cur.price)+"\n" +
-    "💳 *Méthode :* "+m.icon+" "+m.name+"\n\n" +
-    "👤 *Client :* "+name+"\n" +
-    "📱 *Tél :* "+phone+"\n\n" +
-    "📸 Capture d'écran ci-dessous.\nMerci de confirmer !";
+  var text="Bonjour EMBF Boutique ! 👋\n\n💳 *PREUVE DE PAIEMENT*\n━━━━━━━━━━━━━━\n📦 *Produit :* "+cur.name+"\n💰 *Montant :* "+fmt(cur.price)+"\n💳 *Méthode :* "+m.icon+" "+m.name+"\n\n👤 *Client :* "+name+"\n📱 *Tél :* "+phone+"\n\n📸 Capture d'écran ci-dessous.\nMerci de confirmer !";
   var url="https://wa.me/22655300868?text="+encodeURIComponent(text);
   if(/Mobi|Android/i.test(navigator.userAgent))window.location.href=url;else window.open(url,"_blank");
   closePay();document.getElementById("succOv").classList.add("open");document.body.style.overflow="hidden";
@@ -1083,5 +1062,6 @@ function submitRev(){
 document.querySelectorAll(".mmenu a").forEach(function(a){a.addEventListener("click",function(){document.getElementById("mmenu").classList.remove("open");document.getElementById("burgerBtn").textContent="☰";});});
 updateCartUI();
 </script>
+<script src="https://id-preview--f60803aa-0907-499a-a977-9992f2538ef8.lovable.app/widget/rachida.js" data-shop="shop-wpdhfq"></script>
 </body>
 </html>

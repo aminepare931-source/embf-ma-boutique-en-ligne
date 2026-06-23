@@ -90,7 +90,7 @@ footer{background:var(--s1);border-top:1px solid var(--border);padding:24px 16px
 .pcard-fav.on{background:rgba(244,63,94,.8);}
 .pcard-body{padding:10px 10px 12px;}
 .pcard-cat{font-size:.68rem;color:var(--a1);font-weight:700;margin-bottom:3px;}
-.pcard-name{font-weight:800;font-size:.85rem;line-height:1.3;margin-bottom:6px;display:-webkit-box;-webkit-line-clamp:2;line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.pcard-name{font-weight:800;font-size:.85rem;line-height:1.3;margin-bottom:6px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;line-clamp:2;overflow:hidden;}
 .pcard-prices{display:flex;align-items:baseline;gap:5px;margin-bottom:5px;flex-wrap:wrap;}
 .pcard-price{font-family:Bebas\ Neue,sans-serif;font-size:1.1rem;color:var(--gold);}
 .pcard-old{font-size:.68rem;color:var(--muted);text-decoration:line-through;}
@@ -295,8 +295,8 @@ footer{background:var(--s1);border-top:1px solid var(--border);padding:24px 16px
 
 <script>
 
-var FB_DB="https://embf-b6bdb-default-rtdb.europe-west1.firebasedatabase.app";
-var FB_KEY="AIzaSyAt6csXKXx80miYqleP_tBIztgvWqZ-d_8";
+var FB_DB="https://boutique-embf-default-rtdb.europe-west1.firebasedatabase.app";
+var FB_KEY="AIzaSyA0UGFKeoatnMaCMAlaF3B3li9gFY4Dt0g";
 var WA="22655300868";
 var CE={"Ordinateur":"💻","Smartphone":"📱","Gadget":"🎮","Accessoires":"🎧","Autre":"📦"};
 function fmt(v){return Number(v).toLocaleString("fr-FR")+" FCFA";}
@@ -495,5 +495,6 @@ function sendWa(){
 document.querySelectorAll(".mmenu a").forEach(function(a){a.addEventListener("click",function(){document.getElementById("mmenu").classList.remove("open");document.getElementById("burgerBtn").textContent="☰";});});
 updateCartUI();
 </script>
+<script src="https://id-preview--f60803aa-0907-499a-a977-9992f2538ef8.lovable.app/widget/rachida.js" data-shop="shop-wpdhfq"></script>
 </body>
 </html>

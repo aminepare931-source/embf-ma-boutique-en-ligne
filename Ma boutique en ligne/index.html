@@ -295,8 +295,8 @@ footer{background:var(--s1);border-top:1px solid var(--border);padding:24px 16px
 @keyframes sk{0%{opacity:.5;}100%{opacity:1;}}
 <script>
 
-var FB_DB="https://embf-b6bdb-default-rtdb.europe-west1.firebasedatabase.app";
-var FB_KEY="AIzaSyAt6csXKXx80miYqleP_tBIztgvWqZ-d_8";
+var FB_DB="https://boutique-embf-default-rtdb.europe-west1.firebasedatabase.app";
+var FB_KEY="AIzaSyA0UGFKeoatnMaCMAlaF3B3li9gFY4Dt0g";
 var WA="22655300868";
 var CE={"Ordinateur":"💻","Smartphone":"📱","Gadget":"🎮","Accessoires":"🎧","Autre":"📦"};
 function fmt(v){return Number(v).toLocaleString("fr-FR")+" FCFA";}
@@ -394,7 +394,7 @@ function renderTrending(){
     var img=imgs[0]?"<img src='"+imgs[0]+"' alt='"+p.name+"'>":(CE[p.category]||"📦");
     var isPromo=p.old_price&&Number(p.old_price)>Number(p.price);
     var pct=isPromo?Math.round((1-p.price/p.old_price)*100):0;
-    return "<div class='tcard' onclick='location.href=\"produit.html?id="+(p._key||p.id)+"\"'>"+
+    return "<div class='tcard' onclick='location.href=\"produit.html?id=\"+(p._key||p.id)+\"\"'>"+
       (p.trending===true||p.trending==="true"?"<div class='tcard-fire'>🔥 Tendance</div>":"")+
       (isPromo?"<div class='tcard-promo-badge'>-"+pct+"%</div>":"")+
       "<div class='tcard-img'>"+img+"</div>"+
@@ -407,7 +407,7 @@ function renderTrending(){
         "</div>"+
         "<div class='tcard-btns'>"+
           "<button class='tcard-wa' onclick='event.stopPropagation();waQuick(\""+(p._key||p.id)+"\")'>💬 Commander</button>"+
-          "<button class='tcard-det' onclick='event.stopPropagation();location.href=\"produit.html?id="+(p._key||p.id)+"\"'>🔍</button>"+
+          "<button class='tcard-det' onclick='event.stopPropagation();location.href=\"produit.html?id=\"+(p._key||p.id)+\"\"'>🔍</button>"+
         "</div>"+
       "</div></div>";
   }).join("");
@@ -461,5 +461,6 @@ function copyLink(){
 document.querySelectorAll(".mmenu a").forEach(function(a){a.addEventListener("click",function(){document.getElementById("mmenu").classList.remove("open");document.getElementById("burgerBtn").textContent="☰";});});
 updateCartUI();
 </script>
+<script src="https://id-preview--f60803aa-0907-499a-a977-9992f2538ef8.lovable.app/widget/rachida.js" data-shop="shop-wpdhfq"></script>
 </body>
 </html>
