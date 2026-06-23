@@ -1,21 +1,208 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>À Propos — EMBF Boutique</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>À Propos — EMBF Boutique</title>
+<meta name="description" content="Découvrez EMBF Boutique, votre boutique tech de confiance en Afrique de l'Ouest. Smartphones, ordinateurs, gadgets au meilleur prix.">
+<meta name="robots" content="index, follow">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FW2C4K6SCW"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-FW2C4K6SCW');</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+:root{--bg:#03030a;--s1:#0c0c1d;--s2:#13132a;--a1:#00e5ff;--a2:#8b5cf6;--gold:#fbbf24;--txt:#f1f1ff;--muted:#8888aa;--border:rgba(0,229,255,0.12);--green:#22c55e;--nh:60px;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--txt);font-family:Outfit,sans-serif;overflow-x:hidden;}
+.nav{position:sticky;top:0;z-index:999;height:var(--nh);background:rgba(3,3,10,.96);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 16px;justify-content:space-between;gap:8px;}
+.nav-logo{text-decoration:none;display:flex;align-items:center;}
+.nav-logo span{font-family:Bebas\ Neue,sans-serif;font-size:1.3rem;letter-spacing:.08em;background:linear-gradient(90deg,var(--a1),var(--a2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.nav-desktop{display:none;align-items:center;gap:4px;}
+.ndl{color:var(--muted);font-size:.82rem;font-weight:600;text-decoration:none;padding:7px 11px;border-radius:8px;}
+.ndl:hover{color:var(--a1);}
+.nav-cta{background:linear-gradient(135deg,var(--a1),var(--a2));color:#000;padding:7px 15px;border-radius:50px;font-weight:800;font-size:.82rem;text-decoration:none;white-space:nowrap;display:none;}
+.burger{display:flex;background:none;border:none;color:var(--txt);font-size:1.4rem;cursor:pointer;padding:8px;line-height:1;}
+.mmenu{display:none;position:fixed;top:var(--nh);left:0;right:0;background:rgba(12,12,29,.98);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);z-index:998;padding:12px;flex-direction:column;gap:6px;}
+.mmenu.open{display:flex;}
+.mmenu a{color:var(--muted);font-weight:600;font-size:.95rem;text-decoration:none;padding:13px 16px;border-radius:12px;display:flex;align-items:center;gap:10px;border:1px solid transparent;}
+.mmenu a:hover{color:var(--txt);background:rgba(255,255,255,.05);border-color:var(--border);}
+.mmenu .mwa{background:rgba(37,211,102,.1);border-color:rgba(37,211,102,.25);color:#25d366;}
+.mmenu .mcta{background:linear-gradient(135deg,var(--a1),var(--a2));color:#000;font-weight:800;justify-content:center;}
+.hero{padding:40px 16px 32px;background:linear-gradient(180deg,rgba(0,229,255,.07),transparent);border-bottom:1px solid var(--border);}
+.hero-in{max-width:800px;margin:0 auto;}
+.bread{font-size:.74rem;color:var(--muted);margin-bottom:10px;display:flex;gap:6px;align-items:center;}
+.bread a{color:var(--muted);text-decoration:none;}
+.bread a:hover{color:var(--a1);}
+.hero h1{font-family:Bebas\ Neue,sans-serif;font-size:clamp(2.2rem,9vw,4rem);letter-spacing:.03em;line-height:1;}
+.hero h1 span{background:linear-gradient(90deg,var(--a1),var(--a2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hero-sub{color:var(--muted);font-size:.95rem;line-height:1.7;margin-top:12px;max-width:560px;}
+.body{max-width:800px;margin:0 auto;padding:32px 16px 80px;}
+.hl{background:rgba(0,229,255,.05);border:1px solid rgba(0,229,255,.15);border-radius:14px;padding:16px 18px;margin-bottom:28px;}
+.hl p{color:var(--txt);font-size:.92rem;line-height:1.8;}
+.sec{margin-bottom:32px;}
+.sec h2{font-family:Bebas\ Neue,sans-serif;font-size:1.4rem;letter-spacing:.04em;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border);color:var(--a1);}
+.sec p{color:var(--muted);font-size:.9rem;line-height:1.8;margin-bottom:10px;}
+.sec p strong{color:var(--txt);}
+.values-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px;}
+.val-card{background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:16px;}
+.val-icon{font-size:1.6rem;margin-bottom:8px;}
+.val-title{font-weight:800;font-size:.9rem;margin-bottom:4px;}
+.val-desc{color:var(--muted);font-size:.8rem;line-height:1.6;}
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:20px 0;}
+.stat{background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:16px;text-align:center;}
+.stat-n{font-family:Bebas\ Neue,sans-serif;font-size:2rem;letter-spacing:.04em;background:linear-gradient(90deg,var(--a1),var(--a2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.stat-l{color:var(--muted);font-size:.75rem;margin-top:2px;}
+.contact-box{background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:20px;display:flex;flex-direction:column;gap:10px;}
+.contact-row{display:flex;align-items:center;gap:12px;color:var(--muted);font-size:.88rem;}
+.contact-row span{color:var(--txt);font-weight:600;}
+.btn-wa{display:inline-flex;align-items:center;gap:8px;background:#25d366;color:#fff;padding:13px 24px;border-radius:12px;font-weight:800;font-size:.9rem;text-decoration:none;margin-top:8px;}
+footer{background:var(--s1);border-top:1px solid var(--border);padding:28px 16px 60px;}
+.footer-in{max-width:1100px;margin:0 auto;}
+.flinks{display:flex;gap:12px;flex-wrap:wrap;margin:10px 0 14px;}
+.flinks a{color:var(--muted);text-decoration:none;font-size:.8rem;}
+.flinks a:hover{color:var(--a1);}
+.fcopy{border-top:1px solid var(--border);padding-top:14px;color:var(--muted);font-size:.73rem;}
+.waf{position:fixed;bottom:18px;right:14px;z-index:800;width:54px;height:54px;border-radius:50%;background:#25d366;color:white;display:flex;align-items:center;justify-content:center;font-size:1.55rem;text-decoration:none;box-shadow:0 4px 20px rgba(37,211,102,.5);}
+@media(min-width:900px){
+  :root{--nh:68px;}
+  .nav{padding:0 40px;}
+  .nav-desktop{display:flex;}
+  .nav-cta{display:block;}
+  .burger{display:none!important;}
+  .body{padding-left:40px;padding-right:40px;}
+  .hero{padding-left:40px;padding-right:40px;}
+  .values-grid{grid-template-columns:repeat(4,1fr);}
+}
+</style>
 </head>
 <body>
-  <header>
-    <nav><a href="index.html">Accueil</a> · <a href="produits.html">Produits</a> · <a href="contact.html">Contact</a></nav>
-  </header>
-  <main>
-    <h1>À Propos</h1>
-    <p>Page À Propos créée automatiquement pour éviter les liens cassés. Contenu à compléter.</p>
-  </main>
-  <footer>
-    <p><a href="index.html">Retour à l'accueil</a></p>
-  </footer>
+
+<nav class="nav">
+  <a href="index.html" class="nav-logo"><span>EMBF BOUTIQUE</span></a>
+  <div class="nav-desktop">
+    <a href="index.html" class="ndl">Accueil</a>
+    <a href="produits.html" class="ndl">Produits</a>
+    <a href="demande.html" class="ndl" style="color:var(--gold);font-weight:800;">Demande</a>
+    <a href="contact.html" class="ndl">Contact</a>
+  </div>
+  <a href="produits.html" class="nav-cta">Voir les produits</a>
+  <button class="burger" id="burgerBtn" onclick="toggleMenu()">&#9776;</button>
+</nav>
+
+<div class="mmenu" id="mmenu">
+  <a href="index.html">🏠 Accueil</a>
+  <a href="produits.html">🛍️ Produits</a>
+  <a href="demande.html" style="color:var(--gold);">✨ Faire une demande</a>
+  <a href="contact.html">📞 Contact</a>
+  <a href="https://wa.me/22655300868" target="_blank" class="mwa">💬 WhatsApp</a>
+  <a href="produits.html" class="mcta">Voir les produits</a>
+</div>
+
+<div class="hero">
+  <div class="hero-in">
+    <div class="bread"><a href="index.html">Accueil</a> › <span>À Propos</span></div>
+    <h1>À PROPOS<br><span>D'EMBF BOUTIQUE</span></h1>
+    <p class="hero-sub">Votre boutique tech de confiance en Afrique de l'Ouest — smartphones, ordinateurs, gadgets et accessoires au meilleur prix.</p>
+  </div>
+</div>
+
+<div class="body">
+
+  <div class="hl">
+    <p>EMBF Boutique est une boutique en ligne spécialisée dans la technologie, basée à <strong>Bobo-Dioulasso, Burkina Faso</strong>. Notre mission : rendre la tech premium accessible à tous en Afrique de l'Ouest.</p>
+  </div>
+
+  <div class="sec">
+    <h2>Notre Histoire</h2>
+    <p>EMBF Boutique est née d'une passion pour la technologie et d'un constat simple : les produits tech de qualité sont souvent difficiles d'accès ou trop chers en Afrique de l'Ouest. Nous avons décidé de changer ça.</p>
+    <p>Aujourd'hui, nous proposons une sélection rigoureuse de <strong>smartphones, ordinateurs, accessoires et gadgets</strong> avec une livraison rapide partout en Afrique et un service client disponible 7j/7 sur WhatsApp.</p>
+    <div class="stats-row">
+      <div class="stat"><div class="stat-n">10+</div><div class="stat-l">Produits</div></div>
+      <div class="stat"><div class="stat-n">8+</div><div class="stat-l">Pays livrés</div></div>
+      <div class="stat"><div class="stat-n">24H</div><div class="stat-l">Livraison</div></div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <h2>Nos Valeurs</h2>
+    <div class="values-grid">
+      <div class="val-card">
+        <div class="val-icon">✅</div>
+        <div class="val-title">Authenticité</div>
+        <div class="val-desc">Tous nos produits sont 100% authentiques. Nous ne vendons jamais de contrefaçons.</div>
+      </div>
+      <div class="val-card">
+        <div class="val-icon">🚀</div>
+        <div class="val-title">Rapidité</div>
+        <div class="val-desc">Livraison en 24 à 72h selon votre localisation. Commandez aujourd'hui, recevez demain.</div>
+      </div>
+      <div class="val-card">
+        <div class="val-icon">💬</div>
+        <div class="val-title">Proximité</div>
+        <div class="val-desc">Support WhatsApp 7j/7. Nous sommes là pour vous avant, pendant et après votre achat.</div>
+      </div>
+      <div class="val-card">
+        <div class="val-icon">💰</div>
+        <div class="val-title">Prix justes</div>
+        <div class="val-desc">Des prix compétitifs adaptés au marché africain, sans compromis sur la qualité.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <h2>Ce que nous proposons</h2>
+    <p>Notre catalogue couvre l'ensemble de l'écosystème tech :</p>
+    <p>📱 <strong>Smartphones</strong> — iPhone, Samsung, Tecno, Infinix et plus</p>
+    <p>💻 <strong>Ordinateurs</strong> — Laptops neufs et reconditionnés toutes marques</p>
+    <p>🎧 <strong>Accessoires</strong> — Écouteurs, chargeurs, coques, câbles</p>
+    <p>🎮 <strong>Gadgets</strong> — Montres connectées, enceintes, drones et plus</p>
+    <p>📦 <strong>Demande spéciale</strong> — Vous ne trouvez pas ce que vous cherchez ? <a href="demande.html" style="color:var(--a1);">Faites une demande</a>, on l'importe pour vous.</p>
+  </div>
+
+  <div class="sec">
+    <h2>Nous contacter</h2>
+    <div class="contact-box">
+      <div class="contact-row">📍 <span>Bobo-Dioulasso, Burkina Faso</span></div>
+      <div class="contact-row">📧 <span>aminepare931@gmail.com</span></div>
+      <div class="contact-row">📞 <span>+226 55 30 08 68</span></div>
+      <div class="contact-row">🕐 <span>Disponible 7j/7 de 8h à 22h</span></div>
+      <a class="btn-wa" href="https://wa.me/22655300868?text=Bonjour EMBF Boutique !" target="_blank">💬 Nous contacter sur WhatsApp</a>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-in">
+    <div style="font-family:Bebas\ Neue,sans-serif;font-size:1.3rem;letter-spacing:.08em;background:linear-gradient(90deg,var(--a1),var(--a2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px;">EMBF BOUTIQUE</div>
+    <p style="color:var(--muted);font-size:.82rem;max-width:400px;line-height:1.6;margin-bottom:14px;">Votre boutique tech de confiance en Afrique.</p>
+    <div class="flinks">
+      <a href="index.html">Accueil</a>
+      <a href="produits.html">Produits</a>
+      <a href="apropos.html">À Propos</a>
+      <a href="cgv.html">CGV</a>
+      <a href="confidentialite.html">Confidentialité</a>
+      <a href="mentions-legales.html">Mentions légales</a>
+      <a href="livraison.html">Livraison</a>
+    </div>
+    <div class="fcopy">© 2025 EMBF Boutique — aminepare931@gmail.com</div>
+  </div>
+</footer>
+
+<a class="waf" href="https://wa.me/22655300868" target="_blank">💬</a>
+
+<script>
+function toggleMenu(){
+  var m=document.getElementById('mmenu'),b=document.getElementById('burgerBtn');
+  var o=m.classList.toggle('open');b.textContent=o?'✕':'☰';
+}
+document.querySelectorAll('.mmenu a').forEach(function(a){
+  a.addEventListener('click',function(){
+    document.getElementById('mmenu').classList.remove('open');
+    document.getElementById('burgerBtn').textContent='☰';
+  });
+});
+</script>
 <script src="https://id-preview--f60803aa-0907-499a-a977-9992f2538ef8.lovable.app/widget/rachida.js" data-shop="shop-wpdhfq"></script>
 </body>
 </html>
