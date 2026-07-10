@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Espace Affilié — EMBF Boutique</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FW2C4K6SCW"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-FW2C4K6SCW');</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+:root{--bg:#03030a;--s1:#0c0c1d;--s2:#13132a;--a1:#00e5ff;--a2:#8b5cf6;--gold:#fbbf24;--txt:#f1f1ff;--muted:#8888aa;--border:rgba(0,229,255,0.12);--green:#22c55e;--a3:#f43f5e;--nh:60px;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--txt);font-family:Outfit,sans-serif;overflow-x:hidden;}
+.nav{position:sticky;top:0;z-index:999;height:var(--nh);background:rgba(3,3,10,.96);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 16px;justify-content:space-between;gap:8px;}
+.nav-logo{text-decoration:none;}
+.nav-logo span{font-family:Bebas\ Neue,sans-serif;font-size:1.3rem;letter-spacing:.08em;background:linear-gradient(90deg,var(--a1),var(--a2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.burger{display:flex;background:none;border:none;color:var(--txt);font-size:1.4rem;cursor:pointer;padding:8px;}
+.mmenu{display:none;position:fixed;top:var(--nh);left:0;right:0;background:rgba(12,12,29,.98);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);z-index:998;padding:12px;flex-direction:column;gap:6px;}
+.mmenu.open{display:flex;}
+.mmenu a{color:var(--muted);font-weight:600;font-size:.95rem;text-decoration:none;padding:13px 16px;border-radius:12px;display:flex;align-items:center;gap:10px;border:1px solid transparent;}
+.mmenu a:hover{color:var(--txt);background:rgba(255,255,255,.05);border-color:var(--border);}
+.mmenu .mwa{background:rgba(37,211,102,.1);border-color:rgba(37,211,102,.25);color:#25d366;}
+
+/* LOGIN */
+.login-wrap{min-height:80vh;display:flex;align-items:center;justify-content:center;padding:24px 16px;}
+.login-card{background:var(--s1);border:1px solid var(--border);border-radius:20px;padding:32px 24px;max-width:400px;width:100%;text-align:center;}
+.login-card h2{font-family:Bebas\ Neue,sans-serif;font-size:1.8rem;letter-spacing:.04em;margin-bottom:6px;color:var(--gold);}
+.login-card p{color:var(--muted);font-size:.85rem;margin-bottom:20px;}
+.finput{width:100%;background:var(--s2);border:1.5px solid var(--border);color:var(--txt);padding:12px 14px;border-radius:12px;font-family:Outfit,sans-serif;font-size:.9rem;outline:none;transition:border-color .2s;margin-bottom:12px;}
+.finput:focus{border-color:var(--a1);}
+.finput::placeholder{color:var(--muted);}
+.btn-login{width:100%;background:linear-gradient(135deg,var(--gold),#f97316);color:#000;border:none;padding:13px;border-radius:12px;font-family:Outfit,sans-serif;font-weight:800;font-size:.95rem;cursor:pointer;}
+.btn-login:disabled{opacity:.5;cursor:not-allowed;}
+
+/* DASHBOARD */
+.dashboard{display:none;max-width:900px;margin:0 auto;padding:24px 16px 80px;}
+.dash-header{background:linear-gradient(135deg,rgba(251,191,36,.1),rgba(139,92,246,.08));border:1px solid rgba(251,191,36,.2);border-radius:18px;padding:20px;margin-bottom:20px;}
+.dash-welcome{font-family:Bebas\ Neue,sans-serif;font-size:1.5rem;letter-spacing:.04em;margin-bottom:4px;}
+.dash-code{display:inline-flex;align-items:center;gap:8px;background:var(--s2);border:1px solid var(--gold);border-radius:50px;padding:5px 14px;font-family:monospace;font-size:.9rem;font-weight:800;color:var(--gold);cursor:pointer;margin-top:6px;}
+.dash-statut{display:inline-block;font-size:.7rem;font-weight:800;padding:3px 10px;border-radius:50px;margin-left:8px;}
+.statut-actif{background:rgba(34,197,94,.2);color:var(--green);}
+.statut-attente{background:rgba(251,191,36,.15);color:var(--gold);}
+.statut-bloque{background:rgba(244,63,94,.15);color:var(--a3);}
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px;}
+.stat-card{background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:14px;text-align:center;}
+.stat-n{font-family:Bebas\ Neue,sans-serif;font-size:1.8rem;letter-spacing:.04em;}
+.stat-l{color:var(--muted);font-size:.72rem;margin-top:2px;}
+.section-title{font-family:Bebas\ Neue,sans-serif;font-size:1.3rem;letter-spacing:.04em;margin-bottom:14px;color:var(--a1);}
+.prod-affilie{background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:14px;margin-bottom:10px;}
+.pa-top{display:flex;gap:12px;align-items:center;margin-bottom:10px;}
+.pa-img{width:56px;height:56px;object-fit:cover;border-radius:10px;flex-shrink:0;background:var(--s2);}
+.pa-name{font-weight:700;font-size:.9rem;margin-bottom:2px;}
+.pa-price{color:var(--gold);font-weight:800;font-size:.88rem;}
+.pa-comm{color:var(--green);font-size:.8rem;font-weight:700;}
+.pa-gain{background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.2);border-radius:8px;padding:4px 10px;font-size:.78rem;font-weight:800;color:var(--green);}
+.pa-link{background:var(--s2);border:1px solid var(--border);border-radius:10px;padding:8px 12px;font-size:.76rem;color:var(--muted);font-family:monospace;word-break:break-all;margin-bottom:8px;}
+.btn-copy{background:linear-gradient(135deg,var(--a1),var(--a2));color:#000;border:none;padding:8px 16px;border-radius:8px;font-family:Outfit,sans-serif;font-weight:800;font-size:.78rem;cursor:pointer;margin-right:6px;}
+.btn-share{background:rgba(37,211,102,.15);border:1px solid rgba(37,211,102,.25);color:#25d366;padding:8px 14px;border-radius:8px;font-family:Outfit,sans-serif;font-weight:700;font-size:.78rem;cursor:pointer;}
+.loading{text-align:center;padding:40px;color:var(--muted);}
+.spinner{width:32px;height:32px;border:3px solid var(--border);border-top-color:var(--a1);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 12px;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(40px);padding:10px 22px;border-radius:50px;font-weight:700;font-size:.84rem;z-index:2000;transition:all .3s;opacity:0;white-space:nowrap;}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1;}
+.toast.ok{background:var(--green);color:#fff;}
+.toast.err{background:var(--a3);color:#fff;}
+.waf{position:fixed;bottom:18px;right:14px;z-index:800;width:54px;height:54px;border-radius:50%;background:#25d366;color:white;display:flex;align-items:center;justify-content:center;font-size:1.55rem;text-decoration:none;box-shadow:0 4px 20px rgba(37,211,102,.5);}
+@media(min-width:900px){:root{--nh:68px;}.nav{padding:0 40px;}.burger{display:none!important;}.stats-row{grid-template-columns:repeat(4,1fr);}}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <a href="index.html" class="nav-logo"><span>EMBF BOUTIQUE</span></a>
+  <span style="color:var(--gold);font-size:.8rem;font-weight:800;">💰 Espace Affilié</span>
+  <button class="burger" id="burgerBtn" onclick="toggleMenu()">&#9776;</button>
+</nav>
+<div class="mmenu" id="mmenu">
+  <a href="index.html">🏠 Accueil</a>
+  <a href="produits.html">🛍️ Produits</a>
+  <a href="affiliation.html">💰 Programme Affilié</a>
+  <a href="https://wa.me/22655300868" target="_blank" class="mwa">💬 WhatsApp</a>
+</div>
+
+<!-- LOGIN -->
+<div class="login-wrap" id="loginWrap">
+  <div class="login-card">
+    <div style="font-size:2rem;margin-bottom:8px;">💰</div>
+    <h2>ESPACE AFFILIÉ</h2>
+    <p>Entrez votre code affilié pour accéder à votre tableau de bord et vos liens de commission.</p>
+    <input class="finput" id="codeInput" type="text" placeholder="Votre code affilié (ex: AMI123)" maxlength="10">
+    <button class="btn-login" id="btnLogin" onclick="loginAffilie()">🔓 Accéder à mon espace</button>
+    <div style="margin-top:14px;font-size:.8rem;color:var(--muted);">Pas encore affilié ? <a href="affiliation.html" style="color:var(--a1);">Rejoindre le programme</a></div>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div class="dashboard" id="dashboard">
+  <div class="dash-header">
+    <div class="dash-welcome" id="dashWelcome">Bonjour !</div>
+    <div style="color:var(--muted);font-size:.85rem;margin-bottom:6px;">Votre code affilié :</div>
+    <div class="dash-code" id="dashCode" onclick="copyCode()">--- <span style="font-size:.7rem;color:var(--muted);">📋 copier</span></div>
+    <span class="dash-statut" id="dashStatut">—</span>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-card"><div class="stat-n" style="color:var(--green);" id="statGains">0</div><div class="stat-l">Gains FCFA</div></div>
+    <div class="stat-card"><div class="stat-n" style="color:var(--a1);" id="statVentes">0</div><div class="stat-l">Ventes</div></div>
+    <div class="stat-card"><div class="stat-n" style="color:var(--gold);" id="statClics">0</div><div class="stat-l">Clics</div></div>
+    <div class="stat-card"><div class="stat-n" style="color:var(--a2);" id="statProduits">0</div><div class="stat-l">Produits</div></div>
+  </div>
+
+  <div class="section-title">🔗 Vos liens affiliés par produit</div>
+  <div id="prodListArea"><div class="loading"><div class="spinner"></div>Chargement des produits...</div></div>
+
+  <div style="margin-top:24px;background:var(--s1);border:1px solid rgba(251,191,36,.2);border-radius:14px;padding:16px;">
+    <div style="font-weight:800;font-size:.9rem;margin-bottom:6px;color:var(--gold);">💬 Besoin d'aide ?</div>
+    <p style="color:var(--muted);font-size:.84rem;line-height:1.7;margin-bottom:10px;">Pour toute question sur vos commissions ou vos paiements, contactez-nous directement.</p>
+    <a href="https://wa.me/22655300868?text=Bonjour ! Je suis affilié EMBF Boutique, j'ai une question." target="_blank" style="display:inline-flex;align-items:center;gap:6px;background:#25d366;color:#fff;padding:10px 18px;border-radius:10px;font-weight:700;font-size:.85rem;text-decoration:none;">💬 Contacter EMBF</a>
+  </div>
+</div>
+
+<a class="waf" href="https://wa.me/22655300868" target="_blank">💬</a>
+<div class="toast" id="toast"></div>
+
+<script>
+var FB_DB="https://boutique-embf-default-rtdb.europe-west1.firebasedatabase.app";
+var SITE_URL="https://embfboutik.netlify.app";
+var currentAffilie=null;
+
+function toggleMenu(){
+  var m=document.getElementById('mmenu'),b=document.getElementById('burgerBtn');
+  var o=m.classList.toggle('open');b.textContent=o?'✕':'☰';
+}
+function showToast(msg,ok){
+  var t=document.getElementById('toast');
+  t.textContent=msg;t.className='toast show '+(ok===false?'err':'ok');
+  setTimeout(function(){t.className='toast';},3000);
+}
+
+// Auto-login if code saved
+window.addEventListener('load',function(){
+  var saved=localStorage.getItem('embf_affilie_code');
+  if(saved){document.getElementById('codeInput').value=saved;loginAffilie();}
+});
+
+async function loginAffilie(){
+  var code=document.getElementById('codeInput').value.trim().toUpperCase();
+  if(!code){showToast('❌ Entrez votre code affilié',false);return;}
+  var btn=document.getElementById('btnLogin');
+  btn.disabled=true;btn.textContent='⏳ Vérification...';
+  try{
+    var r=await fetch(FB_DB+'/affilies.json?orderBy="code"&equalTo="'+code+'"');
+    var data=await r.json();
+    if(!data||Object.keys(data).length===0){
+      showToast('❌ Code invalide — vérifiez votre code',false);
+      btn.disabled=false;btn.textContent='🔓 Accéder à mon espace';return;
+    }
+    var key=Object.keys(data)[0];
+    currentAffilie={...data[key],_key:key};
+    localStorage.setItem('embf_affilie_code',code);
+    showDashboard();
+  }catch(e){showToast('❌ Erreur: '+e.message,false);btn.disabled=false;btn.textContent='🔓 Accéder à mon espace';}
+}
+
+async function showDashboard(){
+  document.getElementById('loginWrap').style.display='none';
+  document.getElementById('dashboard').style.display='block';
+  var a=currentAffilie;
+  document.getElementById('dashWelcome').textContent='Bonjour, '+a.nom+' 👋';
+  document.getElementById('dashCode').innerHTML=a.code+' <span style="font-size:.7rem;color:var(--muted);">📋 copier</span>';
+  var statutEl=document.getElementById('dashStatut');
+  if(a.statut==='actif'){statutEl.textContent='✅ Actif';statutEl.className='dash-statut statut-actif';}
+  else if(a.statut==='bloque'){statutEl.textContent='🚫 Bloqué';statutEl.className='dash-statut statut-bloque';}
+  else{statutEl.textContent='⏳ En attente de validation';statutEl.className='dash-statut statut-attente';}
+  document.getElementById('statGains').textContent=Number(a.gains||0).toLocaleString('fr-FR');
+  document.getElementById('statVentes').textContent=a.ventes||0;
+  document.getElementById('statClics').textContent=a.clics||0;
+  loadProduits();
+}
+
+async function loadProduits(){
+  try{
+    var r=await fetch(FB_DB+'/products.json');
+    var data=await r.json();
+    if(!data){document.getElementById('prodListArea').innerHTML='<p style="color:var(--muted);">Aucun produit disponible.</p>';return;}
+    var prods=Object.keys(data).map(function(k){var p=data[k];p._key=k;return p;});
+    document.getElementById('statProduits').textContent=prods.length;
+    document.getElementById('prodListArea').innerHTML=prods.map(function(p){
+      var imgs=[];try{imgs=JSON.parse(p.images||'[]');}catch(e){}
+      var imgSrc=imgs[0]||'';
+      var comm=p.commission||5;
+      var gain=Math.round((p.price*comm)/100);
+      var link=SITE_URL+'/produit.html?id='+p._key+'&ref='+currentAffilie.code;
+      var waText=encodeURIComponent('🔥 '+p.name+'\n💰 '+Number(p.price).toLocaleString('fr-FR')+' FCFA\n📱 Commander ici : '+link+'\n\nLivraison rapide partout en Afrique de l\'Ouest !');
+      return '<div class="prod-affilie">'+
+        '<div class="pa-top">'+
+          (imgSrc?'<img class="pa-img" src="'+imgSrc+'" onerror="this.style.display=\'none\'">':'<div class="pa-img" style="display:flex;align-items:center;justify-content:center;font-size:1.5rem;">📦</div>')+
+          '<div style="flex:1;">'+
+            '<div class="pa-name">'+p.name+'</div>'+
+            '<div class="pa-price">'+Number(p.price).toLocaleString('fr-FR')+' FCFA</div>'+
+            '<div style="display:flex;align-items:center;gap:8px;margin-top:4px;">'+
+              '<div class="pa-comm">'+comm+'% commission</div>'+
+              '<div class="pa-gain">+'+gain.toLocaleString('fr-FR')+' FCFA</div>'+
+            '</div>'+
+          '</div>'+
+        '</div>'+
+        '<div class="pa-link">🔗 '+link+'</div>'+
+        '<button class="btn-copy" onclick="copyLink(\''+link+'\')">📋 Copier le lien</button>'+
+        '<a href="https://wa.me/?text='+waText+'" target="_blank" style="display:inline-flex;align-items:center;gap:5px;background:rgba(37,211,102,.15);border:1px solid rgba(37,211,102,.25);color:#25d366;padding:8px 14px;border-radius:8px;font-family:Outfit,sans-serif;font-weight:700;font-size:.78px;text-decoration:none;font-size:.78rem;">💬 Partager sur WhatsApp</a>'+
+      '</div>';
+    }).join('');
+  }catch(e){document.getElementById('prodListArea').innerHTML='<p style="color:var(--muted);">Erreur chargement produits.</p>';}
+}
+
+function copyLink(url){
+  navigator.clipboard.writeText(url).then(function(){showToast('✅ Lien copié !');}).catch(function(){showToast('❌ Erreur copie',false);});
+}
+function copyCode(){
+  if(!currentAffilie)return;
+  navigator.clipboard.writeText(currentAffilie.code).then(function(){showToast('✅ Code copié !');});
+}
+</script>
+<script src="https://id-preview--f60803aa-0907-499a-a977-9992f2538ef8.lovable.app/widget/rachida.js" data-shop="shop-wpdhfq"></script>
+</body>
+</html>

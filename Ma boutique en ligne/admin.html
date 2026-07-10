@@ -181,6 +181,7 @@ input:checked+.toggle-sl:before{transform:translateX(20px);background:var(--a1);
     </div>
     <div class="nitem" id="nav-promo" onclick="showPage('promo')">🎯 Promo</div>
     <div class="nitem" id="nav-stats" onclick="showPage('stats')">📊 Stats</div>
+    <div class="nitem" id="nav-affilies" onclick="showPage('affilies')">💰 Affiliés <span id="affiliesBadge" style="background:var(--gold);color:#000;font-size:.6rem;font-weight:800;padding:1px 6px;border-radius:50px;margin-left:4px;display:none;"></span></div>
     <div style="margin-top:auto;padding-top:16px;">
       <button class="publish-btn" id="publishBtn" onclick="publishProducts()">📤 Publier le catalogue</button>
       <button class="logout-btn" onclick="logout()">← Déconnexion</button>
@@ -199,6 +200,7 @@ input:checked+.toggle-sl:before{transform:translateX(20px);background:var(--a1);
       <option value="orders">🔔 Commandes</option>
       <option value="promo">🎯 Promo</option>
       <option value="stats">📊 Stats</option>
+      <option value="affilies">💰 Affiliés</option>
     </select>
   </div>
 
@@ -248,7 +250,7 @@ input:checked+.toggle-sl:before{transform:translateX(20px);background:var(--a1);
         <div class="fsec-title">📸 Photos</div>
         <div class="photo-grid" id="addPhotoGrid"></div>
         <input type="file" id="addPhotoFile" accept="image/*" multiple style="display:none" onchange="handleAddPhotos(event)">
-        <button id="addPhotoBtn" onclick="document.getElementById('addPhotoFile').click()" style="width:100%;background:var(--s2);border:1.5px dashed rgba(0,229,255,.2);color:var(--muted);padding:11px;border-radius:10px;cursor:pointer;font-family:Outfit,sans-serif;font-size:.85rem;margin-bottom:10px;">☁️ Uploader sur Cloudinary</button>
+        <button onclick="document.getElementById('addPhotoFile').click()" style="width:100%;background:var(--s2);border:1.5px dashed rgba(0,229,255,.2);color:var(--muted);padding:11px;border-radius:10px;cursor:pointer;font-family:Outfit,sans-serif;font-size:.85rem;margin-bottom:10px;">📂 Ajouter des photos</button>
         <div class="url-row">
           <input class="url-in" type="url" id="addUrlIn" placeholder="Ou coller une URL image...">
           <button class="url-btn" onclick="addPhotoUrl('add')">+ Ajouter</button>
@@ -314,6 +316,32 @@ input:checked+.toggle-sl:before{transform:translateX(20px);background:var(--a1);
         <div id="statsCats"></div>
       </div>
     </div>
+
+    <!-- PAGE: AFFILIES -->
+    <div class="page" id="page-affilies">
+      <div class="pgh"><h1>💰 AFFILIÉS</h1><p>Gérez vos affiliés et commissions</p></div>
+
+      <!-- Commissions par produit -->
+      <div class="fsec" style="margin-bottom:16px;">
+        <div class="fsec-title">🎯 Commissions par produit</div>
+        <p style="color:var(--muted);font-size:.82rem;margin-bottom:14px;">Définissez le % de commission pour chaque produit. Les affiliés voient ce montant dans leur espace.</p>
+        <div id="commissionsList"><div style="text-align:center;padding:20px;color:var(--muted);">Chargement...</div></div>
+      </div>
+
+      <!-- Liste des affiliés -->
+      <div class="fsec">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px;">
+          <div class="fsec-title" style="margin-bottom:0;">👥 Affiliés inscrits (<span id="affiliesCount">0</span>)</div>
+          <div style="display:flex;gap:8px;">
+            <button onclick="filterAffilie('tous')" id="fTous" style="background:var(--a1);color:#000;border:none;padding:5px 12px;border-radius:8px;font-family:Outfit,sans-serif;font-weight:700;font-size:.78rem;cursor:pointer;">Tous</button>
+            <button onclick="filterAffilie('en_attente')" id="fAttente" style="background:none;border:1px solid var(--border);color:var(--muted);padding:5px 12px;border-radius:8px;font-family:Outfit,sans-serif;font-weight:700;font-size:.78rem;cursor:pointer;">En attente</button>
+            <button onclick="filterAffilie('actif')" id="fActif" style="background:none;border:1px solid var(--border);color:var(--muted);padding:5px 12px;border-radius:8px;font-family:Outfit,sans-serif;font-weight:700;font-size:.78rem;cursor:pointer;">Actifs</button>
+          </div>
+        </div>
+        <div id="affiliesList"><div style="text-align:center;padding:20px;color:var(--muted);">Chargement...</div></div>
+      </div>
+    </div>
+
   </div>
 </div>
 
@@ -342,7 +370,7 @@ input:checked+.toggle-sl:before{transform:translateX(20px);background:var(--a1);
       <div class="fsec-title">📸 Photos</div>
       <div class="photo-grid" id="editPhotoGrid"></div>
       <input type="file" id="editPhotoFile" accept="image/*" multiple style="display:none" onchange="handleEditPhotos(event)">
-      <button id="editPhotoBtn" onclick="document.getElementById('editPhotoFile').click()" style="width:100%;background:var(--s2);border:1.5px dashed rgba(0,229,255,.2);color:var(--muted);padding:11px;border-radius:10px;cursor:pointer;font-family:Outfit,sans-serif;font-size:.85rem;margin-bottom:8px;">☁️ Uploader sur Cloudinary</button>
+      <button onclick="document.getElementById('editPhotoFile').click()" style="width:100%;background:var(--s2);border:1.5px dashed rgba(0,229,255,.2);color:var(--muted);padding:11px;border-radius:10px;cursor:pointer;font-family:Outfit,sans-serif;font-size:.85rem;margin-bottom:8px;">📂 Ajouter</button>
       <div class="url-row">
         <input class="url-in" type="url" id="editUrlIn" placeholder="URL image...">
         <button class="url-btn" onclick="addPhotoUrl('edit')">+ URL</button>
@@ -363,6 +391,143 @@ input:checked+.toggle-sl:before{transform:translateX(20px);background:var(--a1);
 
 var FB_DB="https://boutique-embf-default-rtdb.europe-west1.firebasedatabase.app";
 var FB_KEY="AIzaSyA0UGFKeoatnMaCMAlaF3B3li9gFY4Dt0g";
+var CLOUD_NAME="dl3qgppti";
+var CLOUD_PRESET="EMBF Boutique en ligne";
+
+// ===== CLOUDINARY UPLOAD =====
+async function uploadToCloudinary(file){
+  var fd=new FormData();
+  fd.append("file",file);fd.append("upload_preset",CLOUD_PRESET);fd.append("folder","embf_boutique");
+  var r=await fetch("https://api.cloudinary.com/v1_1/"+CLOUD_NAME+"/image/upload",{method:"POST",body:fd});
+  if(!r.ok){var e=await r.json();throw new Error(e.error?e.error.message:"Cloudinary error");}
+  return (await r.json()).secure_url;
+}
+
+// ===== AFFILIES =====
+var allAffilies=[];
+var currentFilter='tous';
+
+async function loadAffilies(){
+  try{
+    var r=await fetch(FB_DB+'/affilies.json');
+    var data=await r.json();
+    if(!data){allAffilies=[];renderAffilies();return;}
+    allAffilies=Object.keys(data).map(function(k){var a=data[k];a._key=k;return a;});
+    var enAttente=allAffilies.filter(function(a){return a.statut==='en_attente';}).length;
+    var badge=document.getElementById('affiliesBadge');
+    if(enAttente>0){badge.textContent=enAttente;badge.style.display='inline';}
+    else badge.style.display='none';
+    document.getElementById('affiliesCount').textContent=allAffilies.length;
+    renderAffilies();
+    loadCommissions();
+  }catch(e){document.getElementById('affiliesList').innerHTML='<p style="color:var(--muted);">Erreur chargement.</p>';}
+}
+
+function filterAffilie(f){
+  currentFilter=f;
+  document.querySelectorAll('[id^="fT"],[id^="fA"]').forEach(function(b){
+    b.style.background='none';b.style.color='var(--muted)';b.style.border='1px solid var(--border)';
+  });
+  var active=document.getElementById(f==='tous'?'fTous':f==='en_attente'?'fAttente':'fActif');
+  if(active){active.style.background='var(--a1)';active.style.color='#000';active.style.border='none';}
+  renderAffilies();
+}
+
+function renderAffilies(){
+  var list=currentFilter==='tous'?allAffilies:allAffilies.filter(function(a){return a.statut===currentFilter;});
+  if(!list.length){document.getElementById('affiliesList').innerHTML='<p style="color:var(--muted);padding:16px;">Aucun affilié trouvé.</p>';return;}
+  document.getElementById('affiliesList').innerHTML=list.map(function(a){
+    var statutColor=a.statut==='actif'?'var(--green)':a.statut==='bloque'?'var(--a3)':'var(--gold)';
+    var statutLabel=a.statut==='actif'?'✅ Actif':a.statut==='bloque'?'🚫 Bloqué':'⏳ En attente';
+    return '<div style="background:var(--s2);border:1px solid var(--border);border-radius:14px;padding:14px 16px;margin-bottom:10px;">'+
+      '<div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;margin-bottom:10px;">'+
+        '<div>'+
+          '<div style="font-weight:800;font-size:.95rem;">'+a.nom+'</div>'+
+          '<div style="color:var(--muted);font-size:.8rem;margin-top:2px;">📞 '+a.tel+(a.email?' · '+a.email:'')+(a.ville?' · '+a.ville:'')+'</div>'+
+          (a.reseaux?'<div style="color:var(--muted);font-size:.78rem;margin-top:2px;">🌐 '+a.reseaux+'</div>':'')+
+        '</div>'+
+        '<div style="text-align:right;">'+
+          '<div style="font-family:monospace;font-size:1rem;font-weight:800;color:var(--gold);letter-spacing:.08em;">'+a.code+'</div>'+
+          '<div style="font-size:.72rem;font-weight:800;color:'+statutColor+';">'+statutLabel+'</div>'+
+        '</div>'+
+      '</div>'+
+      '<div style="display:flex;gap:6px;flex-wrap:wrap;">'+
+        '<div style="background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.2);border-radius:8px;padding:4px 10px;font-size:.76rem;color:var(--green);font-weight:700;">💰 '+Number(a.gains||0).toLocaleString('fr-FR')+' FCFA gains</div>'+
+        '<div style="background:rgba(0,229,255,.08);border:1px solid rgba(0,229,255,.12);border-radius:8px;padding:4px 10px;font-size:.76rem;color:var(--a1);font-weight:700;">🛒 '+(a.ventes||0)+' ventes</div>'+
+      '</div>'+
+      '<div style="display:flex;gap:6px;margin-top:10px;flex-wrap:wrap;">'+
+        (a.statut!=='actif'?'<button onclick="setStatutAffilie(\''+a._key+'\',\'actif\')" style="background:var(--green);color:#fff;border:none;padding:7px 14px;border-radius:8px;font-family:Outfit,sans-serif;font-weight:700;font-size:.78rem;cursor:pointer;">✅ Activer</button>':'')+
+        (a.statut!=='bloque'?'<button onclick="setStatutAffilie(\''+a._key+'\',\'bloque\')" style="background:var(--a3);color:#fff;border:none;padding:7px 14px;border-radius:8px;font-family:Outfit,sans-serif;font-weight:700;font-size:.78rem;cursor:pointer;">🚫 Bloquer</button>':'')+
+        '<button onclick="deleteAffilie(\''+a._key+'\',\''+a.nom+'\')" style="background:none;border:1px solid var(--border);color:var(--muted);padding:7px 14px;border-radius:8px;font-family:Outfit,sans-serif;font-weight:700;font-size:.78rem;cursor:pointer;">🗑️ Supprimer</button>'+
+        '<button onclick="copyCode(\''+a.code+'\')" style="background:none;border:1px solid var(--border);color:var(--muted);padding:7px 14px;border-radius:8px;font-family:Outfit,sans-serif;font-weight:700;font-size:.78rem;cursor:pointer;">📋 Copier code</button>'+
+      '</div>'+
+    '</div>';
+  }).join('');
+}
+
+async function setStatutAffilie(key,statut){
+  try{
+    await fetch(FB_DB+'/affilies/'+key+'.json?auth='+FB_KEY,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({statut:statut})});
+    showToast('✅ Statut mis à jour');loadAffilies();
+  }catch(e){showToast('❌ Erreur',false);}
+}
+
+async function deleteAffilie(key,nom){
+  if(!confirm('Supprimer '+nom+' ?'))return;
+  try{
+    await fetch(FB_DB+'/affilies/'+key+'.json?auth='+FB_KEY,{method:'DELETE'});
+    showToast('✅ Affilié supprimé');loadAffilies();
+  }catch(e){showToast('❌ Erreur',false);}
+}
+
+function copyCode(code){
+  navigator.clipboard.writeText(code).then(function(){showToast('✅ Code copié !');});
+}
+
+async function loadCommissions(){
+  try{
+    var r=await fetch(FB_DB+'/products.json');
+    var data=await r.json();
+    if(!data){document.getElementById('commissionsList').innerHTML='<p style="color:var(--muted);">Aucun produit.</p>';return;}
+    var prods=Object.keys(data).map(function(k){var p=data[k];p._key=k;return p;});
+    document.getElementById('commissionsList').innerHTML=
+      '<div style="display:grid;gap:8px;">'+
+      prods.map(function(p){
+        return '<div style="display:flex;align-items:center;gap:12px;background:var(--s2);border:1px solid var(--border);border-radius:12px;padding:10px 14px;flex-wrap:wrap;">'+
+          '<div style="flex:1;min-width:160px;">'+
+            '<div style="font-weight:700;font-size:.88rem;">'+p.name+'</div>'+
+            '<div style="color:var(--gold);font-size:.78rem;">'+Number(p.price).toLocaleString('fr-FR')+' FCFA</div>'+
+          '</div>'+
+          '<div style="display:flex;align-items:center;gap:8px;">'+
+            '<span style="color:var(--muted);font-size:.82rem;">Commission :</span>'+
+            '<input type="number" id="comm_'+p._key+'" value="'+(p.commission||5)+'" min="0" max="50" style="width:60px;background:var(--s1);border:1px solid var(--border);color:var(--txt);padding:5px 8px;border-radius:8px;font-family:Outfit,sans-serif;font-size:.85rem;text-align:center;outline:none;">'+
+            '<span style="color:var(--muted);font-size:.82rem;">%</span>'+
+            '<span style="color:var(--green);font-size:.78rem;font-weight:700;" id="gain_'+p._key+'">= '+Math.round((p.price*(p.commission||5))/100).toLocaleString('fr-FR')+' FCFA</span>'+
+            '<button onclick="saveCommission(\''+p._key+'\',\''+p.price+'\')" style="background:linear-gradient(135deg,var(--a1),var(--a2));color:#000;border:none;padding:6px 12px;border-radius:8px;font-family:Outfit,sans-serif;font-weight:800;font-size:.76rem;cursor:pointer;">💾</button>'+
+          '</div>'+
+        '</div>';
+      }).join('')+
+      '</div>';
+    // Live update gain display
+    prods.forEach(function(p){
+      var inp=document.getElementById('comm_'+p._key);
+      if(inp)inp.addEventListener('input',function(){
+        var g=document.getElementById('gain_'+p._key);
+        if(g)g.textContent='= '+Math.round((p.price*this.value)/100).toLocaleString('fr-FR')+' FCFA';
+      });
+    });
+  }catch(e){document.getElementById('commissionsList').innerHTML='<p style="color:var(--muted);">Erreur.</p>';}
+}
+
+async function saveCommission(prodKey,price){
+  var inp=document.getElementById('comm_'+prodKey);
+  if(!inp)return;
+  var val=parseFloat(inp.value)||5;
+  try{
+    await fetch(FB_DB+'/products/'+prodKey+'.json?auth='+FB_KEY,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({commission:val})});
+    showToast('✅ Commission enregistrée');
+  }catch(e){showToast('❌ Erreur',false);}
+}
 var WA="22655300868";
 var CE={"Ordinateur":"💻","Smartphone":"📱","Gadget":"🎮","Accessoires":"🎧","Autre":"📦"};
 function fmt(v){return Number(v).toLocaleString("fr-FR")+" FCFA";}
@@ -435,6 +600,7 @@ function showPage(id){
   if(mob) mob.value = id;
   if(id==="orders") renderOrders();
   if(id==="stats") updateStats();
+  if(id==="affilies") loadAffilies();
 }
 
 // RENDER PRODUCT LIST
@@ -497,68 +663,25 @@ function renderPhotoGrid(gridId, photos, mode){
     grid.appendChild(slot);
   }
 }
-var CLOUD_NAME = "dl3qgppti";
-var CLOUD_PRESET = "EMBF Boutique en ligne";
-
-async function uploadToCloudinary(file) {
-  var fd = new FormData();
-  fd.append("file", file);
-  fd.append("upload_preset", CLOUD_PRESET);
-  fd.append("folder", "embf_boutique");
-  var r = await fetch("https://api.cloudinary.com/v1_1/" + CLOUD_NAME + "/image/upload", {
-    method: "POST",
-    body: fd
-  });
-  if (!r.ok) {
-    var err = await r.json();
-    throw new Error(err.error ? err.error.message : "Cloudinary error");
+async function handleAddPhotos(e){
+  var files=Array.from(e.target.files).slice(0,8-addPhotos.length);
+  e.target.value="";if(!files.length)return;
+  showToast("⏳ Upload "+files.length+" photo(s)...");
+  for(var i=0;i<files.length;i++){
+    try{var url=await uploadToCloudinary(files[i]);addPhotos.push(url);renderPhotoGrid("addPhotoGrid",addPhotos,"add");}
+    catch(err){showToast("❌ "+err.message,false);return;}
   }
-  var d = await r.json();
-  return d.secure_url;
+  showToast("✅ "+files.length+" photo(s) uploadée(s) !");
 }
-
-async function handleAddPhotos(e) {
-  var files = Array.from(e.target.files).slice(0, 8 - addPhotos.length);
-  e.target.value = "";
-  if (!files.length) return;
-  var btn = document.getElementById("addPhotoBtn");
-  if (btn) { btn.disabled = true; btn.textContent = "⏳ Upload " + files.length + " photo(s)..."; }
-  for (var i = 0; i < files.length; i++) {
-    try {
-      if (btn) btn.textContent = "⏳ " + (i+1) + "/" + files.length + " en cours...";
-      var url = await uploadToCloudinary(files[i]);
-      addPhotos.push(url);
-      renderPhotoGrid("addPhotoGrid", addPhotos, "add");
-    } catch(err) {
-      showToast("❌ Erreur upload: " + err.message, false);
-      if (btn) { btn.disabled = false; btn.textContent = "☁️ Uploader sur Cloudinary"; }
-      return;
-    }
+async function handleEditPhotos(e){
+  var files=Array.from(e.target.files).slice(0,8-editPhotos.length);
+  e.target.value="";if(!files.length)return;
+  showToast("⏳ Upload "+files.length+" photo(s)...");
+  for(var i=0;i<files.length;i++){
+    try{var url=await uploadToCloudinary(files[i]);editPhotos.push(url);renderPhotoGrid("editPhotoGrid",editPhotos,"edit");}
+    catch(err){showToast("❌ "+err.message,false);return;}
   }
-  if (btn) { btn.disabled = false; btn.textContent = "☁️ Uploader sur Cloudinary"; }
-  showToast("✅ " + files.length + " photo(s) uploadée(s) sur Cloudinary !");
-}
-
-async function handleEditPhotos(e) {
-  var files = Array.from(e.target.files).slice(0, 8 - editPhotos.length);
-  e.target.value = "";
-  if (!files.length) return;
-  var btn = document.getElementById("editPhotoBtn");
-  if (btn) { btn.disabled = true; btn.textContent = "⏳ Upload " + files.length + " photo(s)..."; }
-  for (var i = 0; i < files.length; i++) {
-    try {
-      if (btn) btn.textContent = "⏳ " + (i+1) + "/" + files.length + " en cours...";
-      var url = await uploadToCloudinary(files[i]);
-      editPhotos.push(url);
-      renderPhotoGrid("editPhotoGrid", editPhotos, "edit");
-    } catch(err) {
-      showToast("❌ Erreur upload: " + err.message, false);
-      if (btn) { btn.disabled = false; btn.textContent = "☁️ Uploader sur Cloudinary"; }
-      return;
-    }
-  }
-  if (btn) { btn.disabled = false; btn.textContent = "☁️ Uploader sur Cloudinary"; }
-  showToast("✅ " + files.length + " photo(s) uploadée(s) sur Cloudinary !");
+  showToast("✅ "+files.length+" photo(s) uploadée(s) !");
 }
 function addPhotoUrl(mode){
   var inId = mode+"UrlIn";
@@ -781,6 +904,5 @@ function showToast(msg,ok){
   clearTimeout(t._to); t._to=setTimeout(function(){t.classList.remove("show");},3000);
 }
 </script>
-<script src="https://id-preview--f60803aa-0907-499a-a977-9992f2538ef8.lovable.app/widget/rachida.js" data-shop="shop-wpdhfq"></script>
 </body>
 </html>
