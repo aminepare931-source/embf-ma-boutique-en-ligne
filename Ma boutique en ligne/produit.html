@@ -681,6 +681,39 @@ var PAY_METHODS={
 };
 
 // INIT
+// ===== AFFILIATION TRACKING =====
+var AFFREF = null;
+function initAffRef(){
+  var p=new URLSearchParams(location.search);
+  var ref=p.get("ref");
+  if(ref){
+    AFFREF=ref.toUpperCase();
+    sessionStorage.setItem("embf_ref",AFFREF);
+    // Track click
+    var pid2=p.get("id");
+    if(pid2){
+      fetch("https://boutique-embf-default-rtdb.europe-west1.firebasedatabase.app/clicks.json",{
+        method:"POST",headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({ref:AFFREF,prodId:pid2,ts:Date.now()})
+      }).catch(function(){});
+      // Increment affiliate clicks counter
+      fetch("https://boutique-embf-default-rtdb.europe-west1.firebasedatabase.app/affilies.json?orderBy=%22code%22&equalTo=%22"+AFFREF+"%22")
+      .then(function(r){return r.json();}).then(function(data){
+        if(!data)return;
+        var key=Object.keys(data)[0];
+        var cur=data[key].clics||0;
+        fetch("https://boutique-embf-default-rtdb.europe-west1.firebasedatabase.app/affilies/"+key+".json?auth=AIzaSyA0UGFKeoatnMaCMAlaF3B3li9gFY4Dt0g",{
+          method:"PATCH",headers:{"Content-Type":"application/json"},
+          body:JSON.stringify({clics:cur+1})
+        }).catch(function(){});
+      }).catch(function(){});
+    }
+  } else {
+    AFFREF=sessionStorage.getItem("embf_ref")||null;
+  }
+}
+initAffRef();
+
 window.onload=async function(){
   var pid=new URLSearchParams(location.search).get("id");
   if(!pid){location.href="produits.html";return;}
@@ -934,7 +967,31 @@ function sendWa(){
   var qty=document.getElementById("waQty").value||1;
   var msg=document.getElementById("waMsg").value.trim();
   var p=cur;
-  var text="Bonjour EMBF Boutique ! 👋\n\n🛍️ *NOUVELLE COMMANDE*\n━━━━━━━━━━━━━━\n📦 *Produit :* "+p.name+"\n💰 *Prix :* "+fmt(p.price)+"\n🛒 *Quantité :* "+qty+"\n\n👤 *CLIENT*\n━━━━━━━━━━━━━━\n• Nom : *"+name+"*\n• Tél : *"+phone+"*\n• Type : *"+(selCTval==="comm"?"Commerçant":"Particulier")+"*\n• Pays : *"+pays+"*\n• Ville : *"+ville+"*"+(document.getElementById("waQuart").value?"\n• Quartier : *"+document.getElementById("waQuart").value+"*":"")+(selPayVal?"\n\n💳 *Paiement :* "+selPayVal:"")+(msg?"\n\n📝 *Message :* "+msg:"")+"\n\nMerci !";
+  var refTxt=AFFREF?"\n🔗 *Affilié :* "+AFFREF:"";
+  var text="Bonjour EMBF Boutique ! 👋\n\n🛍️ *NOUVELLE COMMANDE*\n━━━━━━━━━━━━━━\n📦 *Produit :* "+p.name+"\n💰 *Prix :* "+fmt(p.price)+"\n🛒 *Quantité :* "+qty+"\n\n👤 *CLIENT*\n━━━━━━━━━━━━━━\n• Nom : *"+name+"*\n• Tél : *"+phone+"*\n• Type : *"+(selCTval==="comm"?"Commerçant":"Particulier")+"*\n• Pays : *"+pays+"*\n• Ville : *"+ville+"*"+(document.getElementById("waQuart").value?"\n• Quartier : *"+document.getElementById("waQuart").value+"*":"")+(selPayVal?"\n\n💳 *Paiement :* "+selPayVal:"")+(msg?"\n\n📝 *Message :* "+msg:"")+refTxt+"\n\nMerci !";
+  // Save order to Firebase with affiliate ref
+  var orderData={produit:p.name,produitId:p._key||"",prix:p.price,quantite:qty,client:{nom:name,tel:phone,pays:pays,ville:ville},paiement:selPayVal||"",ref:AFFREF||null,statut:"nouveau",ts:Date.now()};
+  fetch("https://boutique-embf-default-rtdb.europe-west1.firebasedatabase.app/orders.json",{
+    method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(orderData)
+  }).then(function(r){return r.json();}).then(function(res){
+    // If affiliated, record sale for affiliate
+    if(AFFREF && res && res.name){
+      fetch("https://boutique-embf-default-rtdb.europe-west1.firebasedatabase.app/affilies.json?orderBy=%22code%22&equalTo=%22"+AFFREF+"%22")
+      .then(function(r2){return r2.json();}).then(function(affData){
+        if(!affData)return;
+        var affKey=Object.keys(affData)[0];
+        var aff=affData[affKey];
+        var commission=p.commission||5;
+        var gain=Math.round((p.price*commission)/100);
+        var newVentes=(aff.ventes||0)+1;
+        var newGains=(aff.gains||0)+gain;
+        fetch("https://boutique-embf-default-rtdb.europe-west1.firebasedatabase.app/affilies/"+affKey+".json?auth=AIzaSyA0UGFKeoatnMaCMAlaF3B3li9gFY4Dt0g",{
+          method:"PATCH",headers:{"Content-Type":"application/json"},
+          body:JSON.stringify({ventes:newVentes,gains:newGains})
+        }).catch(function(){});
+      }).catch(function(){});
+    }
+  }).catch(function(){});
   var url="https://wa.me/22655300868?text="+encodeURIComponent(text);
   if(/Mobi|Android/i.test(navigator.userAgent))window.location.href=url;else window.open(url,"_blank");
   closeWa();showToast("✅ Commande envoyée !");

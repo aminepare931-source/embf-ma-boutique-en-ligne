@@ -13,59 +13,82 @@
 html{scroll-behavior:smooth;}
 body{background:var(--bg);color:var(--txt);font-family:Outfit,sans-serif;overflow-x:hidden;}
 .nav{position:sticky;top:0;z-index:999;height:var(--nh);background:rgba(3,3,10,.96);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 16px;justify-content:space-between;gap:8px;}
-.nav-logo{text-decoration:none;}
-.nav-logo span{font-family:Bebas\ Neue,sans-serif;font-size:1.3rem;letter-spacing:.08em;background:linear-gradient(90deg,var(--a1),var(--a2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.nav-logo{text-decoration:none;}.nav-logo span{font-family:Bebas\ Neue,sans-serif;font-size:1.3rem;letter-spacing:.08em;background:linear-gradient(90deg,var(--a1),var(--a2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
 .burger{display:flex;background:none;border:none;color:var(--txt);font-size:1.4rem;cursor:pointer;padding:8px;}
 .mmenu{display:none;position:fixed;top:var(--nh);left:0;right:0;background:rgba(12,12,29,.98);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);z-index:998;padding:12px;flex-direction:column;gap:6px;}
-.mmenu.open{display:flex;}
-.mmenu a{color:var(--muted);font-weight:600;font-size:.95rem;text-decoration:none;padding:13px 16px;border-radius:12px;display:flex;align-items:center;gap:10px;border:1px solid transparent;}
-.mmenu a:hover{color:var(--txt);background:rgba(255,255,255,.05);border-color:var(--border);}
-.mmenu .mwa{background:rgba(37,211,102,.1);border-color:rgba(37,211,102,.25);color:#25d366;}
-
+.mmenu.open{display:flex;}.mmenu a{color:var(--muted);font-weight:600;font-size:.95rem;text-decoration:none;padding:13px 16px;border-radius:12px;display:flex;align-items:center;gap:10px;border:1px solid transparent;}
+.mmenu a:hover{color:var(--txt);background:rgba(255,255,255,.05);border-color:var(--border);}.mmenu .mwa{background:rgba(37,211,102,.1);border-color:rgba(37,211,102,.25);color:#25d366;}
 /* LOGIN */
-.login-wrap{min-height:80vh;display:flex;align-items:center;justify-content:center;padding:24px 16px;}
+.login-wrap{min-height:85vh;display:flex;align-items:center;justify-content:center;padding:24px 16px;}
 .login-card{background:var(--s1);border:1px solid var(--border);border-radius:20px;padding:32px 24px;max-width:400px;width:100%;text-align:center;}
 .login-card h2{font-family:Bebas\ Neue,sans-serif;font-size:1.8rem;letter-spacing:.04em;margin-bottom:6px;color:var(--gold);}
-.login-card p{color:var(--muted);font-size:.85rem;margin-bottom:20px;}
+.login-card p{color:var(--muted);font-size:.85rem;margin-bottom:20px;line-height:1.6;}
 .finput{width:100%;background:var(--s2);border:1.5px solid var(--border);color:var(--txt);padding:12px 14px;border-radius:12px;font-family:Outfit,sans-serif;font-size:.9rem;outline:none;transition:border-color .2s;margin-bottom:12px;}
 .finput:focus{border-color:var(--a1);}
 .finput::placeholder{color:var(--muted);}
 .btn-login{width:100%;background:linear-gradient(135deg,var(--gold),#f97316);color:#000;border:none;padding:13px;border-radius:12px;font-family:Outfit,sans-serif;font-weight:800;font-size:.95rem;cursor:pointer;}
 .btn-login:disabled{opacity:.5;cursor:not-allowed;}
-
 /* DASHBOARD */
-.dashboard{display:none;max-width:900px;margin:0 auto;padding:24px 16px 80px;}
-.dash-header{background:linear-gradient(135deg,rgba(251,191,36,.1),rgba(139,92,246,.08));border:1px solid rgba(251,191,36,.2);border-radius:18px;padding:20px;margin-bottom:20px;}
-.dash-welcome{font-family:Bebas\ Neue,sans-serif;font-size:1.5rem;letter-spacing:.04em;margin-bottom:4px;}
-.dash-code{display:inline-flex;align-items:center;gap:8px;background:var(--s2);border:1px solid var(--gold);border-radius:50px;padding:5px 14px;font-family:monospace;font-size:.9rem;font-weight:800;color:var(--gold);cursor:pointer;margin-top:6px;}
-.dash-statut{display:inline-block;font-size:.7rem;font-weight:800;padding:3px 10px;border-radius:50px;margin-left:8px;}
+.dashboard{display:none;max-width:920px;margin:0 auto;padding:24px 16px 80px;}
+.dash-header{background:linear-gradient(135deg,rgba(251,191,36,.1),rgba(139,92,246,.08));border:1px solid rgba(251,191,36,.2);border-radius:18px;padding:20px;margin-bottom:16px;display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;}
+.dash-left h2{font-family:Bebas\ Neue,sans-serif;font-size:1.4rem;letter-spacing:.04em;margin-bottom:4px;}
+.dash-code{display:inline-flex;align-items:center;gap:8px;background:var(--s2);border:1px solid var(--gold);border-radius:50px;padding:5px 14px;font-family:monospace;font-size:.95rem;font-weight:800;color:var(--gold);cursor:pointer;margin-top:6px;}
+.statut-badge{display:inline-block;font-size:.72rem;font-weight:800;padding:3px 10px;border-radius:50px;margin-left:8px;}
 .statut-actif{background:rgba(34,197,94,.2);color:var(--green);}
 .statut-attente{background:rgba(251,191,36,.15);color:var(--gold);}
 .statut-bloque{background:rgba(244,63,94,.15);color:var(--a3);}
-.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px;}
-.stat-card{background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:14px;text-align:center;}
+/* TABS */
+.tabs{display:flex;gap:6px;margin-bottom:18px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px;}
+.tab{background:var(--s1);border:1px solid var(--border);color:var(--muted);padding:8px 16px;border-radius:50px;font-family:Outfit,sans-serif;font-weight:700;font-size:.82rem;cursor:pointer;white-space:nowrap;transition:all .2s;}
+.tab.act{background:linear-gradient(135deg,var(--a1),var(--a2));color:#000;border-color:transparent;}
+/* STATS */
+.stats-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:18px;}
+.stat-card{background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:16px;text-align:center;}
 .stat-n{font-family:Bebas\ Neue,sans-serif;font-size:1.8rem;letter-spacing:.04em;}
 .stat-l{color:var(--muted);font-size:.72rem;margin-top:2px;}
-.section-title{font-family:Bebas\ Neue,sans-serif;font-size:1.3rem;letter-spacing:.04em;margin-bottom:14px;color:var(--a1);}
-.prod-affilie{background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:14px;margin-bottom:10px;}
-.pa-top{display:flex;gap:12px;align-items:center;margin-bottom:10px;}
-.pa-img{width:56px;height:56px;object-fit:cover;border-radius:10px;flex-shrink:0;background:var(--s2);}
-.pa-name{font-weight:700;font-size:.9rem;margin-bottom:2px;}
-.pa-price{color:var(--gold);font-weight:800;font-size:.88rem;}
-.pa-comm{color:var(--green);font-size:.8rem;font-weight:700;}
-.pa-gain{background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.2);border-radius:8px;padding:4px 10px;font-size:.78rem;font-weight:800;color:var(--green);}
-.pa-link{background:var(--s2);border:1px solid var(--border);border-radius:10px;padding:8px 12px;font-size:.76rem;color:var(--muted);font-family:monospace;word-break:break-all;margin-bottom:8px;}
-.btn-copy{background:linear-gradient(135deg,var(--a1),var(--a2));color:#000;border:none;padding:8px 16px;border-radius:8px;font-family:Outfit,sans-serif;font-weight:800;font-size:.78rem;cursor:pointer;margin-right:6px;}
-.btn-share{background:rgba(37,211,102,.15);border:1px solid rgba(37,211,102,.25);color:#25d366;padding:8px 14px;border-radius:8px;font-family:Outfit,sans-serif;font-weight:700;font-size:.78rem;cursor:pointer;}
-.loading{text-align:center;padding:40px;color:var(--muted);}
-.spinner{width:32px;height:32px;border:3px solid var(--border);border-top-color:var(--a1);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 12px;}
+/* PRODUITS */
+.prod-card{background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:14px;margin-bottom:10px;}
+.prod-top{display:flex;gap:12px;align-items:center;margin-bottom:10px;}
+.prod-img{width:56px;height:56px;object-fit:cover;border-radius:10px;flex-shrink:0;background:var(--s2);}
+.prod-name{font-weight:700;font-size:.9rem;margin-bottom:2px;}
+.prod-price{color:var(--gold);font-weight:800;font-size:.88rem;}
+.prod-comm{display:inline-flex;align-items:center;gap:6px;margin-top:4px;}
+.comm-pct{background:rgba(0,229,255,.1);border:1px solid rgba(0,229,255,.15);color:var(--a1);padding:3px 10px;border-radius:50px;font-size:.75rem;font-weight:800;}
+.comm-gain{background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.2);color:var(--green);padding:3px 10px;border-radius:50px;font-size:.75rem;font-weight:800;}
+.link-box{background:var(--s2);border:1px solid var(--border);border-radius:10px;padding:8px 12px;font-size:.74rem;color:var(--muted);font-family:monospace;word-break:break-all;margin-bottom:8px;}
+.btn-row{display:flex;gap:6px;flex-wrap:wrap;}
+.btn-copy{background:linear-gradient(135deg,var(--a1),var(--a2));color:#000;border:none;padding:8px 14px;border-radius:8px;font-family:Outfit,sans-serif;font-weight:800;font-size:.78rem;cursor:pointer;}
+.btn-wa-share{display:inline-flex;align-items:center;gap:5px;background:rgba(37,211,102,.15);border:1px solid rgba(37,211,102,.3);color:#25d366;padding:8px 14px;border-radius:8px;font-family:Outfit,sans-serif;font-weight:700;font-size:.78rem;text-decoration:none;}
+/* RETRAITS */
+.retrait-card{background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:12px;}
+.retrait-card h3{font-family:Bebas\ Neue,sans-serif;font-size:1.2rem;letter-spacing:.04em;margin-bottom:12px;color:var(--gold);}
+.gains-display{background:var(--s2);border:1px solid rgba(34,197,94,.2);border-radius:12px;padding:16px;text-align:center;margin-bottom:14px;}
+.gains-big{font-family:Bebas\ Neue,sans-serif;font-size:2.4rem;letter-spacing:.04em;color:var(--green);}
+.gains-lbl{color:var(--muted);font-size:.78rem;margin-top:2px;}
+.fselect{width:100%;background:var(--s2);border:1.5px solid var(--border);color:var(--txt);padding:11px 14px;border-radius:12px;font-family:Outfit,sans-serif;font-size:.88rem;outline:none;margin-bottom:10px;}
+.btn-retrait{width:100%;background:linear-gradient(135deg,var(--green),#16a34a);color:#fff;border:none;padding:13px;border-radius:12px;font-family:Outfit,sans-serif;font-weight:800;font-size:.95rem;cursor:pointer;}
+.btn-retrait:disabled{opacity:.4;cursor:not-allowed;}
+.retrait-hist{margin-top:16px;}
+.rh-item{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:var(--s2);border:1px solid var(--border);border-radius:10px;margin-bottom:6px;font-size:.84rem;}
+.rh-statut{font-size:.7rem;font-weight:800;padding:2px 8px;border-radius:50px;}
+.rh-en-attente{background:rgba(251,191,36,.15);color:var(--gold);}
+.rh-valide{background:rgba(34,197,94,.2);color:var(--green);}
+.rh-refuse{background:rgba(244,63,94,.15);color:var(--a3);}
+/* HISTORIQUE */
+.order-item{background:var(--s1);border:1px solid var(--border);border-radius:12px;padding:12px 14px;margin-bottom:8px;}
+.order-prod{font-weight:700;font-size:.88rem;margin-bottom:4px;}
+.order-meta{color:var(--muted);font-size:.78rem;}
+.order-gain{color:var(--green);font-weight:800;font-size:.85rem;}
+/* MISC */
+.section-empty{text-align:center;padding:32px;color:var(--muted);font-size:.88rem;}
+.spinner{width:30px;height:30px;border:3px solid var(--border);border-top-color:var(--a1);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 10px;}
 @keyframes spin{to{transform:rotate(360deg);}}
 .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(40px);padding:10px 22px;border-radius:50px;font-weight:700;font-size:.84rem;z-index:2000;transition:all .3s;opacity:0;white-space:nowrap;}
 .toast.show{transform:translateX(-50%) translateY(0);opacity:1;}
 .toast.ok{background:var(--green);color:#fff;}
 .toast.err{background:var(--a3);color:#fff;}
 .waf{position:fixed;bottom:18px;right:14px;z-index:800;width:54px;height:54px;border-radius:50%;background:#25d366;color:white;display:flex;align-items:center;justify-content:center;font-size:1.55rem;text-decoration:none;box-shadow:0 4px 20px rgba(37,211,102,.5);}
-@media(min-width:900px){:root{--nh:68px;}.nav{padding:0 40px;}.burger{display:none!important;}.stats-row{grid-template-columns:repeat(4,1fr);}}
+@media(min-width:700px){.stats-grid{grid-template-columns:repeat(4,1fr);}:root{--nh:68px;}.nav{padding:0 40px;}.burger{display:none!important;}}
 </style>
 </head>
 <body>
@@ -84,39 +107,83 @@ body{background:var(--bg);color:var(--txt);font-family:Outfit,sans-serif;overflo
 <!-- LOGIN -->
 <div class="login-wrap" id="loginWrap">
   <div class="login-card">
-    <div style="font-size:2rem;margin-bottom:8px;">💰</div>
+    <div style="font-size:2.5rem;margin-bottom:10px;">💰</div>
     <h2>ESPACE AFFILIÉ</h2>
-    <p>Entrez votre code affilié pour accéder à votre tableau de bord et vos liens de commission.</p>
-    <input class="finput" id="codeInput" type="text" placeholder="Votre code affilié (ex: AMI123)" maxlength="10">
+    <p>Entrez votre code affilié pour accéder à votre tableau de bord, vos liens et vos gains.</p>
+    <input class="finput" id="codeInput" type="text" placeholder="Votre code (ex: AMI123)" maxlength="10" style="text-align:center;font-family:monospace;font-size:1.1rem;letter-spacing:.08em;text-transform:uppercase;">
     <button class="btn-login" id="btnLogin" onclick="loginAffilie()">🔓 Accéder à mon espace</button>
-    <div style="margin-top:14px;font-size:.8rem;color:var(--muted);">Pas encore affilié ? <a href="affiliation.html" style="color:var(--a1);">Rejoindre le programme</a></div>
+    <div style="margin-top:14px;font-size:.8rem;color:var(--muted);">Pas encore affilié ? <a href="affiliation.html" style="color:var(--a1);">Rejoindre le programme →</a></div>
   </div>
 </div>
 
 <!-- DASHBOARD -->
 <div class="dashboard" id="dashboard">
+
+  <!-- Header -->
   <div class="dash-header">
-    <div class="dash-welcome" id="dashWelcome">Bonjour !</div>
-    <div style="color:var(--muted);font-size:.85rem;margin-bottom:6px;">Votre code affilié :</div>
-    <div class="dash-code" id="dashCode" onclick="copyCode()">--- <span style="font-size:.7rem;color:var(--muted);">📋 copier</span></div>
-    <span class="dash-statut" id="dashStatut">—</span>
+    <div class="dash-left">
+      <div id="dashWelcome" style="font-family:Bebas\ Neue,sans-serif;font-size:1.4rem;letter-spacing:.04em;">Bonjour !</div>
+      <div style="color:var(--muted);font-size:.82rem;margin-top:4px;">Code affilié :</div>
+      <div class="dash-code" id="dashCode" onclick="copyCode()">--- <span style="font-size:.65rem;opacity:.7;">📋</span></div>
+      <span class="statut-badge" id="dashStatut">—</span>
+    </div>
+    <div style="text-align:right;">
+      <button onclick="logout()" style="background:none;border:1px solid var(--border);color:var(--muted);padding:7px 14px;border-radius:10px;font-family:Outfit,sans-serif;font-size:.8rem;cursor:pointer;">← Déconnexion</button>
+    </div>
   </div>
 
-  <div class="stats-row">
-    <div class="stat-card"><div class="stat-n" style="color:var(--green);" id="statGains">0</div><div class="stat-l">Gains FCFA</div></div>
-    <div class="stat-card"><div class="stat-n" style="color:var(--a1);" id="statVentes">0</div><div class="stat-l">Ventes</div></div>
-    <div class="stat-card"><div class="stat-n" style="color:var(--gold);" id="statClics">0</div><div class="stat-l">Clics</div></div>
-    <div class="stat-card"><div class="stat-n" style="color:var(--a2);" id="statProduits">0</div><div class="stat-l">Produits</div></div>
+  <!-- Stats -->
+  <div class="stats-grid">
+    <div class="stat-card"><div class="stat-n" style="color:var(--green);" id="statGains">0</div><div class="stat-l">💰 Gains FCFA</div></div>
+    <div class="stat-card"><div class="stat-n" style="color:var(--a1);" id="statVentes">0</div><div class="stat-l">🛒 Ventes</div></div>
+    <div class="stat-card"><div class="stat-n" style="color:var(--gold);" id="statClics">0</div><div class="stat-l">👆 Clics</div></div>
+    <div class="stat-card"><div class="stat-n" style="color:var(--a2);" id="statConv">0%</div><div class="stat-l">📊 Conversion</div></div>
   </div>
 
-  <div class="section-title">🔗 Vos liens affiliés par produit</div>
-  <div id="prodListArea"><div class="loading"><div class="spinner"></div>Chargement des produits...</div></div>
-
-  <div style="margin-top:24px;background:var(--s1);border:1px solid rgba(251,191,36,.2);border-radius:14px;padding:16px;">
-    <div style="font-weight:800;font-size:.9rem;margin-bottom:6px;color:var(--gold);">💬 Besoin d'aide ?</div>
-    <p style="color:var(--muted);font-size:.84rem;line-height:1.7;margin-bottom:10px;">Pour toute question sur vos commissions ou vos paiements, contactez-nous directement.</p>
-    <a href="https://wa.me/22655300868?text=Bonjour ! Je suis affilié EMBF Boutique, j'ai une question." target="_blank" style="display:inline-flex;align-items:center;gap:6px;background:#25d366;color:#fff;padding:10px 18px;border-radius:10px;font-weight:700;font-size:.85rem;text-decoration:none;">💬 Contacter EMBF</a>
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="tab act" onclick="showTab('liens')">🔗 Mes liens</button>
+    <button class="tab" onclick="showTab('retraits')">💸 Retrait</button>
+    <button class="tab" onclick="showTab('historique')">📋 Historique</button>
   </div>
+
+  <!-- TAB: LIENS -->
+  <div id="tab-liens">
+    <p style="color:var(--muted);font-size:.82rem;margin-bottom:14px;">Partagez ces liens — chaque vente via votre lien vous rapporte la commission indiquée.</p>
+    <div id="prodListArea"><div style="text-align:center;padding:30px;"><div class="spinner"></div><div style="color:var(--muted);font-size:.85rem;">Chargement...</div></div></div>
+  </div>
+
+  <!-- TAB: RETRAITS -->
+  <div id="tab-retraits" style="display:none;">
+    <div class="retrait-card">
+      <h3>💸 Demander un retrait</h3>
+      <div class="gains-display">
+        <div class="gains-big" id="retGains">0 FCFA</div>
+        <div class="gains-lbl">Gains disponibles</div>
+      </div>
+      <div id="retWarn" style="display:none;background:rgba(244,63,94,.08);border:1px solid rgba(244,63,94,.2);border-radius:10px;padding:10px 14px;font-size:.82rem;color:var(--a3);margin-bottom:12px;">⚠️ Minimum 5 000 FCFA pour effectuer un retrait.</div>
+      <label style="font-size:.78rem;color:var(--muted);font-weight:700;display:block;margin-bottom:5px;">Moyen de paiement</label>
+      <select class="fselect" id="retMeth">
+        <option value="">Choisir...</option>
+        <option value="Orange Money">🟠 Orange Money</option>
+        <option value="Moov Money">🔵 Moov Money</option>
+        <option value="Wave">🌊 Wave</option>
+      </select>
+      <label style="font-size:.78rem;color:var(--muted);font-weight:700;display:block;margin-bottom:5px;">Numéro de réception</label>
+      <input class="finput" id="retNum" type="tel" placeholder="+226 XX XX XX XX">
+      <label style="font-size:.78rem;color:var(--muted);font-weight:700;display:block;margin-bottom:5px;">Montant demandé (FCFA)</label>
+      <input class="finput" id="retMontant" type="number" placeholder="Ex: 10000" min="5000">
+      <button class="btn-retrait" id="btnRetrait" onclick="demanderRetrait()">💸 Envoyer la demande</button>
+    </div>
+    <div id="retHist"><div style="text-align:center;padding:20px;color:var(--muted);font-size:.84rem;">Chargement historique...</div></div>
+  </div>
+
+  <!-- TAB: HISTORIQUE -->
+  <div id="tab-historique" style="display:none;">
+    <p style="color:var(--muted);font-size:.82rem;margin-bottom:14px;">Ventes attribuées à votre code affilié.</p>
+    <div id="ordersArea"><div style="text-align:center;padding:30px;"><div class="spinner"></div></div></div>
+  </div>
+
 </div>
 
 <a class="waf" href="https://wa.me/22655300868" target="_blank">💬</a>
@@ -124,20 +191,16 @@ body{background:var(--bg);color:var(--txt);font-family:Outfit,sans-serif;overflo
 
 <script>
 var FB_DB="https://boutique-embf-default-rtdb.europe-west1.firebasedatabase.app";
+var FB_KEY="AIzaSyA0UGFKeoatnMaCMAlaF3B3li9gFY4Dt0g";
 var SITE_URL="https://embfboutik.netlify.app";
 var currentAffilie=null;
+var currentKey=null;
+var allProducts=[];
 
-function toggleMenu(){
-  var m=document.getElementById('mmenu'),b=document.getElementById('burgerBtn');
-  var o=m.classList.toggle('open');b.textContent=o?'✕':'☰';
-}
-function showToast(msg,ok){
-  var t=document.getElementById('toast');
-  t.textContent=msg;t.className='toast show '+(ok===false?'err':'ok');
-  setTimeout(function(){t.className='toast';},3000);
-}
+function toggleMenu(){var m=document.getElementById('mmenu'),b=document.getElementById('burgerBtn');var o=m.classList.toggle('open');b.textContent=o?'✕':'☰';}
+function showToast(msg,ok){var t=document.getElementById('toast');t.textContent=msg;t.className='toast show '+(ok===false?'err':'ok');setTimeout(function(){t.className='toast';},3000);}
 
-// Auto-login if code saved
+// Auto-login
 window.addEventListener('load',function(){
   var saved=localStorage.getItem('embf_affilie_code');
   if(saved){document.getElementById('codeInput').value=saved;loginAffilie();}
@@ -145,80 +208,187 @@ window.addEventListener('load',function(){
 
 async function loginAffilie(){
   var code=document.getElementById('codeInput').value.trim().toUpperCase();
-  if(!code){showToast('❌ Entrez votre code affilié',false);return;}
+  if(!code){showToast('❌ Entrez votre code',false);return;}
   var btn=document.getElementById('btnLogin');
   btn.disabled=true;btn.textContent='⏳ Vérification...';
   try{
-    var r=await fetch(FB_DB+'/affilies.json?orderBy="code"&equalTo="'+code+'"');
+    var r=await fetch(FB_DB+'/affilies.json?orderBy=%22code%22&equalTo=%22'+code+'%22');
     var data=await r.json();
-    if(!data||Object.keys(data).length===0){
-      showToast('❌ Code invalide — vérifiez votre code',false);
-      btn.disabled=false;btn.textContent='🔓 Accéder à mon espace';return;
-    }
-    var key=Object.keys(data)[0];
-    currentAffilie={...data[key],_key:key};
+    if(!data||!Object.keys(data).length){showToast('❌ Code invalide',false);btn.disabled=false;btn.textContent='🔓 Accéder à mon espace';return;}
+    currentKey=Object.keys(data)[0];
+    currentAffilie={...data[currentKey],_key:currentKey};
     localStorage.setItem('embf_affilie_code',code);
     showDashboard();
   }catch(e){showToast('❌ Erreur: '+e.message,false);btn.disabled=false;btn.textContent='🔓 Accéder à mon espace';}
 }
 
+function logout(){
+  localStorage.removeItem('embf_affilie_code');
+  currentAffilie=null;currentKey=null;
+  document.getElementById('dashboard').style.display='none';
+  document.getElementById('loginWrap').style.display='flex';
+  document.getElementById('codeInput').value='';
+}
+
 async function showDashboard(){
+  // Refresh data
+  var r=await fetch(FB_DB+'/affilies/'+currentKey+'.json');
+  var fresh=await r.json();
+  if(fresh)currentAffilie={...fresh,_key:currentKey};
+
   document.getElementById('loginWrap').style.display='none';
   document.getElementById('dashboard').style.display='block';
+
   var a=currentAffilie;
   document.getElementById('dashWelcome').textContent='Bonjour, '+a.nom+' 👋';
-  document.getElementById('dashCode').innerHTML=a.code+' <span style="font-size:.7rem;color:var(--muted);">📋 copier</span>';
-  var statutEl=document.getElementById('dashStatut');
-  if(a.statut==='actif'){statutEl.textContent='✅ Actif';statutEl.className='dash-statut statut-actif';}
-  else if(a.statut==='bloque'){statutEl.textContent='🚫 Bloqué';statutEl.className='dash-statut statut-bloque';}
-  else{statutEl.textContent='⏳ En attente de validation';statutEl.className='dash-statut statut-attente';}
-  document.getElementById('statGains').textContent=Number(a.gains||0).toLocaleString('fr-FR');
-  document.getElementById('statVentes').textContent=a.ventes||0;
-  document.getElementById('statClics').textContent=a.clics||0;
+  document.getElementById('dashCode').innerHTML=a.code+' <span style="font-size:.65rem;opacity:.7;">📋</span>';
+
+  var s=document.getElementById('dashStatut');
+  if(a.statut==='actif'){s.textContent='✅ Actif';s.className='statut-badge statut-actif';}
+  else if(a.statut==='bloque'){s.textContent='🚫 Bloqué';s.className='statut-badge statut-bloque';}
+  else{s.textContent='⏳ En attente de validation';s.className='statut-badge statut-attente';}
+
+  var gains=Number(a.gains||0);
+  var ventes=Number(a.ventes||0);
+  var clics=Number(a.clics||0);
+  var conv=clics>0?Math.round((ventes/clics)*100):0;
+
+  document.getElementById('statGains').textContent=gains.toLocaleString('fr-FR');
+  document.getElementById('statVentes').textContent=ventes;
+  document.getElementById('statClics').textContent=clics;
+  document.getElementById('statConv').textContent=conv+'%';
+  document.getElementById('retGains').textContent=gains.toLocaleString('fr-FR')+' FCFA';
+
+  if(gains<5000)document.getElementById('retWarn').style.display='block';
+  if(gains<5000)document.getElementById('btnRetrait').disabled=true;
+
   loadProduits();
+  loadRetraitHist();
 }
 
 async function loadProduits(){
   try{
     var r=await fetch(FB_DB+'/products.json');
     var data=await r.json();
-    if(!data){document.getElementById('prodListArea').innerHTML='<p style="color:var(--muted);">Aucun produit disponible.</p>';return;}
-    var prods=Object.keys(data).map(function(k){var p=data[k];p._key=k;return p;});
-    document.getElementById('statProduits').textContent=prods.length;
-    document.getElementById('prodListArea').innerHTML=prods.map(function(p){
+    if(!data){document.getElementById('prodListArea').innerHTML='<div class="section-empty">Aucun produit.</div>';return;}
+    allProducts=Object.keys(data).map(function(k){var p=data[k];p._key=k;return p;});
+    var a=currentAffilie;
+    document.getElementById('prodListArea').innerHTML=allProducts.map(function(p){
       var imgs=[];try{imgs=JSON.parse(p.images||'[]');}catch(e){}
-      var imgSrc=imgs[0]||'';
+      var img=imgs[0]||'';
       var comm=p.commission||5;
       var gain=Math.round((p.price*comm)/100);
-      var link=SITE_URL+'/produit.html?id='+p._key+'&ref='+currentAffilie.code;
-      var waText=encodeURIComponent('🔥 '+p.name+'\n💰 '+Number(p.price).toLocaleString('fr-FR')+' FCFA\n📱 Commander ici : '+link+'\n\nLivraison rapide partout en Afrique de l\'Ouest !');
-      return '<div class="prod-affilie">'+
-        '<div class="pa-top">'+
-          (imgSrc?'<img class="pa-img" src="'+imgSrc+'" onerror="this.style.display=\'none\'">':'<div class="pa-img" style="display:flex;align-items:center;justify-content:center;font-size:1.5rem;">📦</div>')+
+      var link=SITE_URL+'/produit.html?id='+p._key+'&ref='+a.code;
+      var waText=encodeURIComponent('🔥 *'+p.name+'*\n💰 '+Number(p.price).toLocaleString('fr-FR')+' FCFA\n\n📱 Commander ici :\n'+link+'\n\n✅ Livraison rapide toute l\'Afrique de l\'Ouest !');
+      return '<div class="prod-card">'+
+        '<div class="prod-top">'+
+          (img?'<img class="prod-img" src="'+img+'" onerror="this.style.display=\'none\'">':'<div class="prod-img" style="display:flex;align-items:center;justify-content:center;font-size:1.5rem;">📦</div>')+
           '<div style="flex:1;">'+
-            '<div class="pa-name">'+p.name+'</div>'+
-            '<div class="pa-price">'+Number(p.price).toLocaleString('fr-FR')+' FCFA</div>'+
-            '<div style="display:flex;align-items:center;gap:8px;margin-top:4px;">'+
-              '<div class="pa-comm">'+comm+'% commission</div>'+
-              '<div class="pa-gain">+'+gain.toLocaleString('fr-FR')+' FCFA</div>'+
+            '<div class="prod-name">'+p.name+'</div>'+
+            '<div class="prod-price">'+Number(p.price).toLocaleString('fr-FR')+' FCFA</div>'+
+            '<div class="prod-comm">'+
+              '<span class="comm-pct">'+comm+'%</span>'+
+              '<span class="comm-gain">+'+gain.toLocaleString('fr-FR')+' FCFA</span>'+
             '</div>'+
           '</div>'+
         '</div>'+
-        '<div class="pa-link">🔗 '+link+'</div>'+
-        '<button class="btn-copy" onclick="copyLink(\''+link+'\')">📋 Copier le lien</button>'+
-        '<a href="https://wa.me/?text='+waText+'" target="_blank" style="display:inline-flex;align-items:center;gap:5px;background:rgba(37,211,102,.15);border:1px solid rgba(37,211,102,.25);color:#25d366;padding:8px 14px;border-radius:8px;font-family:Outfit,sans-serif;font-weight:700;font-size:.78px;text-decoration:none;font-size:.78rem;">💬 Partager sur WhatsApp</a>'+
+        '<div class="link-box">'+link+'</div>'+
+        '<div class="btn-row">'+
+          '<button class="btn-copy" onclick="copyLink(\''+link+'\')">📋 Copier le lien</button>'+
+          '<a class="btn-wa-share" href="https://wa.me/?text='+waText+'" target="_blank">💬 Partager</a>'+
+        '</div>'+
       '</div>';
     }).join('');
-  }catch(e){document.getElementById('prodListArea').innerHTML='<p style="color:var(--muted);">Erreur chargement produits.</p>';}
+  }catch(e){document.getElementById('prodListArea').innerHTML='<div class="section-empty">Erreur chargement.</div>';}
 }
 
-function copyLink(url){
-  navigator.clipboard.writeText(url).then(function(){showToast('✅ Lien copié !');}).catch(function(){showToast('❌ Erreur copie',false);});
+async function loadOrders(){
+  var a=currentAffilie;
+  try{
+    var r=await fetch(FB_DB+'/orders.json?orderBy=%22ref%22&equalTo=%22'+a.code+'%22');
+    var data=await r.json();
+    if(!data||!Object.keys(data).length){
+      document.getElementById('ordersArea').innerHTML='<div class="section-empty">Aucune vente attribuée pour l\'instant.<br>Partagez vos liens pour commencer !</div>';
+      return;
+    }
+    var orders=Object.keys(data).map(function(k){var o=data[k];o._key=k;return o;}).sort(function(a,b){return b.ts-a.ts;});
+    document.getElementById('ordersArea').innerHTML=orders.map(function(o){
+      var prod=allProducts.find(function(p){return p._key===o.produitId;})||{};
+      var comm=prod.commission||5;
+      var gain=Math.round((o.prix*comm)/100);
+      var date=new Date(o.ts).toLocaleDateString('fr-FR');
+      return '<div class="order-item">'+
+        '<div class="order-prod">'+o.produit+'</div>'+
+        '<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px;margin-top:4px;">'+
+          '<div class="order-meta">'+date+' · '+Number(o.prix).toLocaleString('fr-FR')+' FCFA · '+o.client.ville+'</div>'+
+          '<div class="order-gain">+'+gain.toLocaleString('fr-FR')+' FCFA</div>'+
+        '</div>'+
+      '</div>';
+    }).join('');
+  }catch(e){document.getElementById('ordersArea').innerHTML='<div class="section-empty">Erreur chargement.</div>';}
 }
-function copyCode(){
-  if(!currentAffilie)return;
-  navigator.clipboard.writeText(currentAffilie.code).then(function(){showToast('✅ Code copié !');});
+
+async function loadRetraitHist(){
+  var a=currentAffilie;
+  try{
+    var r=await fetch(FB_DB+'/retraits.json?orderBy=%22affilieCode%22&equalTo=%22'+a.code+'%22');
+    var data=await r.json();
+    if(!data||!Object.keys(data).length){
+      document.getElementById('retHist').innerHTML='<div class="section-empty" style="font-size:.82rem;">Aucune demande de retrait.</div>';
+      return;
+    }
+    var retraits=Object.keys(data).map(function(k){var r=data[k];r._key=k;return r;}).sort(function(a,b){return b.ts-a.ts;});
+    document.getElementById('retHist').innerHTML='<div style="font-weight:700;font-size:.85rem;margin-bottom:8px;color:var(--muted);">Historique des retraits</div>'+
+      retraits.map(function(rt){
+        var date=new Date(rt.ts).toLocaleDateString('fr-FR');
+        var sc=rt.statut==='valide'?'rh-valide':rt.statut==='refuse'?'rh-refuse':'rh-en-attente';
+        var sl=rt.statut==='valide'?'✅ Payé':rt.statut==='refuse'?'❌ Refusé':'⏳ En attente';
+        return '<div class="rh-item">'+
+          '<div><div style="font-weight:700;">'+Number(rt.montant).toLocaleString('fr-FR')+' FCFA</div><div style="color:var(--muted);font-size:.75rem;">'+rt.methode+' · '+date+'</div></div>'+
+          '<span class="rh-statut '+sc+'">'+sl+'</span>'+
+        '</div>';
+      }).join('');
+  }catch(e){document.getElementById('retHist').innerHTML='';}
 }
+
+async function demanderRetrait(){
+  var a=currentAffilie;
+  var meth=document.getElementById('retMeth').value;
+  var num=document.getElementById('retNum').value.trim();
+  var montant=parseInt(document.getElementById('retMontant').value)||0;
+  var gains=Number(a.gains||0);
+  if(!meth){showToast('❌ Choisissez un moyen de paiement',false);return;}
+  if(!num){showToast('❌ Entrez votre numéro',false);return;}
+  if(montant<5000){showToast('❌ Minimum 5 000 FCFA',false);return;}
+  if(montant>gains){showToast('❌ Montant supérieur à vos gains',false);return;}
+  var btn=document.getElementById('btnRetrait');
+  btn.disabled=true;btn.textContent='⏳ Envoi...';
+  try{
+    await fetch(FB_DB+'/retraits.json',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({affilieCode:a.code,affilieNom:a.nom,affilieTel:a.tel,methode:meth,numero:num,montant:montant,statut:'en_attente',ts:Date.now()})
+    });
+    showToast('✅ Demande envoyée ! Traitement sous 24-48h');
+    document.getElementById('retMeth').value='';
+    document.getElementById('retNum').value='';
+    document.getElementById('retMontant').value='';
+    loadRetraitHist();
+  }catch(e){showToast('❌ Erreur: '+e.message,false);}
+  btn.disabled=false;btn.textContent='💸 Envoyer la demande';
+}
+
+function showTab(tab){
+  ['liens','retraits','historique'].forEach(function(t){
+    document.getElementById('tab-'+t).style.display=t===tab?'block':'none';
+  });
+  document.querySelectorAll('.tab').forEach(function(b,i){
+    b.classList.toggle('act',['liens','retraits','historique'][i]===tab);
+  });
+  if(tab==='historique'&&allProducts.length)loadOrders();
+}
+
+function copyLink(url){navigator.clipboard.writeText(url).then(function(){showToast('✅ Lien copié !');}).catch(function(){showToast('❌ Erreur copie',false);});}
+function copyCode(){if(!currentAffilie)return;navigator.clipboard.writeText(currentAffilie.code).then(function(){showToast('✅ Code copié !');});}
 </script>
 <script src="https://id-preview--f60803aa-0907-499a-a977-9992f2538ef8.lovable.app/widget/rachida.js" data-shop="shop-wpdhfq"></script>
 </body>

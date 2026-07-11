@@ -328,6 +328,15 @@ input:checked+.toggle-sl:before{transform:translateX(20px);background:var(--a1);
         <div id="commissionsList"><div style="text-align:center;padding:20px;color:var(--muted);">Chargement...</div></div>
       </div>
 
+      <!-- Demandes de retrait -->
+      <div class="fsec" style="margin-bottom:16px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px;">
+          <div class="fsec-title" style="margin-bottom:0;">💸 Demandes de retrait <span id="retraitsBadge" style="background:var(--a3);color:#fff;font-size:.6rem;font-weight:800;padding:1px 6px;border-radius:50px;margin-left:4px;display:none;"></span></div>
+          <button onclick="loadRetraits()" style="background:none;border:1px solid var(--border);color:var(--muted);padding:5px 12px;border-radius:8px;font-family:Outfit,sans-serif;font-weight:700;font-size:.78rem;cursor:pointer;">🔄 Rafraîchir</button>
+        </div>
+        <div id="retraitsList"><div style="text-align:center;padding:16px;color:var(--muted);font-size:.84rem;">Chargement...</div></div>
+      </div>
+
       <!-- Liste des affiliés -->
       <div class="fsec">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px;">
@@ -528,6 +537,64 @@ async function saveCommission(prodKey,price){
     showToast('✅ Commission enregistrée');
   }catch(e){showToast('❌ Erreur',false);}
 }
+
+// ===== RETRAITS =====
+async function loadRetraits(){
+  try{
+    var r=await fetch(FB_DB+'/retraits.json');
+    var data=await r.json();
+    if(!data||!Object.keys(data).length){
+      document.getElementById('retraitsList').innerHTML='<p style="color:var(--muted);font-size:.84rem;padding:10px;">Aucune demande de retrait.</p>';
+      document.getElementById('retraitsBadge').style.display='none';
+      return;
+    }
+    var retraits=Object.keys(data).map(function(k){var rt=data[k];rt._key=k;return rt;}).sort(function(a,b){return b.ts-a.ts;});
+    var pending=retraits.filter(function(rt){return rt.statut==='en_attente';}).length;
+    var badge=document.getElementById('retraitsBadge');
+    if(pending>0){badge.textContent=pending;badge.style.display='inline';}
+    else badge.style.display='none';
+    document.getElementById('retraitsList').innerHTML=retraits.map(function(rt){
+      var date=new Date(rt.ts).toLocaleDateString('fr-FR');
+      var statColor=rt.statut==='valide'?'var(--green)':rt.statut==='refuse'?'var(--a3)':'var(--gold)';
+      var statLabel=rt.statut==='valide'?'✅ Payé':rt.statut==='refuse'?'❌ Refusé':'⏳ En attente';
+      return '<div style="background:var(--s2);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:8px;">'+
+        '<div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;margin-bottom:10px;">'+
+          '<div>'+
+            '<div style="font-weight:800;font-size:.95rem;">'+Number(rt.montant).toLocaleString('fr-FR')+' FCFA</div>'+
+            '<div style="color:var(--muted);font-size:.8rem;margin-top:2px;">'+rt.affilieNom+' · Code: <span style="color:var(--gold);font-family:monospace;">'+rt.affilieCode+'</span></div>'+
+            '<div style="color:var(--muted);font-size:.78rem;margin-top:2px;">'+rt.methode+' → '+rt.numero+' · '+date+'</div>'+
+          '</div>'+
+          '<div style="font-weight:800;font-size:.82rem;color:'+statColor+';">'+statLabel+'</div>'+
+        '</div>'+
+        (rt.statut==='en_attente'?
+          '<div style="display:flex;gap:6px;">'+
+            '<button onclick="setRetraitStatut(\''+rt._key+'\',\'valide\',\''+rt.affilieCode+'\','+rt.montant+')" style="background:var(--green);color:#fff;border:none;padding:7px 14px;border-radius:8px;font-family:Outfit,sans-serif;font-weight:700;font-size:.78rem;cursor:pointer;">✅ Valider paiement</button>'+
+            '<button onclick="setRetraitStatut(\''+rt._key+'\',\'refuse\',\''+rt.affilieCode+'\',0)" style="background:var(--a3);color:#fff;border:none;padding:7px 14px;border-radius:8px;font-family:Outfit,sans-serif;font-weight:700;font-size:.78rem;cursor:pointer;">❌ Refuser</button>'+
+          '</div>':'')+
+      '</div>';
+    }).join('');
+  }catch(e){document.getElementById('retraitsList').innerHTML='<p style="color:var(--muted);">Erreur.</p>';}
+}
+
+async function setRetraitStatut(key,statut,affilieCode,montant){
+  var label=statut==='valide'?'valider ce paiement':'refuser cette demande';
+  if(!confirm('Confirmer : '+label+' ?'))return;
+  try{
+    await fetch(FB_DB+'/retraits/'+key+'.json?auth='+FB_KEY,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({statut:statut})});
+    // If validated, deduct from affiliate gains
+    if(statut==='valide'&&montant>0){
+      var r=await fetch(FB_DB+'/affilies.json?orderBy=%22code%22&equalTo=%22'+affilieCode+'%22');
+      var affData=await r.json();
+      if(affData){
+        var affKey=Object.keys(affData)[0];
+        var curGains=affData[affKey].gains||0;
+        await fetch(FB_DB+'/affilies/'+affKey+'.json?auth='+FB_KEY,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({gains:Math.max(0,curGains-montant)})});
+      }
+    }
+    showToast('✅ Statut mis à jour');
+    loadRetraits();
+  }catch(e){showToast('❌ Erreur',false);}
+}
 var WA="22655300868";
 var CE={"Ordinateur":"💻","Smartphone":"📱","Gadget":"🎮","Accessoires":"🎧","Autre":"📦"};
 function fmt(v){return Number(v).toLocaleString("fr-FR")+" FCFA";}
@@ -600,7 +667,7 @@ function showPage(id){
   if(mob) mob.value = id;
   if(id==="orders") renderOrders();
   if(id==="stats") updateStats();
-  if(id==="affilies") loadAffilies();
+  if(id==="affilies"){loadAffilies();loadRetraits();}
 }
 
 // RENDER PRODUCT LIST
