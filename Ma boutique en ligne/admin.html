@@ -275,10 +275,17 @@ input:checked+.toggle-sl:before{transform:translateX(20px);background:var(--a1);
 
     <!-- PAGE: ORDERS -->
     <div class="page" id="page-orders">
-      <div class="pgh"><h1>🔔 COMMANDES & DEMANDES</h1><p>Reçues depuis le site</p></div>
+      <div class="pgh"><h1>🔔 COMMANDES</h1><p>Reçues depuis le site en temps réel</p></div>
       <div class="fsec">
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;">
+          <button class="order-filter-btn" data-filter="tous" onclick="filterOrders('tous')" style="background:var(--a1);color:#000;border:none;padding:6px 14px;border-radius:8px;font-family:Outfit,sans-serif;font-weight:700;font-size:.78rem;cursor:pointer;">Toutes</button>
+          <button class="order-filter-btn" data-filter="nouveau" onclick="filterOrders('nouveau')" style="background:none;border:1px solid var(--border);color:var(--muted);padding:6px 14px;border-radius:8px;font-family:Outfit,sans-serif;font-weight:700;font-size:.78rem;cursor:pointer;">🆕 Nouvelles</button>
+          <button class="order-filter-btn" data-filter="en_cours" onclick="filterOrders('en_cours')" style="background:none;border:1px solid var(--border);color:var(--muted);padding:6px 14px;border-radius:8px;font-family:Outfit,sans-serif;font-weight:700;font-size:.78rem;cursor:pointer;">🚚 En cours</button>
+          <button class="order-filter-btn" data-filter="livre" onclick="filterOrders('livre')" style="background:none;border:1px solid var(--border);color:var(--muted);padding:6px 14px;border-radius:8px;font-family:Outfit,sans-serif;font-weight:700;font-size:.78rem;cursor:pointer;">✅ Livrées</button>
+          <button class="order-filter-btn" data-filter="annule" onclick="filterOrders('annule')" style="background:none;border:1px solid var(--border);color:var(--muted);padding:6px 14px;border-radius:8px;font-family:Outfit,sans-serif;font-weight:700;font-size:.78rem;cursor:pointer;">❌ Annulées</button>
+          <button onclick="renderOrders()" style="background:none;border:1px solid var(--border);color:var(--muted);padding:6px 14px;border-radius:8px;font-family:Outfit,sans-serif;font-weight:700;font-size:.78rem;cursor:pointer;">🔄</button>
+        </div>
         <div id="ordersList"><div style="text-align:center;padding:24px;color:var(--muted);">Chargement...</div></div>
-        <button onclick="clearOrders()" style="margin-top:12px;background:none;border:1px solid var(--border);color:var(--muted);padding:8px 16px;border-radius:10px;cursor:pointer;font-size:.82rem;">🗑️ Effacer tout</button>
       </div>
     </div>
 
@@ -885,54 +892,99 @@ function clearPromo(){
 }
 
 // ORDERS
-function renderOrders(){
-  var orders = JSON.parse(localStorage.getItem("embf_pending_orders")||"[]");
-  var badge = document.getElementById("ordersBadge");
-  var newN = orders.filter(function(o){ return o.status==="nouveau"; }).length;
-  if(newN>0){ badge.textContent=newN; badge.style.display="inline"; }
-  else { badge.style.display="none"; }
-  var el = document.getElementById("ordersList"); if(!el) return;
-  if(!orders.length){
-    el.innerHTML="<div style='text-align:center;padding:24px;color:var(--muted);'>Aucune commande reçue pour l'instant.</div>"; return;
-  }
-  el.innerHTML=orders.map(function(o){
-    var icon=o.type==="paiement"?"💳":o.type==="demande"?"✨":"🛍️";
-    var color=o.type==="paiement"?"var(--green)":o.type==="demande"?"var(--gold)":"var(--a1)";
-    var isNew=o.status==="nouveau";
-    return "<div class='order-card' style='"+(isNew?"border-color:rgba(0,229,255,.25);":"")+"'>"+
-      (isNew?"<div class='order-badge-new'>NOUVEAU</div>":"")+
-      "<div style='display:flex;align-items:center;gap:8px;margin-bottom:10px;'>"+
-        "<span style='font-size:1.3rem;'>"+icon+"</span>"+
-        "<div><div style='font-weight:800;font-size:.88rem;color:"+color+";text-transform:uppercase;'>"+o.type+"</div>"+
-        "<div style='font-size:.72rem;color:var(--muted);'>"+o.date+"</div></div>"+
-      "</div>"+
-      "<div style='display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:.8rem;margin-bottom:10px;'>"+
-        (o.produit?"<div><span style='color:var(--muted);'>Produit</span><br><strong>"+o.produit+"</strong></div>":"")+
-        (o.prix?"<div><span style='color:var(--muted);'>Prix</span><br><strong style='color:var(--gold);'>"+o.prix+"</strong></div>":"")+
-        (o.client?"<div><span style='color:var(--muted);'>Client</span><br><strong>"+o.client+"</strong></div>":"")+
-        (o.tel?"<div><span style='color:var(--muted);'>Téléphone</span><br><a href='https://wa.me/"+o.tel.replace(/[^0-9]/g,"")+"' target='_blank' style='color:#25d366;font-weight:700;'>"+o.tel+"</a></div>":"")+
-        (o.methode?"<div><span style='color:var(--muted);'>Paiement</span><br><strong>"+o.methode+"</strong></div>":"")+
-        (o.pays?"<div><span style='color:var(--muted);'>Localisation</span><br><strong>"+o.pays+(o.ville?" - "+o.ville:"")+"</strong></div>":"")+
-        (o.budget?"<div><span style='color:var(--muted);'>Budget</span><br><strong style='color:var(--gold);'>"+o.budget+"</strong></div>":"")+
-      "</div>"+
-      "<button onclick='markDone("+o.id+")' style='background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.2);color:var(--green);padding:6px 14px;border-radius:8px;font-size:.76rem;font-weight:700;cursor:pointer;'>✓ Traité</button>"+
-    "</div>";
-  }).join("");
-  orders.forEach(function(o){o.status="vu";});
-  localStorage.setItem("embf_pending_orders",JSON.stringify(orders));
-  renderOrders();
+var allOrders=[];
+var ordersFilter='tous';
+
+async function renderOrders(){
+  var el=document.getElementById("ordersList");if(!el)return;
+  el.innerHTML='<div style="text-align:center;padding:24px;"><div style="width:28px;height:28px;border:3px solid var(--border);border-top-color:var(--a1);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 10px;"></div><div style="color:var(--muted);font-size:.84rem;">Chargement...</div></div>';
+  try{
+    var r=await fetch(FB_DB+"/orders.json");
+    var data=await r.json();
+    if(!data){el.innerHTML="<div style='text-align:center;padding:24px;color:var(--muted);'>Aucune commande reçue.</div>";document.getElementById("ordersBadge").style.display="none";return;}
+    allOrders=Object.keys(data).map(function(k){var o=data[k];o._key=k;return o;}).sort(function(a,b){return b.ts-a.ts;});
+    var newN=allOrders.filter(function(o){return o.statut==="nouveau";}).length;
+    var badge=document.getElementById("ordersBadge");
+    if(newN>0){badge.textContent=newN;badge.style.display="inline";}else{badge.style.display="none";}
+    renderOrdersList();
+  }catch(e){el.innerHTML="<div style='text-align:center;padding:24px;color:var(--muted);'>Erreur chargement.</div>";}
 }
-function markDone(id){
-  var orders=JSON.parse(localStorage.getItem("embf_pending_orders")||"[]");
-  orders=orders.filter(function(o){return o.id!==id;});
-  localStorage.setItem("embf_pending_orders",JSON.stringify(orders));
-  renderOrders(); showToast("✅ Marqué comme traité");
+
+function renderOrdersList(){
+  var el=document.getElementById("ordersList");if(!el)return;
+  var list=ordersFilter==='tous'?allOrders:allOrders.filter(function(o){return o.statut===ordersFilter;});
+  if(!list.length){el.innerHTML="<div style='text-align:center;padding:24px;color:var(--muted);'>Aucune commande trouvée.</div>";return;}
+  el.innerHTML=list.map(function(o){
+    var isNew=o.statut==="nouveau";
+    var date=o.ts?new Date(o.ts).toLocaleString('fr-FR'):'—';
+    var statutColor=o.statut==='livre'?'var(--green)':o.statut==='annule'?'var(--a3)':o.statut==='en_cours'?'var(--a1)':'var(--gold)';
+    var statutLabel=o.statut==='livre'?'✅ Livré':o.statut==='annule'?'❌ Annulé':o.statut==='en_cours'?'🚚 En cours':'🆕 Nouveau';
+    var c=o.client||{};
+    return '<div class="order-card" style="'+(isNew?'border-color:rgba(0,229,255,.3);':'')+'position:relative;">'+
+      (isNew?'<div class="order-badge-new">NOUVEAU</div>':'')+
+      '<div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;margin-bottom:12px;">'+
+        '<div>'+
+          '<div style="font-weight:800;font-size:.95rem;">'+o.produit+'</div>'+
+          '<div style="color:var(--gold);font-weight:800;font-size:.88rem;margin-top:2px;">'+Number(o.prix||0).toLocaleString('fr-FR')+' FCFA × '+(o.quantite||1)+'</div>'+
+          '<div style="color:var(--muted);font-size:.72rem;margin-top:2px;">'+date+'</div>'+
+        '</div>'+
+        '<div style="font-size:.78rem;font-weight:800;color:'+statutColor+';">'+statutLabel+'</div>'+
+      '</div>'+
+      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:.82rem;margin-bottom:12px;">'+
+        '<div><span style="color:var(--muted);font-size:.72rem;">CLIENT</span><br><strong>'+(c.nom||'—')+'</strong></div>'+
+        '<div><span style="color:var(--muted);font-size:.72rem;">TÉLÉPHONE</span><br>'+
+          (c.tel?'<a href="https://wa.me/'+c.tel.replace(/[^0-9]/g,'')+'" target="_blank" style="color:#25d366;font-weight:700;">'+c.tel+'</a>':'—')+
+        '</div>'+
+        '<div><span style="color:var(--muted);font-size:.72rem;">LOCALISATION</span><br><strong>'+(c.pays||'')+(c.ville?' - '+c.ville:'')+(c.quartier?' / '+c.quartier:'')+'</strong></div>'+
+        '<div><span style="color:var(--muted);font-size:.72rem;">PAIEMENT</span><br><strong>'+(o.paiement||'Non précisé')+'</strong></div>'+
+        (o.ref?'<div><span style="color:var(--muted);font-size:.72rem;">AFFILIÉ</span><br><strong style="color:var(--gold);font-family:monospace;">'+o.ref+'</strong></div>':'')+
+        (o.message?'<div style="grid-column:1/-1;"><span style="color:var(--muted);font-size:.72rem;">MESSAGE</span><br><em style="color:var(--muted);">'+o.message+'</em></div>':'')+
+      '</div>'+
+      '<div style="display:flex;gap:6px;flex-wrap:wrap;">'+
+        '<select onchange="setOrderStatut(\''+o._key+'\',this.value)" style="background:var(--s2);border:1px solid var(--border);color:var(--txt);padding:6px 10px;border-radius:8px;font-family:Outfit,sans-serif;font-size:.78rem;cursor:pointer;outline:none;">'+
+          '<option value="nouveau"'+(o.statut==='nouveau'?' selected':'')+'>🆕 Nouveau</option>'+
+          '<option value="en_cours"'+(o.statut==='en_cours'?' selected':'')+'>🚚 En cours</option>'+
+          '<option value="livre"'+(o.statut==='livre'?' selected':'')+'>✅ Livré</option>'+
+          '<option value="annule"'+(o.statut==='annule'?' selected':'')+'>❌ Annulé</option>'+
+        '</select>'+
+        '<a href="https://wa.me/'+(c.tel||'').replace(/[^0-9]/g,'')+'" target="_blank" style="display:inline-flex;align-items:center;gap:5px;background:rgba(37,211,102,.12);border:1px solid rgba(37,211,102,.25);color:#25d366;padding:6px 12px;border-radius:8px;font-family:Outfit,sans-serif;font-weight:700;font-size:.78rem;text-decoration:none;">💬 WhatsApp</a>'+
+        '<button onclick="deleteOrder(\''+o._key+'\')" style="background:none;border:1px solid var(--border);color:var(--muted);padding:6px 12px;border-radius:8px;font-family:Outfit,sans-serif;font-weight:700;font-size:.78rem;cursor:pointer;">🗑️</button>'+
+      '</div>'+
+    '</div>';
+  }).join('');
 }
-function clearOrders(){
-  if(!confirm("Effacer toutes les commandes ?")) return;
-  localStorage.removeItem("embf_pending_orders");
-  renderOrders(); showToast("Historique effacé");
+
+function filterOrders(f){
+  ordersFilter=f;
+  document.querySelectorAll('.order-filter-btn').forEach(function(b){b.style.background='none';b.style.color='var(--muted)';b.style.border='1px solid var(--border)';});
+  var active=document.querySelector('[data-filter="'+f+'"]');
+  if(active){active.style.background='var(--a1)';active.style.color='#000';active.style.border='none';}
+  renderOrdersList();
 }
+
+async function setOrderStatut(key,statut){
+  try{
+    await fetch(FB_DB+"/orders/"+key+".json?auth="+FB_KEY,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({statut:statut})});
+    var o=allOrders.find(function(o){return o._key===key;});
+    if(o)o.statut=statut;
+    renderOrdersList();
+    showToast('✅ Statut mis à jour');
+  }catch(e){showToast('❌ Erreur',false);}
+}
+
+async function deleteOrder(key){
+  if(!confirm('Supprimer cette commande ?'))return;
+  try{
+    await fetch(FB_DB+"/orders/"+key+".json?auth="+FB_KEY,{method:'DELETE'});
+    allOrders=allOrders.filter(function(o){return o._key!==key;});
+    renderOrdersList();
+    showToast('✅ Commande supprimée');
+  }catch(e){showToast('❌ Erreur',false);}
+}
+
+function markDone(id){}
+function clearOrders(){}
+
 
 // STATS
 function updateStats(){

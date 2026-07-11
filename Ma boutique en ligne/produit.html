@@ -492,7 +492,7 @@ footer{background:var(--s1);border-top:1px solid var(--border);padding:24px 16px
       <span class="ppill" onclick="selPay(this)">💵 Espèces</span>
       <span class="ppill" onclick="selPay(this)">🏦 Virement</span>
     </div>
-    <button class="btn-send" onclick="sendWa()">💬 Envoyer la commande</button>
+    <button class="btn-send" onclick="sendWa()">📦 Confirmer la commande</button>
     <button class="btn-cancel" onclick="closeWa()">Annuler</button>
   </div>
 </div>
@@ -966,36 +966,66 @@ function sendWa(){
   if(!ville){document.getElementById("waVille").style.borderColor="var(--a3)";document.getElementById("waVille").focus();showToast("Entrez votre ville",false);return;}
   var qty=document.getElementById("waQty").value||1;
   var msg=document.getElementById("waMsg").value.trim();
+  var quart=document.getElementById("waQuart").value.trim();
   var p=cur;
-  var refTxt=AFFREF?"\n🔗 *Affilié :* "+AFFREF:"";
-  var text="Bonjour EMBF Boutique ! 👋\n\n🛍️ *NOUVELLE COMMANDE*\n━━━━━━━━━━━━━━\n📦 *Produit :* "+p.name+"\n💰 *Prix :* "+fmt(p.price)+"\n🛒 *Quantité :* "+qty+"\n\n👤 *CLIENT*\n━━━━━━━━━━━━━━\n• Nom : *"+name+"*\n• Tél : *"+phone+"*\n• Type : *"+(selCTval==="comm"?"Commerçant":"Particulier")+"*\n• Pays : *"+pays+"*\n• Ville : *"+ville+"*"+(document.getElementById("waQuart").value?"\n• Quartier : *"+document.getElementById("waQuart").value+"*":"")+(selPayVal?"\n\n💳 *Paiement :* "+selPayVal:"")+(msg?"\n\n📝 *Message :* "+msg:"")+refTxt+"\n\nMerci !";
-  // Save order to Firebase with affiliate ref
-  var orderData={produit:p.name,produitId:p._key||"",prix:p.price,quantite:qty,client:{nom:name,tel:phone,pays:pays,ville:ville},paiement:selPayVal||"",ref:AFFREF||null,statut:"nouveau",ts:Date.now()};
-  fetch("https://boutique-embf-default-rtdb.europe-west1.firebasedatabase.app/orders.json",{
+  var btn=document.querySelector(".btn-send");
+  if(btn){btn.disabled=true;btn.textContent="⏳ Envoi...";}
+
+  var orderData={
+    produit:p.name,produitId:p._key||"",
+    prix:p.price,quantite:qty,
+    client:{nom:name,tel:phone,pays:pays,ville:ville,quartier:quart||"",type:selCTval==="comm"?"Commerçant":"Particulier"},
+    paiement:selPayVal||"",message:msg||"",
+    ref:AFFREF||null,statut:"nouveau",ts:Date.now()
+  };
+
+  fetch(FB_DB+"/orders.json",{
     method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(orderData)
   }).then(function(r){return r.json();}).then(function(res){
-    // If affiliated, record sale for affiliate
-    if(AFFREF && res && res.name){
-      fetch("https://boutique-embf-default-rtdb.europe-west1.firebasedatabase.app/affilies.json?orderBy=%22code%22&equalTo=%22"+AFFREF+"%22")
+    // Affiliate tracking
+    if(AFFREF&&res&&res.name){
+      fetch(FB_DB+"/affilies.json?orderBy=%22code%22&equalTo=%22"+AFFREF+"%22")
       .then(function(r2){return r2.json();}).then(function(affData){
         if(!affData)return;
         var affKey=Object.keys(affData)[0];
         var aff=affData[affKey];
         var commission=p.commission||5;
         var gain=Math.round((p.price*commission)/100);
-        var newVentes=(aff.ventes||0)+1;
-        var newGains=(aff.gains||0)+gain;
-        fetch("https://boutique-embf-default-rtdb.europe-west1.firebasedatabase.app/affilies/"+affKey+".json?auth=AIzaSyA0UGFKeoatnMaCMAlaF3B3li9gFY4Dt0g",{
+        fetch(FB_DB+"/affilies/"+affKey+".json?auth="+FB_KEY,{
           method:"PATCH",headers:{"Content-Type":"application/json"},
-          body:JSON.stringify({ventes:newVentes,gains:newGains})
+          body:JSON.stringify({ventes:(aff.ventes||0)+1,gains:(aff.gains||0)+gain})
         }).catch(function(){});
       }).catch(function(){});
     }
-  }).catch(function(){});
-  var url="https://wa.me/22655300868?text="+encodeURIComponent(text);
-  if(/Mobi|Android/i.test(navigator.userAgent))window.location.href=url;else window.open(url,"_blank");
-  closeWa();showToast("✅ Commande envoyée !");
+    // Show success screen
+    closeWa();
+    showOrderSuccess(name,phone,p.name,p.price,qty);
+  }).catch(function(e){
+    showToast("❌ Erreur envoi commande",false);
+    if(btn){btn.disabled=false;btn.textContent="📦 Confirmer la commande";}
+  });
 }
+
+function showOrderSuccess(name,phone,prodName,prix,qty){
+  // Create success overlay
+  var ov=document.createElement("div");
+  ov.style.cssText="position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px;";
+  ov.innerHTML='<div style="background:#0c0c1d;border:1px solid rgba(34,197,94,.3);border-radius:20px;padding:28px 24px;max-width:400px;width:100%;text-align:center;">'+
+    '<div style="font-size:3rem;margin-bottom:12px;">✅</div>'+
+    '<div style="font-family:Bebas\ Neue,sans-serif;font-size:1.8rem;letter-spacing:.04em;color:#22c55e;margin-bottom:8px;">COMMANDE REÇUE !</div>'+
+    '<p style="color:#8888aa;font-size:.88rem;line-height:1.7;margin-bottom:16px;">Merci <strong style="color:#f1f1ff;">'+name+'</strong> ! Votre commande pour <strong style="color:#f1f1ff;">'+prodName+'</strong> a bien été enregistrée.</p>'+
+    '<div style="background:#13132a;border:1px solid rgba(0,229,255,.1);border-radius:12px;padding:14px;margin-bottom:16px;font-size:.84rem;color:#8888aa;text-align:left;">'+
+      '<div>📦 <strong style="color:#f1f1ff;">'+prodName+'</strong></div>'+
+      '<div>💰 <strong style="color:#fbbf24;">'+Number(prix).toLocaleString("fr-FR")+' FCFA</strong> × '+qty+'</div>'+
+      '<div style="margin-top:6px;">📞 Nous vous contactons sur <strong style="color:#f1f1ff;">'+phone+'</strong> pour confirmer la livraison.</div>'+
+    '</div>'+
+    '<p style="color:#8888aa;font-size:.82rem;margin-bottom:16px;">⏱️ Réponse sous <strong style="color:#f1f1ff;">30 minutes</strong> en heures ouvrables.</p>'+
+    '<a href="https://wa.me/22655300868?text='+encodeURIComponent("Bonjour ! J'ai passé une commande pour "+prodName+" - "+name)+'" target="_blank" style="display:flex;align-items:center;justify-content:center;gap:8px;background:#25d366;color:#fff;padding:12px;border-radius:12px;font-weight:800;font-size:.9rem;text-decoration:none;margin-bottom:8px;">💬 Suivre sur WhatsApp</a>'+
+    '<button onclick="this.parentElement.parentElement.remove()" style="background:none;border:1px solid rgba(136,136,170,.3);color:#8888aa;padding:10px;border-radius:12px;width:100%;font-family:Outfit,sans-serif;font-weight:600;font-size:.85rem;cursor:pointer;">Continuer les achats</button>'+
+  '</div>';
+  document.body.appendChild(ov);
+}
+
 
 // PAY NOW
 function openPayNow(){
@@ -1122,6 +1152,6 @@ function submitRev(){
 document.querySelectorAll(".mmenu a").forEach(function(a){a.addEventListener("click",function(){document.getElementById("mmenu").classList.remove("open");document.getElementById("burgerBtn").textContent="☰";});});
 updateCartUI();
 </script>
-<script src="https://id-preview--f60803aa-0907-499a-a977-9992f2538ef8.lovable.app/widget/rachida.js" data-shop="shop-wpdhfq"></script>
+<script>(function(){try{var s=document.createElement('script');s.src='https://f60803aa-0907-499a-a977-9992f2538ef8.lovableproject.com/widget/rachida.js';s.async=true;s.defer=true;s.setAttribute('data-shop','shop-os79u9');s.onerror=function(){console.warn('Rachida widget indisponible')};document.body.appendChild(s)}catch(e){console.warn('Rachida non chargée',e)}})();</script>
 </body>
 </html>
