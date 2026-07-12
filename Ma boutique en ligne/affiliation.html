@@ -14,7 +14,7 @@
 html{scroll-behavior:smooth;}
 body{background:var(--bg);color:var(--txt);font-family:Outfit,sans-serif;overflow-x:hidden;}
 .nav{position:sticky;top:0;z-index:999;height:var(--nh);background:rgba(3,3,10,.96);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 16px;justify-content:space-between;gap:8px;}
-.nav-logo{text-decoration:none;} 
+.nav-logo{text-decoration:none;}
 .nav-logo span{font-family:Bebas\ Neue,sans-serif;font-size:1.3rem;letter-spacing:.08em;background:linear-gradient(90deg,var(--a1),var(--a2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
 .nav-desktop{display:none;align-items:center;gap:4px;}
 .ndl{color:var(--muted);font-size:.82rem;font-weight:600;text-decoration:none;padding:7px 11px;border-radius:8px;}
@@ -27,62 +27,94 @@ body{background:var(--bg);color:var(--txt);font-family:Outfit,sans-serif;overflo
 .mmenu a:hover{color:var(--txt);background:rgba(255,255,255,.05);border-color:var(--border);}
 .mmenu .mwa{background:rgba(37,211,102,.1);border-color:rgba(37,211,102,.25);color:#25d366;}
 .mmenu .mcta{background:linear-gradient(135deg,var(--a1),var(--a2));color:#000;font-weight:800;justify-content:center;}
-.hero{padding:56px 16px 44px;background:linear-gradient(180deg,rgba(251,191,36,.06),transparent);border-bottom:1px solid var(--border);text-align:center;}
-.hero-badge{display:inline-block;background:linear-gradient(135deg,var(--gold),#f97316);color:#000;font-size:.75rem;font-weight:800;padding:5px 14px;border-radius:50px;letter-spacing:.06em;margin-bottom:16px;}
+
+/* ALREADY MEMBER BANNER */
+.member-banner{background:linear-gradient(135deg,rgba(34,197,94,.1),rgba(0,229,255,.06));border:1px solid rgba(34,197,94,.25);border-radius:16px;padding:16px 18px;margin:16px;display:none;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+.member-banner.show{display:flex;}
+.member-banner-left{display:flex;align-items:center;gap:10px;}
+.member-code{font-family:monospace;font-size:1rem;font-weight:800;color:var(--gold);background:var(--s2);padding:4px 12px;border-radius:8px;letter-spacing:.08em;}
+.btn-dashboard{background:linear-gradient(135deg,var(--green),#16a34a);color:#fff;border:none;padding:10px 20px;border-radius:10px;font-family:Outfit,sans-serif;font-weight:800;font-size:.88rem;cursor:pointer;text-decoration:none;display:inline-block;white-space:nowrap;}
+
+/* HERO */
+.hero{padding:48px 16px 36px;background:linear-gradient(180deg,rgba(251,191,36,.06),transparent);border-bottom:1px solid var(--border);text-align:center;}
+.hero-badge{display:inline-block;background:linear-gradient(135deg,var(--gold),#f97316);color:#000;font-size:.75rem;font-weight:800;padding:5px 16px;border-radius:50px;letter-spacing:.06em;margin-bottom:16px;animation:pulse 2s ease infinite;}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(251,191,36,.4);}50%{box-shadow:0 0 0 10px rgba(251,191,36,0);}}
 .hero h1{font-family:Bebas\ Neue,sans-serif;font-size:clamp(2.4rem,10vw,5rem);letter-spacing:.03em;line-height:1;margin-bottom:12px;}
 .hero h1 span{background:linear-gradient(90deg,var(--gold),var(--a1));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.hero-sub{color:var(--muted);font-size:.95rem;line-height:1.7;max-width:520px;margin:0 auto 28px;}
+.hero-sub{color:var(--muted);font-size:.95rem;line-height:1.7;max-width:520px;margin:0 auto 24px;}
 .hero-sub strong{color:var(--txt);}
-.how-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;max-width:680px;margin:0 auto 32px;}
-.how-card{background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:16px 12px;text-align:center;}
+.how-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:620px;margin:0 auto;}
+.how-card{background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:14px 10px;text-align:center;}
 .how-icon{font-size:1.8rem;margin-bottom:6px;}
-.how-n{font-family:Bebas\ Neue,sans-serif;font-size:1rem;color:var(--a1);margin-bottom:4px;}
-.how-desc{color:var(--muted);font-size:.78rem;line-height:1.5;}
-.body{max-width:860px;margin:0 auto;padding:36px 16px 80px;}
-.section-title{font-family:Bebas\ Neue,sans-serif;font-size:1.6rem;letter-spacing:.04em;margin-bottom:18px;color:var(--a1);}
-.avantages{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:36px;}
-.av-card{background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:16px;}
-.av-icon{font-size:1.4rem;margin-bottom:8px;}
-.av-title{font-weight:800;font-size:.9rem;margin-bottom:4px;}
-.av-desc{color:var(--muted);font-size:.82rem;line-height:1.6;}
-.form-card{background:var(--s1);border:1px solid var(--border);border-radius:20px;padding:28px 20px;margin-bottom:24px;}
-.form-card h2{font-family:Bebas\ Neue,sans-serif;font-size:1.5rem;letter-spacing:.04em;margin-bottom:6px;color:var(--gold);}
-.form-card p{color:var(--muted);font-size:.85rem;margin-bottom:20px;}
-.frow{display:grid;gap:14px;margin-bottom:14px;}
+.how-n{font-family:Bebas\ Neue,sans-serif;font-size:.95rem;color:var(--a1);margin-bottom:4px;}
+.how-desc{color:var(--muted);font-size:.76rem;line-height:1.5;}
+
+/* TABS */
+.tab-switcher{display:flex;gap:0;max-width:500px;margin:32px auto 0;background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:4px;}
+.tab-btn{flex:1;padding:12px;border:none;border-radius:10px;font-family:Outfit,sans-serif;font-weight:700;font-size:.9rem;cursor:pointer;transition:all .2s;background:none;color:var(--muted);}
+.tab-btn.act{background:linear-gradient(135deg,var(--gold),#f97316);color:#000;}
+
+.body{max-width:860px;margin:0 auto;padding:28px 16px 80px;}
+
+/* AVANTAGES */
+.avantages{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:28px;}
+.av-card{background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:14px;}
+.av-icon{font-size:1.3rem;margin-bottom:6px;}
+.av-title{font-weight:800;font-size:.88rem;margin-bottom:3px;}
+.av-desc{color:var(--muted);font-size:.8rem;line-height:1.6;}
+
+/* FORM */
+.form-card{background:var(--s1);border:1px solid rgba(251,191,36,.2);border-radius:20px;padding:24px 18px;margin-bottom:20px;}
+.form-card h2{font-family:Bebas\ Neue,sans-serif;font-size:1.4rem;letter-spacing:.04em;margin-bottom:4px;color:var(--gold);}
+.form-card p{color:var(--muted);font-size:.84rem;margin-bottom:18px;}
+.frow{display:grid;gap:12px;margin-bottom:12px;}
 .finput{width:100%;background:var(--s2);border:1.5px solid var(--border);color:var(--txt);padding:12px 14px;border-radius:12px;font-family:Outfit,sans-serif;font-size:.9rem;outline:none;transition:border-color .2s;}
-.finput:focus{border-color:var(--a1);}
+.finput:focus{border-color:var(--gold);}
 .finput::placeholder{color:var(--muted);}
 .fselect{width:100%;background:var(--s2);border:1.5px solid var(--border);color:var(--txt);padding:12px 14px;border-radius:12px;font-family:Outfit,sans-serif;font-size:.9rem;outline:none;appearance:none;}
-.fselect:focus{border-color:var(--a1);}
-.btn-submit{width:100%;background:linear-gradient(135deg,var(--gold),#f97316);color:#000;border:none;padding:15px;border-radius:14px;font-family:Outfit,sans-serif;font-weight:800;font-size:1rem;cursor:pointer;transition:opacity .2s;}
+.fselect:focus{border-color:var(--gold);}
+.btn-submit{width:100%;background:linear-gradient(135deg,var(--gold),#f97316);color:#000;border:none;padding:14px;border-radius:14px;font-family:Outfit,sans-serif;font-weight:800;font-size:.95rem;cursor:pointer;transition:opacity .2s;margin-bottom:10px;}
 .btn-submit:disabled{opacity:.5;cursor:not-allowed;}
-.btn-wa{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;background:rgba(37,211,102,.12);border:1px solid rgba(37,211,102,.25);color:#25d366;padding:13px;border-radius:14px;font-family:Outfit,sans-serif;font-weight:700;font-size:.9rem;text-decoration:none;margin-top:10px;}
-.or-sep{text-align:center;color:var(--muted);font-size:.8rem;margin:12px 0;position:relative;}
+.or-sep{text-align:center;color:var(--muted);font-size:.8rem;margin:10px 0;position:relative;}
 .or-sep::before,.or-sep::after{content:'';position:absolute;top:50%;width:42%;height:1px;background:var(--border);}
-.or-sep::before{left:0;} .or-sep::after{right:0;}
+.or-sep::before{left:0;}.or-sep::after{right:0;}
+.btn-wa{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;background:rgba(37,211,102,.12);border:1px solid rgba(37,211,102,.25);color:#25d366;padding:13px;border-radius:14px;font-family:Outfit,sans-serif;font-weight:700;font-size:.9rem;text-decoration:none;}
+
+/* LOGIN SECTION */
+.login-card{background:var(--s1);border:1px solid var(--border);border-radius:20px;padding:24px 18px;margin-bottom:20px;text-align:center;}
+.login-card h2{font-family:Bebas\ Neue,sans-serif;font-size:1.4rem;letter-spacing:.04em;margin-bottom:4px;color:var(--a1);}
+.login-card p{color:var(--muted);font-size:.84rem;margin-bottom:18px;line-height:1.6;}
+.btn-login{width:100%;background:linear-gradient(135deg,var(--a1),var(--a2));color:#000;border:none;padding:14px;border-radius:14px;font-family:Outfit,sans-serif;font-weight:800;font-size:.95rem;cursor:pointer;}
+.btn-login:disabled{opacity:.5;cursor:not-allowed;}
+
+/* SUCCESS */
 .success-box{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.25);border-radius:16px;padding:24px;text-align:center;display:none;}
 .success-box h3{font-family:Bebas\ Neue,sans-serif;font-size:1.5rem;color:var(--green);margin-bottom:8px;}
 .success-box p{color:var(--muted);font-size:.88rem;line-height:1.7;}
-.code-display{background:var(--s2);border:1px solid var(--gold);border-radius:12px;padding:12px 16px;font-family:monospace;font-size:1.2rem;font-weight:800;color:var(--gold);letter-spacing:.1em;margin:12px 0;text-align:center;}
+.code-display{background:var(--s2);border:2px solid var(--gold);border-radius:12px;padding:12px 16px;font-family:monospace;font-size:1.4rem;font-weight:800;color:var(--gold);letter-spacing:.12em;margin:12px 0;text-align:center;}
+
+/* FAQ */
+.faq-item{background:var(--s1);border:1px solid var(--border);border-radius:14px;margin-bottom:8px;overflow:hidden;}
+.faq-q{padding:14px 18px;font-weight:700;font-size:.88rem;cursor:pointer;display:flex;justify-content:space-between;align-items:center;}
+.faq-q:hover{color:var(--a1);}
+.faq-a{padding:0 18px 14px;color:var(--muted);font-size:.84rem;line-height:1.7;display:none;}
+.faq-item.open .faq-a{display:block;}
+.faq-arrow{transition:transform .2s;font-size:.7rem;}
+.faq-item.open .faq-arrow{transform:rotate(180deg);}
+
+/* MISC */
+.section-title{font-family:Bebas\ Neue,sans-serif;font-size:1.5rem;letter-spacing:.04em;margin-bottom:16px;color:var(--a1);}
 .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(40px);padding:10px 22px;border-radius:50px;font-weight:700;font-size:.84rem;z-index:2000;transition:all .3s;opacity:0;white-space:nowrap;}
 .toast.show{transform:translateX(-50%) translateY(0);opacity:1;}
 .toast.ok{background:var(--green);color:#fff;}
 .toast.err{background:var(--a3);color:#fff;}
-.faq{margin-bottom:36px;}
-.faq-item{background:var(--s1);border:1px solid var(--border);border-radius:14px;margin-bottom:8px;overflow:hidden;}
-.faq-q{padding:14px 18px;font-weight:700;font-size:.9rem;cursor:pointer;display:flex;justify-content:space-between;align-items:center;}
-.faq-q:hover{color:var(--a1);}
-.faq-a{padding:0 18px 14px;color:var(--muted);font-size:.85rem;line-height:1.7;display:none;}
-.faq-item.open .faq-a{display:block;}
-.faq-item.open .faq-arrow{transform:rotate(180deg);}
-.faq-arrow{transition:transform .2s;}
+.waf{position:fixed;bottom:18px;left:14px;z-index:800;width:54px;height:54px;border-radius:50%;background:#25d366;color:white;display:flex;align-items:center;justify-content:center;font-size:1.55rem;text-decoration:none;box-shadow:0 4px 20px rgba(37,211,102,.5);}
 footer{background:var(--s1);border-top:1px solid var(--border);padding:28px 16px 60px;}
 .flinks{display:flex;gap:12px;flex-wrap:wrap;margin:10px 0 14px;}
 .flinks a{color:var(--muted);text-decoration:none;font-size:.8rem;}
 .flinks a:hover{color:var(--a1);}
 .fcopy{border-top:1px solid var(--border);padding-top:14px;color:var(--muted);font-size:.73rem;}
-.waf{position:fixed;bottom:18px;left:14px;z-index:800;width:54px;height:54px;border-radius:50%;background:#25d366;color:white;display:flex;align-items:center;justify-content:center;font-size:1.55rem;text-decoration:none;box-shadow:0 4px 20px rgba(37,211,102,.5);}
-@media(min-width:900px){
+@media(min-width:700px){
   :root{--nh:68px;}
   .nav{padding:0 40px;}
   .nav-desktop{display:flex;}
@@ -116,84 +148,114 @@ footer{background:var(--s1);border-top:1px solid var(--border);padding:28px 16px
   <a href="produits.html" class="mcta">Voir les produits</a>
 </div>
 
+<!-- MEMBER BANNER (shown if already registered) -->
+<div class="member-banner" id="memberBanner">
+  <div class="member-banner-left">
+    <div>
+      <div style="font-weight:800;font-size:.9rem;margin-bottom:3px;">👋 Déjà affilié !</div>
+      <div style="color:var(--muted);font-size:.8rem;">Votre code : <span class="member-code" id="memberCode">---</span></div>
+    </div>
+  </div>
+  <a href="espace-affilie.html" class="btn-dashboard">📊 Mon tableau de bord →</a>
+</div>
+
 <div class="hero">
   <div class="hero-badge">💰 Programme Affilié</div>
-  <h1>GAGNEZ DE L'ARGENT<br><span>EN VENDANT POUR NOUS</span></h1>
-  <p class="hero-sub">Partagez nos produits tech et gagnez une <strong>commission sur chaque vente</strong>. 100% gratuit, sans stock, sans risque.</p>
+  <h1>GAGNEZ EN<br><span>PARTAGEANT</span></h1>
+  <p class="hero-sub">Partagez nos produits tech et gagnez une <strong>commission sur chaque vente</strong>. Gratuit, sans stock, sans risque.</p>
   <div class="how-grid">
-    <div class="how-card"><div class="how-icon">📝</div><div class="how-n">1. Inscrivez-vous</div><div class="how-desc">Remplissez le formulaire gratuitement</div></div>
-    <div class="how-card"><div class="how-icon">🔗</div><div class="how-n">2. Partagez</div><div class="how-desc">Utilisez vos liens affiliés personnels</div></div>
-    <div class="how-card"><div class="how-icon">💸</div><div class="how-n">3. Gagnez</div><div class="how-desc">Commission sur chaque vente réalisée</div></div>
+    <div class="how-card"><div class="how-icon">📝</div><div class="how-n">1. Inscrivez-vous</div><div class="how-desc">Formulaire gratuit, code immédiat</div></div>
+    <div class="how-card"><div class="how-icon">🔗</div><div class="how-n">2. Partagez</div><div class="how-desc">Vos liens affiliés personnels</div></div>
+    <div class="how-card"><div class="how-icon">💸</div><div class="how-n">3. Gagnez</div><div class="how-desc">Commission sur chaque vente</div></div>
+  </div>
+
+  <!-- TAB SWITCHER -->
+  <div class="tab-switcher">
+    <button class="tab-btn act" id="tabInscription" onclick="switchTab('inscription')">📝 Je m'inscris</button>
+    <button class="tab-btn" id="tabConnexion" onclick="switchTab('connexion')">🔓 J'ai un compte</button>
   </div>
 </div>
 
 <div class="body">
-  <div class="section-title">Pourquoi nous rejoindre ?</div>
-  <div class="avantages">
-    <div class="av-card"><div class="av-icon">💰</div><div class="av-title">Commissions attractives</div><div class="av-desc">Jusqu'à 10% de commission selon les produits.</div></div>
-    <div class="av-card"><div class="av-icon">📱</div><div class="av-title">Produits populaires</div><div class="av-desc">Smartphones, laptops, gadgets — faciles à vendre.</div></div>
-    <div class="av-card"><div class="av-icon">📊</div><div class="av-title">Suivi en temps réel</div><div class="av-desc">Votre espace personnel avec vos stats et gains.</div></div>
-    <div class="av-card"><div class="av-icon">⚡</div><div class="av-title">Paiement rapide</div><div class="av-desc">Paiement via Orange Money, Wave ou Moov.</div></div>
+
+  <!-- TAB INSCRIPTION -->
+  <div id="sectionInscription">
+    <div class="section-title">Pourquoi nous rejoindre ?</div>
+    <div class="avantages">
+      <div class="av-card"><div class="av-icon">💰</div><div class="av-title">Commissions attractives</div><div class="av-desc">Jusqu'à 10% par produit vendu.</div></div>
+      <div class="av-card"><div class="av-icon">📊</div><div class="av-title">Tableau de bord</div><div class="av-desc">Clics, ventes, gains en temps réel.</div></div>
+      <div class="av-card"><div class="av-icon">💸</div><div class="av-title">Retrait facile</div><div class="av-desc">Orange Money, Wave ou Moov.</div></div>
+      <div class="av-card"><div class="av-icon">⚡</div><div class="av-title">Produits populaires</div><div class="av-desc">Smartphones, laptops, gadgets.</div></div>
+    </div>
+
+    <div class="form-card" id="formSection">
+      <h2>📝 Rejoindre le programme</h2>
+      <p>Inscription gratuite — recevez votre code affilié immédiatement.</p>
+      <div class="frow">
+        <input class="finput" id="affNom" type="text" placeholder="Nom complet *">
+        <input class="finput" id="affTel" type="tel" placeholder="Téléphone / WhatsApp *">
+      </div>
+      <div class="frow">
+        <input class="finput" id="affEmail" type="email" placeholder="Email (optionnel)">
+        <select class="fselect" id="affVille">
+          <option value="">Votre ville</option>
+          <option>Bobo-Dioulasso</option><option>Ouagadougou</option><option>Banfora</option>
+          <option>Koudougou</option><option>Abidjan</option><option>Dakar</option>
+          <option>Bamako</option><option>Autre</option>
+        </select>
+      </div>
+      <input class="finput" id="affReseaux" type="text" placeholder="Réseaux sociaux (Facebook, TikTok, Instagram...)" style="margin-bottom:14px;">
+      <button class="btn-submit" id="btnSubmit" onclick="submitAffiliation()">🚀 Je rejoins le programme</button>
+      <div class="or-sep">ou</div>
+      <a class="btn-wa" href="https://wa.me/22655300868?text=Bonjour ! Je veux rejoindre le programme d'affiliation EMBF Boutique." target="_blank">💬 S'inscrire via WhatsApp</a>
+    </div>
+
+    <div class="success-box" id="successBox">
+      <div style="font-size:2.5rem;margin-bottom:8px;">🎉</div>
+      <h3>BIENVENUE !</h3>
+      <p>Votre demande est enregistrée. Votre code affilié :</p>
+      <div class="code-display" id="codeDisplay">---</div>
+      <p style="margin-bottom:14px;">Vous serez contacté sur WhatsApp pour validation sous 24h.</p>
+      <a href="espace-affilie.html" class="btn-dashboard" style="display:inline-block;">📊 Accéder à mon tableau de bord →</a>
+    </div>
+
+    <div class="section-title" style="margin-top:28px;">Questions fréquentes</div>
+    <div id="faqSection">
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Comment sont calculées les commissions ? <span class="faq-arrow">▼</span></div>
+        <div class="faq-a">Chaque produit a un taux défini (entre 2% et 10%). Vous voyez le montant exact dans votre tableau de bord.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Comment je reçois mon argent ? <span class="faq-arrow">▼</span></div>
+        <div class="faq-a">Par Orange Money, Wave ou Moov Money. Minimum 5 000 FCFA pour demander un retrait. Paiement après confirmation de livraison.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Comment savoir qu'une vente vient de moi ? <span class="faq-arrow">▼</span></div>
+        <div class="faq-a">Chaque lien contient votre code affilié. Quand un client commande via votre lien, la vente vous est automatiquement attribuée et vos gains mis à jour.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">C'est gratuit ? <span class="faq-arrow">▼</span></div>
+        <div class="faq-a">100% gratuit. Aucun frais, aucun stock. Vous partagez, vous gagnez.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Combien puis-je gagner ? <span class="faq-arrow">▼</span></div>
+        <div class="faq-a">Exemple : un laptop à 150 000 FCFA avec 5% = 7 500 FCFA par vente. Plus vous partagez, plus vous gagnez — sans limite !</div>
+      </div>
+    </div>
   </div>
 
-  <div class="form-card" id="formSection">
-    <h2>📝 Rejoindre le programme</h2>
-    <p>Inscription gratuite — recevez votre code affilié immédiatement.</p>
-    <div class="frow">
-      <input class="finput" id="affNom" type="text" placeholder="Nom complet *" required>
-      <input class="finput" id="affTel" type="tel" placeholder="Téléphone / WhatsApp *" required>
+  <!-- TAB CONNEXION -->
+  <div id="sectionConnexion" style="display:none;">
+    <div class="login-card">
+      <div style="font-size:2rem;margin-bottom:8px;">🔓</div>
+      <h2>ACCÉDER À MON ESPACE</h2>
+      <p>Entrez votre code affilié pour accéder à votre tableau de bord, vos liens et vos gains.</p>
+      <input class="finput" id="loginCode" type="text" placeholder="Votre code (ex: AMI123)" maxlength="10" style="text-align:center;font-family:monospace;font-size:1.1rem;letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px;">
+      <button class="btn-login" id="btnLogin" onclick="goToDashboard()">📊 Accéder à mon tableau de bord</button>
+      <div style="margin-top:12px;font-size:.8rem;color:var(--muted);">Pas encore affilié ? <span onclick="switchTab('inscription')" style="color:var(--a1);cursor:pointer;font-weight:700;">S'inscrire gratuitement →</span></div>
     </div>
-    <div class="frow">
-      <input class="finput" id="affEmail" type="email" placeholder="Email (optionnel)">
-      <select class="fselect" id="affVille">
-        <option value="">Votre ville</option>
-        <option>Bobo-Dioulasso</option>
-        <option>Ouagadougou</option>
-        <option>Banfora</option>
-        <option>Koudougou</option>
-        <option>Abidjan</option>
-        <option>Dakar</option>
-        <option>Bamako</option>
-        <option>Autre</option>
-      </select>
-    </div>
-    <input class="finput" id="affReseaux" type="text" placeholder="Vos réseaux sociaux (Facebook, TikTok, Instagram...)" style="margin-bottom:14px;">
-    <button class="btn-submit" id="btnSubmit" onclick="submitAffiliation()">🚀 Je rejoins le programme</button>
-    <div class="or-sep">ou</div>
-    <a class="btn-wa" href="https://wa.me/22655300868?text=Bonjour ! Je veux rejoindre le programme d'affiliation EMBF Boutique." target="_blank">💬 S'inscrire via WhatsApp</a>
   </div>
 
-  <div class="success-box" id="successBox">
-    <div style="font-size:2.5rem;margin-bottom:8px;">🎉</div>
-    <h3>BIENVENUE DANS L'ÉQUIPE !</h3>
-    <p>Votre demande a été enregistrée. Voici votre code affilié :</p>
-    <div class="code-display" id="codeDisplay">---</div>
-    <p>Vous allez recevoir une confirmation sur WhatsApp dans les prochaines heures.<br>En attendant, <a href="espace-affilie.html" style="color:var(--a1);">accédez à votre espace affilié</a> pour voir vos liens et commissions.</p>
-  </div>
-
-  <div class="section-title" style="margin-top:36px;">Questions fréquentes</div>
-  <div class="faq">
-    <div class="faq-item">
-      <div class="faq-q" onclick="toggleFaq(this)">Comment sont calculées les commissions ? <span class="faq-arrow">▼</span></div>
-      <div class="faq-a">Chaque produit a un taux de commission défini par EMBF Boutique (entre 2% et 10%). Vous voyez le montant exact que vous gagnez par produit dans votre espace affilié.</div>
-    </div>
-    <div class="faq-item">
-      <div class="faq-q" onclick="toggleFaq(this)">Comment je reçois mon argent ? <span class="faq-arrow">▼</span></div>
-      <div class="faq-a">Paiement par Orange Money, Wave ou Moov Money. Le paiement est effectué après confirmation de la livraison de la commande.</div>
-    </div>
-    <div class="faq-item">
-      <div class="faq-q" onclick="toggleFaq(this)">Comment savoir qu'une vente vient de moi ? <span class="faq-arrow">▼</span></div>
-      <div class="faq-a">Chaque lien que vous partagez contient votre code affilié unique. Quand un client commande via votre lien, la vente vous est automatiquement attribuée.</div>
-    </div>
-    <div class="faq-item">
-      <div class="faq-q" onclick="toggleFaq(this)">C'est gratuit de s'inscrire ? <span class="faq-arrow">▼</span></div>
-      <div class="faq-a">Oui, 100% gratuit. Aucun frais, aucun stock à acheter. Vous partagez, vous gagnez.</div>
-    </div>
-    <div class="faq-item">
-      <div class="faq-q" onclick="toggleFaq(this)">Combien puis-je gagner ? <span class="faq-arrow">▼</span></div>
-      <div class="faq-a">Cela dépend du nombre de ventes. Par exemple, si vous vendez un laptop à 150 000 FCFA avec 5% de commission, vous gagnez 7 500 FCFA. Plus vous vendez, plus vous gagnez — sans limite.</div>
-    </div>
-  </div>
 </div>
 
 <footer>
@@ -201,17 +263,20 @@ footer{background:var(--s1);border-top:1px solid var(--border);padding:28px 16px
     <div style="font-family:Bebas\ Neue,sans-serif;font-size:1.3rem;letter-spacing:.08em;background:linear-gradient(90deg,var(--a1),var(--a2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px;">EMBF BOUTIQUE</div>
     <p style="color:var(--muted);font-size:.82rem;max-width:400px;line-height:1.6;margin-bottom:14px;">Votre boutique tech de confiance en Afrique.</p>
     <div class="flinks">
-      <a href="index.html">Accueil</a><a href="produits.html">Produits</a><a href="affiliation.html">Affiliation</a>
-      <a href="cgv.html">CGV</a><a href="confidentialite.html">Confidentialité</a><a href="mentions-legales.html">Mentions légales</a>
+      <a href="index.html">Accueil</a><a href="produits.html">Produits</a>
+      <a href="affiliation.html" style="color:var(--gold);font-weight:700;">💰 Affiliation</a>
+      <a href="cgv.html">CGV</a><a href="confidentialite.html">Confidentialité</a>
+      <a href="mentions-legales.html">Mentions légales</a><a href="livraison.html">Livraison</a>
     </div>
     <div class="fcopy">© 2025 EMBF Boutique — aminepare931@gmail.com</div>
   </div>
 </footer>
+
 <a class="waf" href="https://wa.me/22655300868" target="_blank">💬</a>
 <div class="toast" id="toast"></div>
 
 <script>
-var FB_DB = "https://boutique-embf-default-rtdb.europe-west1.firebasedatabase.app";
+var FB_DB="https://boutique-embf-default-rtdb.europe-west1.firebasedatabase.app";
 
 function toggleMenu(){
   var m=document.getElementById('mmenu'),b=document.getElementById('burgerBtn');
@@ -220,46 +285,86 @@ function toggleMenu(){
 document.querySelectorAll('.mmenu a').forEach(function(a){
   a.addEventListener('click',function(){document.getElementById('mmenu').classList.remove('open');document.getElementById('burgerBtn').textContent='☰';});
 });
-function toggleFaq(el){
-  var item=el.parentElement;
-  item.classList.toggle('open');
-}
+
 function showToast(msg,ok){
   var t=document.getElementById('toast');
   t.textContent=msg;t.className='toast show '+(ok===false?'err':'ok');
   setTimeout(function(){t.className='toast';},3000);
 }
+
+function toggleFaq(el){el.parentElement.classList.toggle('open');}
+
+// Check if already member on load
+window.addEventListener('load',function(){
+  var saved=localStorage.getItem('embf_affilie_code');
+  if(saved){
+    // Show member banner
+    var banner=document.getElementById('memberBanner');
+    var codeEl=document.getElementById('memberCode');
+    if(banner){banner.classList.add('show');}
+    if(codeEl){codeEl.textContent=saved;}
+    // Pre-fill login tab
+    var loginInp=document.getElementById('loginCode');
+    if(loginInp)loginInp.value=saved;
+  }
+  // Check URL param ?tab=connexion
+  var params=new URLSearchParams(location.search);
+  if(params.get('tab')==='connexion')switchTab('connexion');
+});
+
+function switchTab(tab){
+  document.getElementById('sectionInscription').style.display=tab==='inscription'?'block':'none';
+  document.getElementById('sectionConnexion').style.display=tab==='connexion'?'block':'none';
+  document.getElementById('tabInscription').classList.toggle('act',tab==='inscription');
+  document.getElementById('tabConnexion').classList.toggle('act',tab==='connexion');
+  // Scroll to tabs
+  document.querySelector('.tab-switcher').scrollIntoView({behavior:'smooth',block:'center'});
+}
+
 function generateCode(nom){
   var initials=nom.trim().toUpperCase().replace(/[^A-Z]/g,'').substring(0,3);
   if(initials.length<2)initials='AFF';
   return initials+Math.floor(100+Math.random()*900);
 }
+
 async function submitAffiliation(){
   var nom=document.getElementById('affNom').value.trim();
   var tel=document.getElementById('affTel').value.trim();
   var email=document.getElementById('affEmail').value.trim();
   var ville=document.getElementById('affVille').value;
   var reseaux=document.getElementById('affReseaux').value.trim();
-  if(!nom||!tel){showToast('❌ Nom et téléphone obligatoires',false);return;}
+  if(!nom){showToast('❌ Entrez votre nom',false);return;}
+  if(!tel){showToast('❌ Entrez votre téléphone',false);return;}
   var btn=document.getElementById('btnSubmit');
   btn.disabled=true;btn.textContent='⏳ Envoi en cours...';
   var code=generateCode(nom);
-  var data={nom:nom,tel:tel,email:email,ville:ville,reseaux:reseaux,code:code,statut:'en_attente',createdAt:Date.now(),gains:0,ventes:0};
+  var data={nom:nom,tel:tel,email:email,ville:ville,reseaux:reseaux,code:code,statut:'en_attente',createdAt:Date.now(),gains:0,ventes:0,clics:0};
   try{
     var r=await fetch(FB_DB+'/affilies.json',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});
     if(!r.ok)throw new Error('Erreur Firebase');
+    localStorage.setItem('embf_affilie_code',code);
+    localStorage.setItem('embf_affilie_nom',nom);
     document.getElementById('formSection').style.display='none';
     document.getElementById('codeDisplay').textContent=code;
     document.getElementById('successBox').style.display='block';
-    localStorage.setItem('embf_affilie_code',code);
-    localStorage.setItem('embf_affilie_nom',nom);
+    // Update banner
+    var banner=document.getElementById('memberBanner');
+    var codeEl=document.getElementById('memberCode');
+    if(banner)banner.classList.add('show');
+    if(codeEl)codeEl.textContent=code;
   }catch(e){
     showToast('❌ Erreur: '+e.message,false);
     btn.disabled=false;btn.textContent='🚀 Je rejoins le programme';
   }
 }
-</script>
 
+function goToDashboard(){
+  var code=document.getElementById('loginCode').value.trim().toUpperCase();
+  if(!code){showToast('❌ Entrez votre code',false);return;}
+  localStorage.setItem('embf_affilie_code',code);
+  window.location.href='espace-affilie.html';
+}
+</script>
 <script src="https://rachida-ia.lovable.app/widget/rachida.js" data-shop="shop-os79u9" async defer onerror="console.warn('Rachida widget indisponible')"></script>
 </body>
 </html>
