@@ -107,8 +107,8 @@ footer{background:var(--s1);border-top:1px solid var(--border);padding:24px 16px
 .stat-n{font-family:Bebas\ Neue,sans-serif;font-size:1.8rem;letter-spacing:.04em;}
 .stat-l{font-size:.7rem;color:var(--muted);margin-top:2px;}
 /* ORDERS mobile */
-.order-card{background:var(--s2);border:1px solid var(--border);border-radius:12px;padding:12px;margin-bottom:8px;position:relative;}
-.order-badge-new{position:absolute;top:8px;right:8px;background:var(--a3);color:#fff;font-size:.58rem;font-weight:800;padding:2px 7px;border-radius:50px;}
+.order-card{background:var(--s2);border:1px solid var(--border);border-radius:12px;padding:12px;margin-bottom:8px;position:relative;overflow:hidden;}
+.order-badge-new{display:inline-block;background:var(--a3);color:#fff;font-size:.58rem;font-weight:800;padding:2px 7px;border-radius:50px;margin-bottom:6px;}
 /* PHOTO GRID mobile */
 .photo-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:10px;}
 .pslot{aspect-ratio:1;border-radius:8px;background:var(--s2);border:2px dashed rgba(255,255,255,.1);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;position:relative;overflow:hidden;font-size:.55rem;color:var(--muted);}
@@ -136,9 +136,17 @@ footer{background:var(--s1);border-top:1px solid var(--border);padding:24px 16px
 .toast.ok{background:var(--green);color:#fff;}
 .toast.err{background:var(--a3);color:#fff;}
 @media(max-width:899px){
-  .sidebar{display:none;}
+  .sidebar{display:none!important;}
   .mob-nav{display:block;}
-  .admin-main{width:100%;}
+  .admin-layout{display:block;}
+  .admin-main{width:100%;max-width:100%;overflow-x:hidden;}
+  .page{padding:12px;}
+  .fsec{padding:12px;}
+  .fgrid{grid-template-columns:1fr;}
+  .btn-primary,.btn-secondary{width:100%;}
+  .order-card{padding:10px;}
+  .pgh h1{font-size:1.4rem;}
+  .pgh{margin-bottom:12px;}
 }
 @media(min-width:900px){
   .mob-nav{display:none;}
@@ -275,12 +283,12 @@ footer{background:var(--s1);border-top:1px solid var(--border);padding:24px 16px
       <div class="pgh"><h1>🔔 COMMANDES</h1><p>Reçues depuis le site en temps réel</p></div>
       <div class="fsec">
         <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;">
-          <button class="order-filter-btn" data-filter="tous" onclick="filterOrders('tous')" style="background:var(--a1);color:#000;border:none;padding:6px 14px;border-radius:8px;font-family:Outfit,sans-serif;font-weight:700;font-size:.78rem;cursor:pointer;">Toutes</button>
-          <button class="order-filter-btn" data-filter="nouveau" onclick="filterOrders('nouveau')" style="background:none;border:1px solid var(--border);color:var(--muted);padding:6px 14px;border-radius:8px;font-family:Outfit,sans-serif;font-weight:700;font-size:.78rem;cursor:pointer;">🆕 Nouvelles</button>
-          <button class="order-filter-btn" data-filter="en_cours" onclick="filterOrders('en_cours')" style="background:none;border:1px solid var(--border);color:var(--muted);padding:6px 14px;border-radius:8px;font-family:Outfit,sans-serif;font-weight:700;font-size:.78rem;cursor:pointer;">🚚 En cours</button>
-          <button class="order-filter-btn" data-filter="livre" onclick="filterOrders('livre')" style="background:none;border:1px solid var(--border);color:var(--muted);padding:6px 14px;border-radius:8px;font-family:Outfit,sans-serif;font-weight:700;font-size:.78rem;cursor:pointer;">✅ Livrées</button>
-          <button class="order-filter-btn" data-filter="annule" onclick="filterOrders('annule')" style="background:none;border:1px solid var(--border);color:var(--muted);padding:6px 14px;border-radius:8px;font-family:Outfit,sans-serif;font-weight:700;font-size:.78rem;cursor:pointer;">❌ Annulées</button>
-          <button onclick="renderOrders()" style="background:none;border:1px solid var(--border);color:var(--muted);padding:6px 14px;border-radius:8px;font-family:Outfit,sans-serif;font-weight:700;font-size:.78rem;cursor:pointer;">🔄</button>
+          <button class="order-filter-btn" data-filter="tous" onclick="filterOrders('tous')" style="background:var(--a1);color:#000;border:none;padding:6px 12px;border-radius:8px;font-family:Outfit,sans-serif;font-weight:700;font-size:.76rem;cursor:pointer;">Toutes</button>
+          <button class="order-filter-btn" data-filter="nouveau" onclick="filterOrders('nouveau')" style="background:none;border:1px solid var(--border);color:var(--muted);padding:6px 12px;border-radius:8px;font-family:Outfit,sans-serif;font-weight:700;font-size:.76rem;cursor:pointer;">🆕 Nouvelles</button>
+          <button class="order-filter-btn" data-filter="en_cours" onclick="filterOrders('en_cours')" style="background:none;border:1px solid var(--border);color:var(--muted);padding:6px 12px;border-radius:8px;font-family:Outfit,sans-serif;font-weight:700;font-size:.76rem;cursor:pointer;">🚚 En cours</button>
+          <button class="order-filter-btn" data-filter="livre" onclick="filterOrders('livre')" style="background:none;border:1px solid var(--border);color:var(--muted);padding:6px 12px;border-radius:8px;font-family:Outfit,sans-serif;font-weight:700;font-size:.76rem;cursor:pointer;">✅ Livrées</button>
+          <button class="order-filter-btn" data-filter="annule" onclick="filterOrders('annule')" style="background:none;border:1px solid var(--border);color:var(--muted);padding:6px 12px;border-radius:8px;font-family:Outfit,sans-serif;font-weight:700;font-size:.76rem;cursor:pointer;">❌ Annulées</button>
+          <button onclick="renderOrders()" style="background:none;border:1px solid var(--border);color:var(--muted);padding:6px 12px;border-radius:8px;font-family:Outfit,sans-serif;font-weight:700;font-size:.76rem;cursor:pointer;">🔄</button>
         </div>
         <div id="ordersList"><div style="text-align:center;padding:24px;color:var(--muted);">Chargement...</div></div>
       </div>
@@ -924,15 +932,12 @@ function renderOrdersList(){
     var statutColor=o.statut==='livre'?'var(--green)':o.statut==='annule'?'var(--a3)':o.statut==='en_cours'?'var(--a1)':'var(--gold)';
     var statutLabel=o.statut==='livre'?'✅ Livré':o.statut==='annule'?'❌ Annulé':o.statut==='en_cours'?'🚚 En cours':'🆕 Nouveau';
     var c=o.client||{};
-    return '<div class="order-card" style="'+(isNew?'border-color:rgba(0,229,255,.3);':'')+'position:relative;">'+
-      (isNew?'<div class="order-badge-new">NOUVEAU</div>':'')+
-      '<div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;margin-bottom:12px;">'+
-        '<div>'+
-          '<div style="font-weight:800;font-size:.95rem;">'+o.produit+'</div>'+
-          '<div style="color:var(--gold);font-weight:800;font-size:.88rem;margin-top:2px;">'+Number(o.prix||0).toLocaleString('fr-FR')+' FCFA × '+(o.quantite||1)+'</div>'+
-          '<div style="color:var(--muted);font-size:.72rem;margin-top:2px;">'+date+'</div>'+
-        '</div>'+
-        '<div style="font-size:.78rem;font-weight:800;color:'+statutColor+';">'+statutLabel+'</div>'+
+    return '<div class="order-card" style="'+(isNew?'border-color:rgba(0,229,255,.3);':'')+'">'+
+      (isNew?'<div class="order-badge-new">🆕 NOUVEAU</div>':'')+
+      '<div style="margin-bottom:10px;">'+
+        '<div style="font-weight:800;font-size:.92rem;margin-bottom:2px;">'+o.produit+'</div>'+
+        '<div style="color:var(--gold);font-weight:800;font-size:.86rem;">'+Number(o.prix||0).toLocaleString('fr-FR')+' FCFA × '+(o.quantite||1)+'</div>'+
+        '<div style="color:var(--muted);font-size:.7rem;margin-top:2px;">'+date+'</div>'+
       '</div>'+
       '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:.82rem;margin-bottom:12px;">'+
         '<div><span style="color:var(--muted);font-size:.72rem;">CLIENT</span><br><strong>'+(c.nom||'—')+'</strong></div>'+
