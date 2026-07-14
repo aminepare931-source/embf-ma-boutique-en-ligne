@@ -212,11 +212,14 @@ async function loginAffilie(){
   var btn=document.getElementById('btnLogin');
   btn.disabled=true;btn.textContent='⏳ Vérification...';
   try{
-    var r=await fetch(FB_DB+'/affilies.json?orderBy=%22code%22&equalTo=%22'+code+'%22');
+    var r=await fetch(FB_DB+'/affilies.json');
     var data=await r.json();
-    if(!data||!Object.keys(data).length){showToast('❌ Code invalide',false);btn.disabled=false;btn.textContent='🔓 Accéder à mon espace';return;}
-    currentKey=Object.keys(data)[0];
-    currentAffilie={...data[currentKey],_key:currentKey};
+    if(!data){showToast('❌ Code invalide',false);btn.disabled=false;btn.textContent='🔓 Accéder à mon espace';return;}
+    // Filter by code client-side
+    var found=Object.keys(data).find(function(k){return data[k].code===code;});
+    if(!found){showToast('❌ Code invalide — vérifiez votre code',false);btn.disabled=false;btn.textContent='🔓 Accéder à mon espace';return;}
+    currentKey=found;
+    currentAffilie={...data[found],_key:found};
     localStorage.setItem('embf_affilie_code',code);
     showDashboard();
   }catch(e){showToast('❌ Erreur: '+e.message,false);btn.disabled=false;btn.textContent='🔓 Accéder à mon espace';}
@@ -305,13 +308,15 @@ async function loadProduits(){
 async function loadOrders(){
   var a=currentAffilie;
   try{
-    var r=await fetch(FB_DB+'/orders.json?orderBy=%22ref%22&equalTo=%22'+a.code+'%22');
+    var r=await fetch(FB_DB+'/orders.json');
     var data=await r.json();
     if(!data||!Object.keys(data).length){
       document.getElementById('ordersArea').innerHTML='<div class="section-empty">Aucune vente attribuée pour l\'instant.<br>Partagez vos liens pour commencer !</div>';
       return;
     }
-    var orders=Object.keys(data).map(function(k){var o=data[k];o._key=k;return o;}).sort(function(a,b){return b.ts-a.ts;});
+    var orders=Object.keys(data).map(function(k){var o=data[k];o._key=k;return o;})
+      .filter(function(o){return o.ref===a.code;})
+      .sort(function(a,b){return b.ts-a.ts;});
     document.getElementById('ordersArea').innerHTML=orders.map(function(o){
       var prod=allProducts.find(function(p){return p._key===o.produitId;})||{};
       var comm=prod.commission||5;
@@ -331,13 +336,15 @@ async function loadOrders(){
 async function loadRetraitHist(){
   var a=currentAffilie;
   try{
-    var r=await fetch(FB_DB+'/retraits.json?orderBy=%22affilieCode%22&equalTo=%22'+a.code+'%22');
+    var r=await fetch(FB_DB+'/retraits.json');
     var data=await r.json();
     if(!data||!Object.keys(data).length){
       document.getElementById('retHist').innerHTML='<div class="section-empty" style="font-size:.82rem;">Aucune demande de retrait.</div>';
       return;
     }
-    var retraits=Object.keys(data).map(function(k){var r=data[k];r._key=k;return r;}).sort(function(a,b){return b.ts-a.ts;});
+    var retraits=Object.keys(data).map(function(k){var r=data[k];r._key=k;return r;})
+      .filter(function(rt){return rt.affilieCode===a.code;})
+      .sort(function(a,b){return b.ts-a.ts;});
     document.getElementById('retHist').innerHTML='<div style="font-weight:700;font-size:.85rem;margin-bottom:8px;color:var(--muted);">Historique des retraits</div>'+
       retraits.map(function(rt){
         var date=new Date(rt.ts).toLocaleDateString('fr-FR');

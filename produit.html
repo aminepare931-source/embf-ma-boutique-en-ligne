@@ -711,16 +711,18 @@ function initAffRef(){
         method:"POST",headers:{"Content-Type":"application/json"},
         body:JSON.stringify({ref:AFFREF,prodId:pid2,ts:Date.now()})
       }).catch(function(){});
-      // Increment affiliate clicks counter
-      fetch("https://boutique-embf-default-rtdb.europe-west1.firebasedatabase.app/affilies.json?orderBy=%22code%22&equalTo=%22"+AFFREF+"%22")
+      // Increment affiliate clicks counter - filter client side
+      fetch("https://boutique-embf-default-rtdb.europe-west1.firebasedatabase.app/affilies.json")
       .then(function(r){return r.json();}).then(function(data){
         if(!data)return;
-        var key=Object.keys(data)[0];
+        var key=Object.keys(data).find(function(k){return data[k].code===AFFREF;});
+        if(!key)return;
         var cur=data[key].clics||0;
         fetch("https://boutique-embf-default-rtdb.europe-west1.firebasedatabase.app/affilies/"+key+".json?auth=AIzaSyA0UGFKeoatnMaCMAlaF3B3li9gFY4Dt0g",{
           method:"PATCH",headers:{"Content-Type":"application/json"},
           body:JSON.stringify({clics:cur+1})
         }).catch(function(){});
+      }).catch(function(){});
       }).catch(function(){});
     }
   } else {
@@ -1017,10 +1019,11 @@ function sendWa(){
   }).then(function(r){return r.json();}).then(function(res){
     // Affiliate tracking
     if(AFFREF&&res&&res.name){
-      fetch(FB_DB+"/affilies.json?orderBy=%22code%22&equalTo=%22"+AFFREF+"%22")
+      fetch(FB_DB+"/affilies.json")
       .then(function(r2){return r2.json();}).then(function(affData){
         if(!affData)return;
-        var affKey=Object.keys(affData)[0];
+        var affKey=Object.keys(affData).find(function(k){return affData[k].code===AFFREF;});
+        if(!affKey)return;
         var aff=affData[affKey];
         var commission=p.commission||5;
         var gain=Math.round((p.price*commission)/100);
