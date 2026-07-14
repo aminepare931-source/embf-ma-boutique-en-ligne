@@ -275,8 +275,8 @@ input:checked+.tog-sl:before{transform:translateX(19px);background:var(--a1);}
   <div class="card">
     <div class="card-title">📸 Photos (max 8)</div>
     <div class="photo-grid" id="addPhotoGrid"></div>
-    <input type="file" id="addPhotoFile" accept="image/*" multiple style="display:none" onchange="handleAddPhotos(event)">
-    <button onclick="document.getElementById('addPhotoFile').click()" id="addPhotoBtn" class="btn btn-ghost" style="margin-bottom:8px;">☁️ Uploader photos</button>
+    <input type="file" id="addPhotoFile" accept="image/*,video/*" multiple style="display:none" onchange="handleAddPhotos(event)">
+    <button onclick="document.getElementById('addPhotoFile').click()" id="addPhotoBtn" class="btn btn-ghost" style="margin-bottom:8px;">☁️ Photos & Vidéos</button>
     <div class="url-row">
       <input class="finput" id="addUrlInput" type="url" placeholder="Ou coller une URL image...">
       <button class="url-btn" onclick="addUrlPhoto()">+ Ajouter</button>
@@ -423,8 +423,8 @@ input:checked+.tog-sl:before{transform:translateX(19px);background:var(--a1);}
     <div class="card" style="margin-bottom:10px;">
       <div class="card-title">📸 Photos</div>
       <div class="photo-grid" id="editPhotoGrid"></div>
-      <input type="file" id="editPhotoFile" accept="image/*" multiple style="display:none" onchange="handleEditPhotos(event)">
-      <button onclick="document.getElementById('editPhotoFile').click()" id="editPhotoBtn" class="btn btn-ghost btn-sm" style="margin-bottom:6px;">☁️ Ajouter photos</button>
+      <input type="file" id="editPhotoFile" accept="image/*,video/*" multiple style="display:none" onchange="handleEditPhotos(event)">
+      <button onclick="document.getElementById('editPhotoFile').click()" id="editPhotoBtn" class="btn btn-ghost btn-sm" style="margin-bottom:6px;">☁️ Photos & Vidéos</button>
       <div class="url-row">
         <input class="finput" id="editUrlInput" type="url" placeholder="URL image...">
         <button class="url-btn" onclick="editAddUrl()">+</button>
@@ -596,11 +596,15 @@ async function deleteProd(key,name){
 
 // ===== CLOUDINARY =====
 async function uploadToCloudinary(file){
+  var isVideo=file.type.startsWith('video/');
   var fd=new FormData();
-  fd.append('file',file);fd.append('upload_preset',CLOUD_PRESET);fd.append('folder','embf_boutique');
-  var r=await fetch('https://api.cloudinary.com/v1_1/'+CLOUD_NAME+'/image/upload',{method:'POST',body:fd});
+  fd.append('file',file);fd.append('upload_preset',CLOUD_PRESET);
+  fd.append('folder','embf_boutique');
+  var endpoint=isVideo?'video':'image';
+  var r=await fetch('https://api.cloudinary.com/v1_1/'+CLOUD_NAME+'/'+endpoint+'/upload',{method:'POST',body:fd});
   if(!r.ok){var e=await r.json();throw new Error(e.error?e.error.message:'Cloudinary error');}
-  return (await r.json()).secure_url;
+  var d=await r.json();
+  return {url:d.secure_url,type:isVideo?'video':'image',thumbnail:isVideo?(d.secure_url.replace('/video/upload/','/video/upload/so_0,w_400/')).replace('.mp4','.jpg'):null};
 }
 
 // ===== PHOTO GRIDS =====
@@ -609,7 +613,12 @@ function renderPhotoGrid(gridId,photos,mode){
   var slots=[];
   for(var i=0;i<8;i++){
     if(photos[i]){
-      slots.push('<div class="pslot filled"><img src="'+photos[i]+'" onerror="this.src=\'\'"><button class="pslot-del" onclick="removePhoto(\''+mode+'\','+i+')">✕</button></div>');
+      var item=photos[i];
+      var url=typeof item==='object'?item.url:item;
+      var isVid=typeof item==='object'?item.type==='video':(url.includes('/video/')||url.match(/\.(mp4|webm|mov)(\?|$)/i));
+      var thumb=typeof item==='object'&&item.thumbnail?item.thumbnail:null;
+      var preview=isVid?(thumb?'<img src="'+thumb+'" style="width:100%;height:100%;object-fit:cover;">':'<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:1.6rem;background:rgba(139,92,246,.15);">🎬</div>'):'<img src="'+url+'" onerror="this.style.display=\'none\'">';
+      slots.push('<div class="pslot filled">'+preview+'<button class="pslot-del" onclick="removePhoto(\''+mode+'\','+i+')">✕</button>'+(isVid?'<div style="position:absolute;bottom:2px;left:2px;background:rgba(0,0,0,.7);border-radius:4px;padding:1px 4px;font-size:.5rem;color:#fff;font-weight:800;">VID</div>':'')+'</div>');
     } else {
       slots.push('<div class="pslot" onclick="document.getElementById(\''+(mode==='add'?'addPhotoFile':'editPhotoFile')+'\').click()"><span style="font-size:1.2rem;">+</span></div>');
     }
@@ -627,11 +636,14 @@ async function handleAddPhotos(e){
   btn.disabled=true;
   for(var i=0;i<files.length;i++){
     btn.textContent='⏳ '+(i+1)+'/'+files.length+'...';
-    try{var url=await uploadToCloudinary(files[i]);addPhotos.push(url);renderPhotoGrid('addPhotoGrid',addPhotos,'add');}
-    catch(err){showToast('❌ '+err.message,false);}
+    try{
+      var res=await uploadToCloudinary(files[i]);
+      addPhotos.push(res);
+      renderPhotoGrid('addPhotoGrid',addPhotos,'add');
+    }catch(err){showToast('❌ '+err.message,false);}
   }
-  btn.disabled=false;btn.textContent='☁️ Uploader photos';
-  showToast('✅ Photos uploadées !');
+  btn.disabled=false;btn.textContent='☁️ Photos & Vidéos';
+  showToast('✅ Média uploadé !');
 }
 async function handleEditPhotos(e){
   var files=Array.from(e.target.files).slice(0,8-editPhotos.length);
@@ -640,11 +652,14 @@ async function handleEditPhotos(e){
   btn.disabled=true;
   for(var i=0;i<files.length;i++){
     btn.textContent='⏳ '+(i+1)+'/'+files.length+'...';
-    try{var url=await uploadToCloudinary(files[i]);editPhotos.push(url);renderPhotoGrid('editPhotoGrid',editPhotos,'edit');}
-    catch(err){showToast('❌ '+err.message,false);}
+    try{
+      var res=await uploadToCloudinary(files[i]);
+      editPhotos.push(res);
+      renderPhotoGrid('editPhotoGrid',editPhotos,'edit');
+    }catch(err){showToast('❌ '+err.message,false);}
   }
-  btn.disabled=false;btn.textContent='☁️ Ajouter photos';
-  showToast('✅ Photos uploadées !');
+  btn.disabled=false;btn.textContent='☁️ Photos & Vidéos';
+  showToast('✅ Média uploadé !');
 }
 function addUrlPhoto(){
   var url=document.getElementById('addUrlInput').value.trim();
@@ -677,7 +692,7 @@ async function addProduct(){
     description:document.getElementById('addDesc').value.trim(),
     specs:document.getElementById('addSpecs').value.trim(),
     commission:parseFloat(document.getElementById('addComm').value)||5,
-    images:JSON.stringify(addPhotos),
+    images:JSON.stringify(addPhotos.map(function(p){return typeof p==='object'?p:{url:p,type:'image',thumbnail:null};})),
     is_new:document.getElementById('addIsNew').checked,
     trending:document.getElementById('addTrending').checked,
     createdAt:Date.now()
@@ -733,7 +748,7 @@ async function saveEdit(){
     description:document.getElementById('editDesc').value.trim(),
     specs:document.getElementById('editSpecs').value.trim(),
     commission:parseFloat(document.getElementById('editComm').value)||5,
-    images:JSON.stringify(editPhotos),
+    images:JSON.stringify(editPhotos.map(function(p){return typeof p==='object'?p:{url:p,type:'image',thumbnail:null};})),
     is_new:document.getElementById('editIsNew').checked,
     trending:document.getElementById('editTrending').checked
   };

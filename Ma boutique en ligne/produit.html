@@ -590,7 +590,22 @@ var FB_KEY="AIzaSyA0UGFKeoatnMaCMAlaF3B3li9gFY4Dt0g";
 var WA="22655300868";
 var CE={"Ordinateur":"💻","Smartphone":"📱","Gadget":"🎮","Accessoires":"🎧","Autre":"📦"};
 function fmt(v){return Number(v).toLocaleString("fr-FR")+" FCFA";}
-function getImgs(p){try{return p.images?JSON.parse(p.images):[];}catch(e){return[];}}
+function getImgs(p){
+  try{
+    var raw=p.images?JSON.parse(p.images):[];
+    // Normalize: old format (string URLs) and new format (objects)
+    return raw.map(function(item){
+      if(typeof item==='string') return {url:item,type:'image',thumbnail:null};
+      return item;
+    });
+  }catch(e){return[];}
+}
+function getImgUrl(item){return typeof item==='object'?item.url:item;}
+function isVideo(item){
+  if(typeof item==='object'&&item.type==='video')return true;
+  var url=typeof item==='string'?item:item.url||'';
+  return url.includes('/video/')||!!url.match(/\.(mp4|webm|mov)(\?|$)/i);
+}
 function toggleMenu(){var m=document.getElementById("mmenu"),b=document.getElementById("burgerBtn");var o=m.classList.toggle("open");b.textContent=o?"✕":"☰";}
 function showToast(msg,ok){var t=document.getElementById("toast");if(!t)return;t.textContent=msg;t.className="toast show "+(ok!==false?"ok":"err");clearTimeout(t._to);t._to=setTimeout(function(){t.classList.remove("show");},2800);}
 function initReveal(){var obs=new IntersectionObserver(function(e){e.forEach(function(x){if(x.isIntersecting)x.target.classList.add("vis");});},{threshold:.07});document.querySelectorAll(".reveal").forEach(function(el){obs.observe(el);});}
@@ -774,22 +789,40 @@ function renderGallery(p){
   if(prodImgs.length>1){
     document.getElementById("galPrev").style.display="flex";
     document.getElementById("galNext").style.display="flex";
-    document.getElementById("galThumbs").innerHTML=prodImgs.map(function(src,i){
-      return "<div class='gthumb "+(i===0?"on":"")+"' onclick='showImg("+i+")' id='gt"+i+"'><img src='"+src+"' alt=''></div>";
+    document.getElementById("galThumbs").innerHTML=prodImgs.map(function(item,i){
+      var url=getImgUrl(item);
+      var vid=isVideo(item);
+      var thumb=typeof item==='object'&&item.thumbnail?item.thumbnail:url;
+      return "<div class='gthumb "+(i===0?"on":"")+"' onclick='showImg("+i+")' id='gt"+i+"'>"+(vid?"<div style='width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:rgba(139,92,246,.15);border-radius:6px;font-size:1.2rem;'>🎬</div>":"<img src='"+thumb+"' alt=''>"+"</div>");
     }).join("");
   }
 }
 function showImg(idx){
   curImgIdx=idx;
   var gm=document.getElementById("galMain");
-  var old=gm.querySelector("img.gmi");if(old)old.remove();
+  // Remove old media
+  var old=gm.querySelector("img.gmi,video.gmi");if(old)old.remove();
   document.getElementById("galPh").style.display="none";
-  var el=document.createElement("img");el.src=prodImgs[idx];el.className="gmi";
-  el.style.cssText="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;";
-  gm.insertBefore(el,gm.firstChild);
+  var item=prodImgs[idx];
+  var url=getImgUrl(item);
+  var vid=isVideo(item);
+  if(vid){
+    var el=document.createElement("video");
+    el.src=url;el.className="gmi";el.controls=true;el.autoplay=false;el.playsInline=true;
+    el.style.cssText="width:100%;height:100%;object-fit:contain;position:absolute;inset:0;background:#000;border-radius:12px;";
+    gm.insertBefore(el,gm.firstChild);
+  } else {
+    var el=document.createElement("img");el.src=url;el.className="gmi";
+    el.style.cssText="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;";
+    gm.insertBefore(el,gm.firstChild);
+  }
   document.querySelectorAll(".gthumb").forEach(function(t,i){t.classList.toggle("on",i===idx);});
 }
-function changeImg(dir){showImg((curImgIdx+dir+prodImgs.length)%prodImgs.length);}
+function changeImg(dir){
+  // Pause video if any
+  var vid=document.querySelector("#galMain video.gmi");if(vid)vid.pause();
+  showImg((curImgIdx+dir+prodImgs.length)%prodImgs.length);
+}
 
 function renderBadges(p){
   var b="";
