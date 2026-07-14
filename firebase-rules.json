@@ -1,0 +1,30 @@
+{
+  "rules": {
+    ".read": true,
+    ".write": "auth != null",
+    "products": {
+      ".read": true,
+      ".write": "auth != null"
+    },
+    "orders": {
+      ".read": true,
+      ".write": true
+    },
+    "promo": {
+      ".read": true,
+      ".write": "auth != null"
+    },
+    "affilies": {
+      ".read": true,
+      ".write": true
+    },
+    "retraits": {
+      ".read": true,
+      ".write": true
+    },
+    "clicks": {
+      ".read": true,
+      ".write": true
+    }
+  }
+}
