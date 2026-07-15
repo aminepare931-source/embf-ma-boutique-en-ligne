@@ -3,6 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="icon" type="image/png" href="/assets/icons/icon-192x192.png">
+  <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png">
+  <meta name="theme-color" content="#00e5ff">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="EMBF Boutique">
 <title id="pgTitle">Produit — EMBF Boutique</title>
 <meta name="description" id="pgDesc" content="EMBF Boutique">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1190,5 +1196,6 @@ updateCartUI();
 </script>
 
 <script src="https://rachida-ia.lovable.app/widget/rachida.js" data-shop="shop-os79u9" async defer onerror="console.warn('Rachida widget indisponible')"></script>
+<script>if("serviceWorker" in navigator){navigator.serviceWorker.register("/sw.js").catch(function(){});}</script>
 </body>
 </html>
