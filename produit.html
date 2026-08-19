@@ -1132,8 +1132,13 @@ function renderSimilar(){
   var sec=document.getElementById("simSec");if(!sim.length)return;sec.style.display="block";
   document.getElementById("simGrid").innerHTML=sim.map(function(p){
     var imgs=getImgs(p);
-    return "<a href='produit.html?id="+(p._key||p.id)+"' class='sim-card'>"+
-      "<div class='sim-img'>"+(imgs[0]?"<img src='"+imgs[0]+"' alt=''>":CE[p.category]||"📦")+"</div>"+
+    var imgUrl=imgs[0]||'';
+    var imgHtml=imgUrl
+      ?"<img src='"+imgUrl+"' alt='' style='width:100%;height:100%;object-fit:cover;' onerror=\"this.outerHTML='<span style=\\'font-size:2rem;display:flex;align-items:center;justify-content:center;width:100%;height:100%;\\'>'"+(CE[p.category]||"📦")+"'</span>'\">"
+      :"<span style='font-size:2rem;'>"+(CE[p.category]||"📦")+"</span>";
+    var key=p._key||p.id||'';
+    return "<a href='produit.html?id="+key+"' class='sim-card'>"+
+      "<div class='sim-img'>"+imgHtml+"</div>"+
       "<div class='sim-body'><div class='sim-name'>"+p.name+"</div><div class='sim-price'>"+fmt(p.price)+"</div></div>"+
     "</a>";
   }).join("");

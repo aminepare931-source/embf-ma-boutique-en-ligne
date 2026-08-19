@@ -457,7 +457,8 @@ function renderTrending(){
     var img=imgUrl?"<img src='"+imgUrl+"' alt='"+p.name+"' style='width:100%;height:100%;object-fit:cover;'>":"<span class='no-img'>"+(CE[p.category]||"📦")+"</span>";
     var isPromo=p.old_price&&Number(p.old_price)>Number(p.price);
     var pct=isPromo?Math.round((1-p.price/p.old_price)*100):0;
-    return "<div class='tcard' onclick='location.href=\"produit.html?id=\"+(p._key||p.id)+\"\"'>"+
+    var key=p._key||p.id||"";
+    return "<div class='tcard' onclick=\"goToProd('"+key+"')\">"+
       (p.trending===true||p.trending==="true"?"<div class='tcard-fire'>🔥 Tendance</div>":"")+
       (isPromo?"<div class='tcard-promo-badge'>-"+pct+"%</div>":"")+
       "<div class='tcard-img'>"+img+"</div>"+
@@ -469,13 +470,14 @@ function renderTrending(){
           (isPromo?"<div class='tcard-old'>"+fmt(p.old_price)+"</div>":"")+
         "</div>"+
         "<div class='tcard-btns'>"+
-          "<button class='tcard-wa' onclick='event.stopPropagation();waQuick(\""+(p._key||p.id)+"\")'>💬 Commander</button>"+
-          "<button class='tcard-det' onclick='event.stopPropagation();location.href=\"produit.html?id=\"+(p._key||p.id)+\"\"'>🔍</button>"+
+    return "<div class='tcard' onclick=\"goToProd('"+key+"')\">"+
+    return "<div class='tcard' onclick=\"goToProd('"+key+"')\">"+
         "</div>"+
       "</div></div>";
   }).join("");
 }
 
+function goToProd(key){location.href="produit.html?id="+key;}
 function waQuick(key){
   var p=allProds.find(function(x){return(x._key||x.id)===key;});if(!p)return;
   var text="Bonjour EMBF Boutique ! 👋\n\nJe suis intéressé par :\n📦 *"+p.name+"*\n💰 *"+fmt(p.price)+"*\n\nPouvez-vous me confirmer la disponibilité ? Merci !";
