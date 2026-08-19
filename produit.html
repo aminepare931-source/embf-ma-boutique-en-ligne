@@ -11,6 +11,18 @@
   <meta name="apple-mobile-web-app-title" content="EMBF Boutique">
 <title id="pgTitle">Produit — EMBF Boutique</title>
 <meta name="description" id="pgDesc" content="EMBF Boutique">
+<meta property="og:type" content="product">
+<meta property="og:site_name" content="EMBF Boutique">
+<meta property="og:title" id="ogTitle" content="EMBF Boutique — Tech Premium">
+<meta property="og:description" id="ogDesc" content="Votre boutique tech de confiance en Afrique de l'Ouest">
+<meta property="og:image" id="ogImage" content="https://embfboutik.vercel.app/assets/icons/icon-512x512.png">
+<meta property="og:image:width" content="512">
+<meta property="og:image:height" content="512">
+<meta property="og:url" id="ogUrl" content="https://embfboutik.vercel.app/produit.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" id="twTitle" content="EMBF Boutique">
+<meta name="twitter:description" id="twDesc" content="Votre boutique tech de confiance en Afrique de l'Ouest">
+<meta name="twitter:image" id="twImage" content="https://embfboutik.vercel.app/assets/icons/icon-512x512.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-FW2C4K6SCW"></script>
@@ -780,6 +792,24 @@ function renderAll(p){
   document.getElementById("prodName").textContent=p.name;
   document.getElementById("prodDesc").textContent=p.description||"Aucune description disponible.";
   renderSpecs(p);renderSocial(p);checkPromo();
+  // Update OG tags for sharing
+  var imgs=getImgs(p);
+  var imgUrl=imgs[0]||'https://embfboutik.vercel.app/assets/icons/icon-512x512.png';
+  var pageUrl='https://embfboutik.vercel.app/produit.html?id='+(p._key||p.id||'');
+  var desc=p.description?(p.description.substring(0,120)+'...'):('Achetez '+p.name+' sur EMBF Boutique. Livraison rapide en Afrique de l\'Ouest.');
+  var priceText=p.price?(' — '+Number(p.price).toLocaleString('fr-FR')+' FCFA'):'';
+  function setMeta(id,attr,val){var el=document.getElementById(id);if(el)el.setAttribute(attr,val);}
+  setMeta('ogTitle','content',p.name+priceText+' | EMBF Boutique');
+  setMeta('ogDesc','content',desc);
+  setMeta('ogImage','content',imgUrl);
+  setMeta('ogUrl','content',pageUrl);
+  setMeta('twTitle','content',p.name+priceText);
+  setMeta('twDesc','content',desc);
+  setMeta('twImage','content',imgUrl);
+  // Update canonical URL
+  var canonical=document.querySelector('link[rel="canonical"]');
+  if(!canonical){canonical=document.createElement('link');canonical.rel='canonical';document.head.appendChild(canonical);}
+  canonical.href=pageUrl;
   // WA Preview
   var imgs=getImgs(p);
   document.getElementById("waProdPrev").innerHTML=
