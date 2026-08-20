@@ -748,24 +748,49 @@ function initAffRef(){
 }
 initAffRef();
 
+function slugify(text){
+  return text.toString().toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+    .replace(/[^a-z0-9\s-]/g,'')
+    .trim().replace(/\s+/g,'-')
+    .replace(/-+/g,'-')
+    .substring(0,60);
+}
+
 window.onload=async function(){
-  var pid=new URLSearchParams(location.search).get("id");
-  if(!pid){location.href="produits.html";return;}
+  var params=new URLSearchParams(location.search);
+  var pid=params.get("id");
+  var slug=params.get("slug")||location.pathname.split('/').pop();
+
+  // Helper to find product by id or slug
+  function findProd(list){
+    if(pid) return list.find(function(x){return (x._key||x.id)===pid;});
+    if(slug) return list.find(function(x){
+      return x.slug===slug || slugify(x.name)===slug;
+    });
+    return null;
+  }
+
+  if(!pid&&!slug){location.href="produits.html";return;}
   var lto=setTimeout(function(){document.getElementById("loadSlow").style.display="block";},5000);
   // Cache first
   var cached=getCached();
   if(cached&&cached.length){
     allProds=cached;
-    var p=allProds.find(function(x){return (x._key||x.id)===pid;});
+    var p=findProd(allProds);
     if(p){cur=p;renderAll(p);clearTimeout(lto);show();}
   }
   // Firebase refresh
   try{
     var fresh=await getProducts();
     setCache(fresh);allProds=fresh;
-    var p2=fresh.find(function(x){return(x._key||x.id)===pid;});
+    var p2=findProd(fresh);
     if(!p2){if(!cur)location.href="produits.html";return;}
     cur=p2;
+    // Update URL to use slug if accessed by id
+    if(pid&&p2.slug&&history.replaceState){
+      history.replaceState(null,'','/produit/'+p2.slug);
+    }
     if(document.getElementById("prodContent").style.display==="none"){renderAll(p2);clearTimeout(lto);show();}
     else cur=p2;
   }catch(e){if(!cur)location.href="produits.html";}
@@ -795,7 +820,7 @@ function renderAll(p){
   // Update OG tags for sharing
   var imgs=getImgs(p);
   var imgUrl=imgs[0]||'https://embfboutik.vercel.app/assets/icons/icon-512x512.png';
-  var pageUrl='https://embfboutik.vercel.app/produit.html?id='+(p._key||p.id||'');
+  var pageUrl=getProductUrl(p);
   var desc=p.description?(p.description.substring(0,120)+'...'):('Achetez '+p.name+' sur EMBF Boutique. Livraison rapide en Afrique de l\'Ouest.');
   var priceText=p.price?(' — '+Number(p.price).toLocaleString('fr-FR')+' FCFA'):'';
   function setMeta(id,attr,val){var el=document.getElementById(id);if(el)el.setAttribute(attr,val);}
@@ -1148,9 +1173,15 @@ function doAddToCart(){
 }
 
 // SHARE
+function getProductUrl(p){
+  var slug=p.slug||slugify(p.name||'');
+  return slug?('https://embfboutik.vercel.app/produit/'+slug):('https://embfboutik.vercel.app/produit.html?id='+(p._key||p.id||''));
+}
+
 function shareProduct(){
-  var p=cur;var url=window.location.href;
-  var text="🛍️ *"+p.name+"*\n💰 "+fmt(p.price)+"\n\nEMBF Boutique !\n🔗 "+url;
+  var p=cur;
+  var url=getProductUrl(p);
+  var text="🛍️ *"+p.name+"*\n💰 "+fmt(p.price)+"\n\n✅ Livraison rapide en Afrique de l'Ouest\n🔗 "+url;
   if(navigator.share)navigator.share({title:p.name,text:text,url:url});
   else if(navigator.clipboard)navigator.clipboard.writeText(url).then(function(){showToast("✅ Lien copié !");});
 }
@@ -1167,7 +1198,8 @@ function renderSimilar(){
       ?"<img src='"+imgUrl+"' alt='' style='width:100%;height:100%;object-fit:cover;' onerror=\"this.outerHTML='<span style=\\'font-size:2rem;display:flex;align-items:center;justify-content:center;width:100%;height:100%;\\'>'"+(CE[p.category]||"📦")+"'</span>'\">"
       :"<span style='font-size:2rem;'>"+(CE[p.category]||"📦")+"</span>";
     var key=p._key||p.id||'';
-    return "<a href='produit.html?id="+key+"' class='sim-card'>"+
+    var purl=p.slug?('/produit/'+p.slug):('produit.html?id='+key);
+    return "<a href='"+purl+"' class='sim-card'>"+
       "<div class='sim-img'>"+imgHtml+"</div>"+
       "<div class='sim-body'><div class='sim-name'>"+p.name+"</div><div class='sim-price'>"+fmt(p.price)+"</div></div>"+
     "</a>";

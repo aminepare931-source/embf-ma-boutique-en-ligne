@@ -473,6 +473,16 @@ input:checked+.tog-sl:before{transform:translateX(19px);background:var(--a1);}
 <div class="toast" id="toast"></div>
 
 <script>
+// ===== SLUG =====
+function slugify(text){
+  return text.toString().toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+    .replace(/[^a-z0-9\s-]/g,'')
+    .trim().replace(/\s+/g,'-')
+    .replace(/-+/g,'-')
+    .substring(0,60);
+}
+
 var FB_DB="https://boutique-embf-default-rtdb.europe-west1.firebasedatabase.app";
 var FB_KEY="AIzaSyA0UGFKeoatnMaCMAlaF3B3li9gFY4Dt0g";
 var CLOUD_NAME="dl3qgppti";
@@ -703,6 +713,7 @@ async function addProduct(){
   btn.disabled=true;btn.textContent='⏳ Publication...';
   var data={
     name:name,price:price,
+    slug:slugify(name),
     old_price:parseFloat(document.getElementById('addOldPrice').value)||null,
     category:document.getElementById('addCat').value,
     stock:parseInt(document.getElementById('addStock').value)||0,
@@ -758,6 +769,7 @@ async function saveEdit(){
   btn.disabled=true;btn.textContent='⏳ Sauvegarde...';
   var data={
     name:document.getElementById('editName').value.trim(),
+    slug:slugify(document.getElementById('editName').value.trim()),
     price:parseFloat(document.getElementById('editPrice').value)||0,
     old_price:parseFloat(document.getElementById('editOldPrice').value)||null,
     category:document.getElementById('editCat').value,

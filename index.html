@@ -338,6 +338,7 @@ footer{background:var(--s1);border-top:1px solid var(--border);padding:24px 16px
 @keyframes sk{0%{opacity:.5;}100%{opacity:1;}}
 <script>
 
+function slugify(t){return t.toString().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9\s-]/g,"").trim().replace(/\s+/g,"-").replace(/-+/g,"-").substring(0,60);}
 var FB_DB="https://boutique-embf-default-rtdb.europe-west1.firebasedatabase.app";
 var FB_KEY="AIzaSyA0UGFKeoatnMaCMAlaF3B3li9gFY4Dt0g";
 var WA="22655300868";
@@ -477,7 +478,7 @@ function renderTrending(){
   }).join("");
 }
 
-function goToProd(key){location.href="produit.html?id="+key;}
+function goToProd(key){location.href=p.slug?"/produit/"+p.slug:"produit.html?id="+key;}
 function waQuick(key){
   var p=allProds.find(function(x){return(x._key||x.id)===key;});if(!p)return;
   var text="Bonjour EMBF Boutique ! 👋\n\nJe suis intéressé par :\n📦 *"+p.name+"*\n💰 *"+fmt(p.price)+"*\n\nPouvez-vous me confirmer la disponibilité ? Merci !";

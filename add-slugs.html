@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Ajouter slugs aux produits</title>
+<style>
+body{background:#03030a;color:#f1f1ff;font-family:Outfit,sans-serif;padding:24px;min-height:100vh;}
+.card{background:#0c0c1d;border:1px solid rgba(0,229,255,.12);border-radius:16px;padding:24px;max-width:500px;margin:0 auto;}
+h2{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;background:linear-gradient(90deg,#00e5ff,#8b5cf6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px;}
+p{color:#8888aa;font-size:.85rem;margin-bottom:16px;}
+.btn{width:100%;background:linear-gradient(135deg,#00e5ff,#8b5cf6);color:#000;border:none;padding:13px;border-radius:12px;font-weight:800;font-size:.92rem;cursor:pointer;margin-bottom:10px;}
+.log{background:#000;border:1px solid rgba(0,229,255,.12);border-radius:10px;padding:14px;font-family:monospace;font-size:.75rem;line-height:1.8;max-height:300px;overflow-y:auto;color:#0f0;white-space:pre-wrap;}
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@400;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="card">
+  <h2>MIGRATION SLUGS</h2>
+  <p>Ajoute le champ <code>slug</code> à tous les produits Firebase existants pour activer les URLs courtes.</p>
+  <button class="btn" onclick="run()">🚀 Lancer la migration</button>
+  <div class="log" id="log">En attente...</div>
+</div>
+<script>
+var FB_DB="https://boutique-embf-default-rtdb.europe-west1.firebasedatabase.app";
+var FB_KEY="AIzaSyA0UGFKeoatnMaCMAlaF3B3li9gFY4Dt0g";
+
+function slugify(t){
+  return t.toString().toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+    .replace(/[^a-z0-9\s-]/g,'')
+    .trim().replace(/\s+/g,'-')
+    .replace(/-+/g,'-')
+    .substring(0,60);
+}
+
+function log(msg){
+  var el=document.getElementById('log');
+  el.textContent+=msg+'\n';
+  el.scrollTop=el.scrollHeight;
+}
+
+async function run(){
+  log('📥 Chargement des produits...');
+  try{
+    var r=await fetch(FB_DB+'/products.json');
+    var data=await r.json();
+    if(!data){log('❌ Aucun produit trouvé');return;}
+    
+    var keys=Object.keys(data);
+    log('✅ '+keys.length+' produits trouvés\n');
+    
+    var ok=0,skip=0,err=0;
+    for(var i=0;i<keys.length;i++){
+      var key=keys[i];
+      var p=data[key];
+      if(!p.name){log('⚠️ Produit sans nom: '+key);skip++;continue;}
+      
+      var slug=slugify(p.name);
+      // Check uniqueness - add number if duplicate
+      var existing=Object.values(data).filter(function(x){return x.slug===slug&&Object.keys(data).find(function(k){return data[k]===x;})!==key;});
+      if(existing.length>0)slug=slug+'-'+(i+1);
+      
+      try{
+        await fetch(FB_DB+'/products/'+key+'.json?auth='+FB_KEY,{
+          method:'PATCH',
+          headers:{'Content-Type':'application/json'},
+          body:JSON.stringify({slug:slug})
+        });
+        log('✅ ['+( i+1)+'/'+keys.length+'] '+p.name+' → /produit/'+slug);
+        ok++;
+      }catch(e){
+        log('❌ Erreur: '+p.name+' — '+e.message);
+        err++;
+      }
+      await new Promise(function(r){setTimeout(r,100);});
+    }
+    
+    log('\n🎉 Migration terminée !');
+    log('✅ '+ok+' produits mis à jour');
+    if(skip)log('⚠️ '+skip+' ignorés');
+    if(err)log('❌ '+err+' erreurs');
+    log('\nTes URLs courtes sont maintenant actives !');
+    log('Exemple: embfboutik.vercel.app/produit/nom-du-produit');
+    
+  }catch(e){log('❌ Erreur: '+e.message);}
+}
+</script>
+</body>
+</html>

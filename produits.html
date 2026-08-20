@@ -304,6 +304,7 @@ footer{background:var(--s1);border-top:1px solid var(--border);padding:24px 16px
 
 <script>
 
+function slugify(t){return t.toString().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9\s-]/g,"").trim().replace(/\s+/g,"-").replace(/-+/g,"-").substring(0,60);}
 var FB_DB="https://boutique-embf-default-rtdb.europe-west1.firebasedatabase.app";
 var FB_KEY="AIzaSyA0UGFKeoatnMaCMAlaF3B3li9gFY4Dt0g";
 var WA="22655300868";

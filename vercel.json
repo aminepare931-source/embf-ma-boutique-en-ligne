@@ -1,0 +1,15 @@
+{
+  "rewrites": [
+    { "source": "/produit/:slug", "destination": "/produit.html" },
+    { "source": "/p/:slug", "destination": "/produit.html" }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Frame-Options", "value": "SAMEORIGIN" },
+        { "key": "X-Content-Type-Options", "value": "nosniff" }
+      ]
+    }
+  ]
+}
