@@ -2,187 +2,221 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-  <link rel="manifest" href="/manifest.json">
-  <link rel="icon" type="image/png" href="/assets/icons/icon-192x192.png">
-  <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png">
-  <meta name="theme-color" content="#00e5ff">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-title" content="EMBF Boutique">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<link rel="manifest" href="/manifest.json">
+<link rel="icon" type="image/png" href="/assets/icons/icon-192x192.png">
+<link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png">
+<meta name="theme-color" content="#000000">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="EMBF Boutique">
 <title>Programme d'Affiliation — EMBF Boutique</title>
 <meta name="description" content="Rejoignez le programme d'affiliation EMBF Boutique et gagnez des commissions sur chaque vente.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-FW2C4K6SCW"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-FW2C4K6SCW');</script>
+<link rel="stylesheet" href="/style.css">
 <style>
-*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
-:root{--bg:#03030a;--s1:#0c0c1d;--s2:#13132a;--a1:#00e5ff;--a2:#8b5cf6;--gold:#fbbf24;--txt:#f1f1ff;--muted:#8888aa;--border:rgba(0,229,255,0.12);--green:#22c55e;--a3:#f43f5e;--nh:60px;}
-html{scroll-behavior:smooth;}
-body{background:var(--bg);color:var(--txt);font-family:Outfit,sans-serif;overflow-x:hidden;}
-.nav{position:sticky;top:0;z-index:999;height:var(--nh);background:rgba(3,3,10,.96);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 16px;justify-content:space-between;gap:8px;}
-.nav-logo{text-decoration:none;}
-.nav-logo span{font-family:Bebas\ Neue,sans-serif;font-size:1.3rem;letter-spacing:.08em;background:linear-gradient(90deg,var(--a1),var(--a2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.nav-desktop{display:none;align-items:center;gap:4px;}
-.ndl{color:var(--muted);font-size:.82rem;font-weight:600;text-decoration:none;padding:7px 11px;border-radius:8px;}
-.ndl:hover{color:var(--a1);}
-.nav-cta{background:linear-gradient(135deg,var(--a1),var(--a2));color:#000;padding:7px 15px;border-radius:50px;font-weight:800;font-size:.82rem;text-decoration:none;white-space:nowrap;display:none;}
-.burger{display:flex;background:none;border:none;color:var(--txt);font-size:1.4rem;cursor:pointer;padding:8px;}
-.mmenu{display:none;position:fixed;top:var(--nh);left:0;right:0;background:rgba(12,12,29,.98);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);z-index:998;padding:12px;flex-direction:column;gap:6px;}
-.mmenu.open{display:flex;}
-.mmenu a{color:var(--muted);font-weight:600;font-size:.95rem;text-decoration:none;padding:13px 16px;border-radius:12px;display:flex;align-items:center;gap:10px;border:1px solid transparent;}
-.mmenu a:hover{color:var(--txt);background:rgba(255,255,255,.05);border-color:var(--border);}
-.mmenu .mwa{background:rgba(37,211,102,.1);border-color:rgba(37,211,102,.25);color:#25d366;}
-.mmenu .mcta{background:linear-gradient(135deg,var(--a1),var(--a2));color:#000;font-weight:800;justify-content:center;}
+/* ===== AFFILIATION PAGE ===== */
+.aff-hero{
+  padding:calc(var(--nav-h) + 40px) 24px 56px;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+  border-bottom:1px solid var(--border);
+}
+.aff-hero-glow{position:absolute;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(251,191,36,.08) 0%,transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;}
+.aff-hero-tag{font-size:.72rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:20px;}
+.aff-hero h1{font-family:var(--font-display);font-size:clamp(2.6rem,11vw,5.5rem);letter-spacing:.02em;line-height:.92;margin-bottom:16px;}
+.aff-hero h1 em{font-style:normal;background:linear-gradient(135deg,var(--gold),var(--p1));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.aff-hero-sub{color:var(--muted);font-size:clamp(.9rem,2.5vw,1.05rem);line-height:1.7;max-width:440px;margin:0 auto 36px;}
+.aff-hero-sub strong{color:var(--txt);}
 
-/* ALREADY MEMBER BANNER */
-.member-banner{background:linear-gradient(135deg,rgba(34,197,94,.1),rgba(0,229,255,.06));border:1px solid rgba(34,197,94,.25);border-radius:16px;padding:16px 18px;margin:16px;display:none;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+/* HOW IT WORKS */
+.how-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:680px;margin:0 auto;}
+.how-card{background:var(--s1);border:1px solid var(--border);border-radius:var(--radius);padding:20px 14px;text-align:center;transition:border-color .2s;}
+.how-card:hover{border-color:var(--border-2);}
+.how-icon{font-size:2rem;margin-bottom:10px;}
+.how-n{font-family:var(--font-display);font-size:1rem;color:var(--gold);letter-spacing:.04em;margin-bottom:6px;}
+.how-desc{color:var(--muted);font-size:.78rem;line-height:1.55;}
+
+/* TAB SWITCHER */
+.tab-switcher{display:flex;max-width:480px;margin:36px auto 0;background:var(--s1);border:1px solid var(--border);border-radius:50px;padding:4px;}
+.tab-btn{flex:1;padding:11px;border-radius:50px;font-weight:700;font-size:.88rem;transition:all .2s;color:var(--muted);}
+.tab-btn.act{background:var(--gold);color:#000;}
+
+/* BODY */
+.aff-body{max-width:860px;margin:0 auto;padding:40px 16px 80px;}
+
+/* MEMBER BANNER */
+.member-banner{background:linear-gradient(135deg,rgba(34,197,94,.08),rgba(0,229,255,.04));border:1px solid rgba(34,197,94,.22);border-radius:var(--radius);padding:16px 18px;margin:0 0 28px;display:none;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
 .member-banner.show{display:flex;}
 .member-banner-left{display:flex;align-items:center;gap:10px;}
 .member-code{font-family:monospace;font-size:1rem;font-weight:800;color:var(--gold);background:var(--s2);padding:4px 12px;border-radius:8px;letter-spacing:.08em;}
-.btn-dashboard{background:linear-gradient(135deg,var(--green),#16a34a);color:#fff;border:none;padding:10px 20px;border-radius:10px;font-family:Outfit,sans-serif;font-weight:800;font-size:.88rem;cursor:pointer;text-decoration:none;display:inline-block;white-space:nowrap;}
+.btn-dashboard{background:var(--green);color:#fff;padding:10px 20px;border-radius:12px;font-weight:800;font-size:.86rem;white-space:nowrap;transition:opacity .2s;}
+.btn-dashboard:active{opacity:.8;}
 
-/* HERO */
-.hero{padding:48px 16px 36px;background:linear-gradient(180deg,rgba(251,191,36,.06),transparent);border-bottom:1px solid var(--border);text-align:center;}
-.hero-badge{display:inline-block;background:linear-gradient(135deg,var(--gold),#f97316);color:#000;font-size:.75rem;font-weight:800;padding:5px 16px;border-radius:50px;letter-spacing:.06em;margin-bottom:16px;animation:pulse 2s ease infinite;}
-@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(251,191,36,.4);}50%{box-shadow:0 0 0 10px rgba(251,191,36,0);}}
-.hero h1{font-family:Bebas\ Neue,sans-serif;font-size:clamp(2.4rem,10vw,5rem);letter-spacing:.03em;line-height:1;margin-bottom:12px;}
-.hero h1 span{background:linear-gradient(90deg,var(--gold),var(--a1));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.hero-sub{color:var(--muted);font-size:.95rem;line-height:1.7;max-width:520px;margin:0 auto 24px;}
-.hero-sub strong{color:var(--txt);}
-.how-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:620px;margin:0 auto;}
-.how-card{background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:14px 10px;text-align:center;}
-.how-icon{font-size:1.8rem;margin-bottom:6px;}
-.how-n{font-family:Bebas\ Neue,sans-serif;font-size:.95rem;color:var(--a1);margin-bottom:4px;}
-.how-desc{color:var(--muted);font-size:.76rem;line-height:1.5;}
-
-/* TABS */
-.tab-switcher{display:flex;gap:0;max-width:500px;margin:32px auto 0;background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:4px;}
-.tab-btn{flex:1;padding:12px;border:none;border-radius:10px;font-family:Outfit,sans-serif;font-weight:700;font-size:.9rem;cursor:pointer;transition:all .2s;background:none;color:var(--muted);}
-.tab-btn.act{background:linear-gradient(135deg,var(--gold),#f97316);color:#000;}
-
-.body{max-width:860px;margin:0 auto;padding:28px 16px 80px;}
+/* SECTION LABELS */
+.section-title{font-family:var(--font-display);font-size:1.5rem;letter-spacing:.04em;margin-bottom:16px;color:var(--p1);}
 
 /* AVANTAGES */
-.avantages{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:28px;}
-.av-card{background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:14px;}
-.av-icon{font-size:1.3rem;margin-bottom:6px;}
-.av-title{font-weight:800;font-size:.88rem;margin-bottom:3px;}
-.av-desc{color:var(--muted);font-size:.8rem;line-height:1.6;}
+.avantages{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:32px;}
+.av-card{background:var(--s1);border:1px solid var(--border);border-radius:var(--radius);padding:16px;transition:border-color .2s;}
+.av-card:hover{border-color:var(--border-2);}
+.av-icon{font-size:1.4rem;margin-bottom:8px;}
+.av-title{font-weight:700;font-size:.88rem;margin-bottom:4px;}
+.av-desc{color:var(--muted);font-size:.78rem;line-height:1.6;}
+
+/* CALCULATOR */
+.calc-card{background:var(--s1);border:1px solid rgba(251,191,36,.18);border-radius:var(--radius-lg);padding:24px 18px;margin-bottom:28px;}
+.calc-card h2{font-family:var(--font-display);font-size:1.4rem;letter-spacing:.04em;margin-bottom:4px;color:var(--gold);}
+.calc-card .calc-sub{color:var(--muted);font-size:.84rem;margin-bottom:18px;}
+.calc-row{margin-bottom:14px;}
+.calc-row label{font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;font-weight:700;margin-bottom:6px;display:block;}
+.calc-input{width:100%;background:var(--s2);border:1.5px solid var(--border);color:var(--txt);padding:12px 14px;border-radius:12px;font-size:.9rem;outline:none;transition:border-color .2s;}
+.calc-input:focus{border-color:var(--gold);}
+.calc-input::placeholder{color:var(--muted);}
+.calc-range{width:100%;-webkit-appearance:none;appearance:none;height:4px;background:var(--s2);border-radius:4px;outline:none;margin-top:8px;}
+.calc-range::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:18px;height:18px;border-radius:50%;background:var(--gold);cursor:pointer;}
+.calc-range::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:var(--gold);cursor:pointer;border:none;}
+.calc-result{background:var(--s2);border:1px solid var(--border);border-radius:14px;padding:18px;margin-top:18px;text-align:center;}
+.calc-result-lbl{font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;font-weight:700;margin-bottom:8px;}
+.calc-result-val{font-family:var(--font-display);font-size:2.4rem;color:var(--gold);letter-spacing:.03em;line-height:1;}
+.calc-result-sub{color:var(--muted);font-size:.78rem;margin-top:8px;}
+
+/* STATS */
+.stats-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:32px;}
+.stat-card{background:var(--s1);border:1px solid var(--border);border-radius:var(--radius);padding:18px 14px;text-align:center;}
+.stat-num{font-family:var(--font-display);font-size:2rem;color:var(--p1);letter-spacing:.03em;line-height:1;margin-bottom:6px;}
+.stat-lbl{color:var(--muted);font-size:.74rem;font-weight:600;}
 
 /* FORM */
-.form-card{background:var(--s1);border:1px solid rgba(251,191,36,.2);border-radius:20px;padding:24px 18px;margin-bottom:20px;}
-.form-card h2{font-family:Bebas\ Neue,sans-serif;font-size:1.4rem;letter-spacing:.04em;margin-bottom:4px;color:var(--gold);}
+.form-card{background:var(--s1);border:1px solid rgba(251,191,36,.18);border-radius:var(--radius-lg);padding:24px 18px;margin-bottom:20px;}
+.form-card h2{font-family:var(--font-display);font-size:1.4rem;letter-spacing:.04em;margin-bottom:4px;color:var(--gold);}
 .form-card p{color:var(--muted);font-size:.84rem;margin-bottom:18px;}
-.frow{display:grid;gap:12px;margin-bottom:12px;}
-.finput{width:100%;background:var(--s2);border:1.5px solid var(--border);color:var(--txt);padding:12px 14px;border-radius:12px;font-family:Outfit,sans-serif;font-size:.9rem;outline:none;transition:border-color .2s;}
+.frow{display:grid;gap:10px;margin-bottom:10px;}
+.finput{width:100%;background:var(--s2);border:1.5px solid var(--border);color:var(--txt);padding:12px 14px;border-radius:12px;font-size:.9rem;outline:none;transition:border-color .2s;margin-bottom:10px;}
 .finput:focus{border-color:var(--gold);}
 .finput::placeholder{color:var(--muted);}
-.fselect{width:100%;background:var(--s2);border:1.5px solid var(--border);color:var(--txt);padding:12px 14px;border-radius:12px;font-family:Outfit,sans-serif;font-size:.9rem;outline:none;appearance:none;}
+.fselect{width:100%;background:var(--s2);border:1.5px solid var(--border);color:var(--txt);padding:12px 14px;border-radius:12px;font-size:.9rem;outline:none;appearance:none;cursor:pointer;margin-bottom:10px;transition:border-color .2s;}
 .fselect:focus{border-color:var(--gold);}
-.btn-submit{width:100%;background:linear-gradient(135deg,var(--gold),#f97316);color:#000;border:none;padding:14px;border-radius:14px;font-family:Outfit,sans-serif;font-weight:800;font-size:.95rem;cursor:pointer;transition:opacity .2s;margin-bottom:10px;}
+.btn-submit{width:100%;background:var(--gold);color:#000;border:none;padding:15px;border-radius:14px;font-weight:800;font-size:.95rem;transition:opacity .2s;margin-bottom:10px;}
 .btn-submit:disabled{opacity:.5;cursor:not-allowed;}
-.or-sep{text-align:center;color:var(--muted);font-size:.8rem;margin:10px 0;position:relative;}
+.btn-submit:active{opacity:.85;}
+.or-sep{text-align:center;color:var(--muted);font-size:.78rem;margin:12px 0;position:relative;}
 .or-sep::before,.or-sep::after{content:'';position:absolute;top:50%;width:42%;height:1px;background:var(--border);}
 .or-sep::before{left:0;}.or-sep::after{right:0;}
-.btn-wa{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;background:rgba(37,211,102,.12);border:1px solid rgba(37,211,102,.25);color:#25d366;padding:13px;border-radius:14px;font-family:Outfit,sans-serif;font-weight:700;font-size:.9rem;text-decoration:none;}
+.btn-wa-form{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;background:rgba(37,211,102,.12);border:1px solid rgba(37,211,102,.25);color:var(--wa);padding:13px;border-radius:14px;font-weight:700;font-size:.9rem;transition:background .2s;}
+.btn-wa-form:active{background:rgba(37,211,102,.2);}
 
-/* LOGIN SECTION */
-.login-card{background:var(--s1);border:1px solid var(--border);border-radius:20px;padding:24px 18px;margin-bottom:20px;text-align:center;}
-.login-card h2{font-family:Bebas\ Neue,sans-serif;font-size:1.4rem;letter-spacing:.04em;margin-bottom:4px;color:var(--a1);}
+/* LOGIN */
+.login-card{background:var(--s1);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px 18px;margin-bottom:20px;text-align:center;}
+.login-card h2{font-family:var(--font-display);font-size:1.4rem;letter-spacing:.04em;margin-bottom:4px;color:var(--p1);}
 .login-card p{color:var(--muted);font-size:.84rem;margin-bottom:18px;line-height:1.6;}
-.btn-login{width:100%;background:linear-gradient(135deg,var(--a1),var(--a2));color:#000;border:none;padding:14px;border-radius:14px;font-family:Outfit,sans-serif;font-weight:800;font-size:.95rem;cursor:pointer;}
+.btn-login{width:100%;background:var(--txt);color:#000;border:none;padding:15px;border-radius:14px;font-weight:800;font-size:.95rem;transition:opacity .2s;}
 .btn-login:disabled{opacity:.5;cursor:not-allowed;}
+.btn-login:active{opacity:.85;}
 
 /* SUCCESS */
-.success-box{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.25);border-radius:16px;padding:24px;text-align:center;display:none;}
-.success-box h3{font-family:Bebas\ Neue,sans-serif;font-size:1.5rem;color:var(--green);margin-bottom:8px;}
-.success-box p{color:var(--muted);font-size:.88rem;line-height:1.7;}
-.code-display{background:var(--s2);border:2px solid var(--gold);border-radius:12px;padding:12px 16px;font-family:monospace;font-size:1.4rem;font-weight:800;color:var(--gold);letter-spacing:.12em;margin:12px 0;text-align:center;}
+.success-box{background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.22);border-radius:var(--radius-lg);padding:28px;text-align:center;display:none;}
+.success-box h3{font-family:var(--font-display);font-size:1.6rem;color:var(--green);margin-bottom:8px;letter-spacing:.04em;}
+.success-box p{color:var(--muted);font-size:.86rem;line-height:1.7;}
+.code-display{background:var(--s2);border:2px solid var(--gold);border-radius:14px;padding:14px 16px;font-family:monospace;font-size:1.5rem;font-weight:800;color:var(--gold);letter-spacing:.12em;margin:14px 0;text-align:center;}
 
 /* FAQ */
-.faq-item{background:var(--s1);border:1px solid var(--border);border-radius:14px;margin-bottom:8px;overflow:hidden;}
-.faq-q{padding:14px 18px;font-weight:700;font-size:.88rem;cursor:pointer;display:flex;justify-content:space-between;align-items:center;}
-.faq-q:hover{color:var(--a1);}
-.faq-a{padding:0 18px 14px;color:var(--muted);font-size:.84rem;line-height:1.7;display:none;}
+.faq-item{background:var(--s1);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:8px;overflow:hidden;transition:border-color .2s;}
+.faq-item.open{border-color:var(--border-2);}
+.faq-q{padding:16px 18px;font-weight:700;font-size:.88rem;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:12px;}
+.faq-q:hover{color:var(--p1);}
+.faq-a{padding:0 18px 16px;color:var(--muted);font-size:.84rem;line-height:1.7;display:none;}
 .faq-item.open .faq-a{display:block;}
-.faq-arrow{transition:transform .2s;font-size:.7rem;}
+.faq-arrow{transition:transform .25s;font-size:.7rem;flex-shrink:0;}
 .faq-item.open .faq-arrow{transform:rotate(180deg);}
 
-/* MISC */
-.section-title{font-family:Bebas\ Neue,sans-serif;font-size:1.5rem;letter-spacing:.04em;margin-bottom:16px;color:var(--a1);}
-.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(40px);padding:10px 22px;border-radius:50px;font-weight:700;font-size:.84rem;z-index:2000;transition:all .3s;opacity:0;white-space:nowrap;}
-.toast.show{transform:translateX(-50%) translateY(0);opacity:1;}
-.toast.ok{background:var(--green);color:#fff;}
-.toast.err{background:var(--a3);color:#fff;}
-.waf{position:fixed;bottom:18px;left:14px;z-index:800;width:54px;height:54px;border-radius:50%;background:#25d366;color:white;display:flex;align-items:center;justify-content:center;font-size:1.55rem;text-decoration:none;box-shadow:0 4px 20px rgba(37,211,102,.5);}
-footer{background:var(--s1);border-top:1px solid var(--border);padding:28px 16px 60px;}
-.flinks{display:flex;gap:12px;flex-wrap:wrap;margin:10px 0 14px;}
-.flinks a{color:var(--muted);text-decoration:none;font-size:.8rem;}
-.flinks a:hover{color:var(--a1);}
-.fcopy{border-top:1px solid var(--border);padding-top:14px;color:var(--muted);font-size:.73rem;}
-@media(min-width:700px){
-  :root{--nh:68px;}
-  .nav{padding:0 40px;}
-  .nav-desktop{display:flex;}
-  .nav-cta{display:block;}
-  .burger{display:none!important;}
-  .body{padding-left:40px;padding-right:40px;}
-  .hero{padding-left:40px;padding-right:40px;}
+@media(min-width:600px){
+  .aff-body{padding-left:24px;padding-right:24px;}
   .frow{grid-template-columns:1fr 1fr;}
   .avantages{grid-template-columns:repeat(4,1fr);}
+  .stats-grid{grid-template-columns:repeat(4,1fr);}
+}
+@media(min-width:900px){
+  .aff-body{padding-left:40px;padding-right:40px;}
+  .aff-hero{padding-left:40px;padding-right:40px;}
 }
 </style>
 </head>
 <body>
-<nav class="nav">
-  <a href="index.html" class="nav-logo"><img src="/assets/icons/icon-96x96.png" alt="EMBF" style="width:28px;height:28px;border-radius:6px;object-fit:cover;margin-right:7px;vertical-align:middle;"><span>EMBF BOUTIQUE</span></a>
+
+<!-- TRUST BAR -->
+<div class="trust-bar">
+  <div class="trust-item">✅ <b>100% Authentique</b></div>
+  <div class="trust-item">🚀 <b>Livraison 24-72H</b></div>
+  <div class="trust-item">🔄 <b>Retour 7 jours</b></div>
+  <div class="trust-item">🔒 <b>Paiement sécurisé</b></div>
+  <div class="trust-item">💬 <b>Support WhatsApp</b></div>
+  <div class="trust-item">✨ <b>Import sur demande</b></div>
+</div>
+
+<!-- NAV -->
+<nav class="nav scrolled" id="nav">
+  <a href="index.html" class="nav-logo">
+    <img src="/assets/icons/icon-96x96.png" alt="EMBF">
+    <span>EMBF</span>
+  </a>
   <div class="nav-desktop">
-    <a href="index.html" class="ndl">Accueil</a>
-    <a href="produits.html" class="ndl">Produits</a>
-    <a href="demande.html" class="ndl" style="color:var(--gold);font-weight:800;">Demande</a>
-    <a href="contact.html" class="ndl">Contact</a>
+    <a href="index.html" class="nav-link">Accueil</a>
+    <a href="produits.html" class="nav-link">Produits</a>
+    <a href="demande.html" class="nav-link gold">Demande</a>
+    <a href="contact.html" class="nav-link">Contact</a>
+    <a href="affiliation.html" class="nav-link gold act">Affiliation</a>
+    <a href="https://wa.me/22655300868" target="_blank" class="nav-wa">WhatsApp</a>
   </div>
-  <a href="produits.html" class="nav-cta">Voir les produits</a>
-  <button class="burger" id="burgerBtn" onclick="toggleMenu()">&#9776;</button>
+  <div class="nav-right">
+    <button class="nav-icon" onclick="toggleCart()" title="Panier">🛒<span class="nav-badge" id="cartCount" style="display:none;">0</span></button>
+    <button class="burger" id="burgerBtn" onclick="toggleMenu()"><span></span><span></span><span></span></button>
+  </div>
 </nav>
+
+<!-- MOBILE MENU -->
 <div class="mmenu" id="mmenu">
   <a href="index.html">🏠 Accueil</a>
   <a href="produits.html">🛍️ Produits</a>
-  <a href="demande.html" style="color:var(--gold);">✨ Faire une demande</a>
+  <a href="demande.html" class="gold-link">✨ Faire une demande</a>
   <a href="contact.html">📞 Contact</a>
-  <a href="https://wa.me/22655300868" target="_blank" class="mwa">💬 WhatsApp</a>
-  <a href="produits.html" class="mcta">Voir les produits</a>
+  <a href="affiliation.html" class="gold-link">💰 Affiliation</a>
+  <a href="apropos.html">ℹ️ À Propos</a>
+  <a href="https://wa.me/22655300868" target="_blank" class="wa-link">💬 WhatsApp</a>
 </div>
 
-<!-- MEMBER BANNER (shown if already registered) -->
-<div class="member-banner" id="memberBanner">
-  <div class="member-banner-left">
-    <div>
-      <div style="font-weight:800;font-size:.9rem;margin-bottom:3px;">👋 Déjà affilié !</div>
-      <div style="color:var(--muted);font-size:.8rem;">Votre code : <span class="member-code" id="memberCode">---</span></div>
-    </div>
-  </div>
-  <a href="espace-affilie.html" class="btn-dashboard">📊 Mon tableau de bord →</a>
-</div>
-
-<div class="hero">
-  <div class="hero-badge">💰 Programme Affilié</div>
-  <h1>GAGNEZ EN<br><span>PARTAGEANT</span></h1>
-  <p class="hero-sub">Partagez nos produits tech et gagnez une <strong>commission sur chaque vente</strong>. Gratuit, sans stock, sans risque.</p>
+<!-- HERO -->
+<div class="aff-hero">
+  <div class="aff-hero-glow"></div>
+  <div class="aff-hero-tag">💰 Programme Affilié</div>
+  <h1>GAGNEZ EN<br><em>PARTAGEANT</em></h1>
+  <p class="aff-hero-sub">Partagez nos produits tech et gagnez une <strong>commission sur chaque vente</strong>. Gratuit, sans stock, sans risque.</p>
   <div class="how-grid">
     <div class="how-card"><div class="how-icon">📝</div><div class="how-n">1. Inscrivez-vous</div><div class="how-desc">Formulaire gratuit, code immédiat</div></div>
     <div class="how-card"><div class="how-icon">🔗</div><div class="how-n">2. Partagez</div><div class="how-desc">Vos liens affiliés personnels</div></div>
     <div class="how-card"><div class="how-icon">💸</div><div class="how-n">3. Gagnez</div><div class="how-desc">Commission sur chaque vente</div></div>
   </div>
-
-  <!-- TAB SWITCHER -->
   <div class="tab-switcher">
     <button class="tab-btn act" id="tabInscription" onclick="switchTab('inscription')">📝 Je m'inscris</button>
     <button class="tab-btn" id="tabConnexion" onclick="switchTab('connexion')">🔓 J'ai un compte</button>
   </div>
 </div>
 
-<div class="body">
+<div class="aff-body">
+
+  <!-- MEMBER BANNER -->
+  <div class="member-banner" id="memberBanner">
+    <div class="member-banner-left">
+      <div>
+        <div style="font-weight:800;font-size:.9rem;margin-bottom:3px;">👋 Déjà affilié !</div>
+        <div style="color:var(--muted);font-size:.8rem;">Votre code : <span class="member-code" id="memberCode">---</span></div>
+      </div>
+    </div>
+    <a href="espace-affilie.html" class="btn-dashboard">📊 Mon tableau de bord →</a>
+  </div>
 
   <!-- TAB INSCRIPTION -->
   <div id="sectionInscription">
@@ -194,6 +228,35 @@ footer{background:var(--s1);border-top:1px solid var(--border);padding:28px 16px
       <div class="av-card"><div class="av-icon">⚡</div><div class="av-title">Produits populaires</div><div class="av-desc">Smartphones, laptops, gadgets.</div></div>
     </div>
 
+    <!-- COMMISSION CALCULATOR -->
+    <div class="calc-card">
+      <h2>🧮 Calculez vos gains</h2>
+      <div class="calc-sub">Estimez votre commission en temps réel.</div>
+      <div class="calc-row">
+        <label>Prix du produit (FCFA)</label>
+        <input class="calc-input" id="calcPrice" type="number" placeholder="Ex: 150000" oninput="calcCommission()">
+      </div>
+      <div class="calc-row">
+        <label>Taux de commission : <span id="rateLabel" style="color:var(--gold);font-weight:800;">5%</span></label>
+        <input class="calc-range" id="calcRate" type="range" min="2" max="10" value="5" step="1" oninput="calcCommission()">
+      </div>
+      <div class="calc-result">
+        <div class="calc-result-lbl">Votre commission par vente</div>
+        <div class="calc-result-val" id="calcResult">0 FCFA</div>
+        <div class="calc-result-sub" id="calcSub">Sur 10 ventes : 0 FCFA</div>
+      </div>
+    </div>
+
+    <!-- STATS -->
+    <div class="section-title">Le programme en chiffres</div>
+    <div class="stats-grid">
+      <div class="stat-card"><div class="stat-num">10%</div><div class="stat-lbl">Commission max</div></div>
+      <div class="stat-card"><div class="stat-num">5000</div><div class="stat-lbl">FCFA retrait min</div></div>
+      <div class="stat-card"><div class="stat-num">24h</div><div class="stat-lbl">Validation</div></div>
+      <div class="stat-card"><div class="stat-num">0€</div><div class="stat-lbl">Coût d'inscription</div></div>
+    </div>
+
+    <!-- FORM -->
     <div class="form-card" id="formSection">
       <h2>📝 Rejoindre le programme</h2>
       <p>Inscription gratuite — recevez votre code affilié immédiatement.</p>
@@ -210,12 +273,13 @@ footer{background:var(--s1);border-top:1px solid var(--border);padding:28px 16px
           <option>Bamako</option><option>Autre</option>
         </select>
       </div>
-      <input class="finput" id="affReseaux" type="text" placeholder="Réseaux sociaux (Facebook, TikTok, Instagram...)" style="margin-bottom:14px;">
+      <input class="finput" id="affReseaux" type="text" placeholder="Réseaux sociaux (Facebook, TikTok, Instagram...)">
       <button class="btn-submit" id="btnSubmit" onclick="submitAffiliation()">🚀 Je rejoins le programme</button>
       <div class="or-sep">ou</div>
-      <a class="btn-wa" href="https://wa.me/22655300868?text=Bonjour ! Je veux rejoindre le programme d'affiliation EMBF Boutique." target="_blank">💬 S'inscrire via WhatsApp</a>
+      <a class="btn-wa-form" href="https://wa.me/22655300868?text=Bonjour ! Je veux rejoindre le programme d'affiliation EMBF Boutique." target="_blank">💬 S'inscrire via WhatsApp</a>
     </div>
 
+    <!-- SUCCESS -->
     <div class="success-box" id="successBox">
       <div style="font-size:2.5rem;margin-bottom:8px;">🎉</div>
       <h3>BIENVENUE !</h3>
@@ -225,7 +289,8 @@ footer{background:var(--s1);border-top:1px solid var(--border);padding:28px 16px
       <a href="espace-affilie.html" class="btn-dashboard" style="display:inline-block;">📊 Accéder à mon tableau de bord →</a>
     </div>
 
-    <div class="section-title" style="margin-top:28px;">Questions fréquentes</div>
+    <!-- FAQ -->
+    <div class="section-title" style="margin-top:32px;">Questions fréquentes</div>
     <div id="faqSection">
       <div class="faq-item">
         <div class="faq-q" onclick="toggleFaq(this)">Comment sont calculées les commissions ? <span class="faq-arrow">▼</span></div>
@@ -256,83 +321,122 @@ footer{background:var(--s1);border-top:1px solid var(--border);padding:28px 16px
       <div style="font-size:2rem;margin-bottom:8px;">🔓</div>
       <h2>ACCÉDER À MON ESPACE</h2>
       <p>Entrez votre code affilié pour accéder à votre tableau de bord, vos liens et vos gains.</p>
-      <input class="finput" id="loginCode" type="text" placeholder="Votre code (ex: AMI123)" maxlength="10" style="text-align:center;font-family:monospace;font-size:1.1rem;letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px;">
+      <input class="finput" id="loginCode" type="text" placeholder="Votre code (ex: AMI123)" maxlength="10" style="text-align:center;font-family:monospace;font-size:1.1rem;letter-spacing:.1em;text-transform:uppercase;">
       <button class="btn-login" id="btnLogin" onclick="goToDashboard()">📊 Accéder à mon tableau de bord</button>
-      <div style="margin-top:12px;font-size:.8rem;color:var(--muted);">Pas encore affilié ? <span onclick="switchTab('inscription')" style="color:var(--a1);cursor:pointer;font-weight:700;">S'inscrire gratuitement →</span></div>
+      <div style="margin-top:12px;font-size:.8rem;color:var(--muted);">Pas encore affilié ? <span onclick="switchTab('inscription')" style="color:var(--p1);cursor:pointer;font-weight:700;">S'inscrire gratuitement →</span></div>
     </div>
   </div>
 
 </div>
 
+<!-- FOOTER -->
 <footer>
-  <div style="max-width:1100px;margin:0 auto;">
-    <div style="font-family:Bebas\ Neue,sans-serif;font-size:1.3rem;letter-spacing:.08em;background:linear-gradient(90deg,var(--a1),var(--a2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px;">EMBF BOUTIQUE</div>
-    <p style="color:var(--muted);font-size:.82rem;max-width:400px;line-height:1.6;margin-bottom:14px;">Votre boutique tech de confiance en Afrique.</p>
-    <div class="flinks">
+  <div class="footer-in">
+    <div class="footer-logo">EMBF BOUTIQUE</div>
+    <p class="footer-desc">Votre boutique tech de confiance en Afrique de l'Ouest.</p>
+    <div class="footer-links">
       <a href="index.html">Accueil</a><a href="produits.html">Produits</a>
-      <a href="affiliation.html" style="color:var(--gold);font-weight:700;">💰 Affiliation</a>
-      <a href="cgv.html">CGV</a><a href="confidentialite.html">Confidentialité</a>
-      <a href="mentions-legales.html">Mentions légales</a><a href="livraison.html">Livraison</a>
+      <a href="demande.html">Demande</a><a href="contact.html">Contact</a>
+      <a href="apropos.html">À Propos</a><a href="affiliation.html" style="color:var(--gold);font-weight:700;">💰 Affiliation</a>
+      <a href="cgv.html">CGV</a><a href="livraison.html">Livraison</a><a href="confidentialite.html">Confidentialité</a>
     </div>
-    <div class="fcopy">© 2025 EMBF Boutique — aminepare931@gmail.com</div>
+    <div class="footer-copy">© 2025 EMBF Boutique — aminepare931@gmail.com</div>
   </div>
 </footer>
 
 <a class="waf" href="https://wa.me/22655300868" target="_blank">💬</a>
 <div class="toast" id="toast"></div>
 
+<!-- CART DRAWER -->
+<div class="cart-ov" id="cartOv" onclick="if(event.target===this)toggleCart()"></div>
+<div class="cart-drawer" id="cartDrawer">
+  <div class="cart-drag"></div>
+  <div class="cart-hdr">
+    <h3>🛒 Mon panier</h3>
+    <button class="cart-close" onclick="toggleCart()">✕</button>
+  </div>
+  <div class="cart-list" id="cartList"></div>
+  <div class="cart-sep"></div>
+  <div class="cart-total-row">
+    <span class="cart-total-lbl">Total</span>
+    <span class="cart-total-val" id="cartTotal">0 FCFA</span>
+  </div>
+  <button class="btn-checkout" onclick="cartToWa()">💬 Commander le panier</button>
+</div>
+
 <script>
 var FB_DB="https://boutique-embf-default-rtdb.europe-west1.firebasedatabase.app";
+var WA="22655300868";
+var CE={"Ordinateur":"💻","Smartphone":"📱","Gadget":"🎮","Accessoires":"🎧","Autre":"📦"};
+function fmt(v){return Number(v).toLocaleString("fr-FR")+" FCFA";}
 
+/* NAV scroll */
+window.addEventListener('scroll',function(){
+  document.getElementById('nav').classList.toggle('scrolled',window.scrollY>40);
+},{passive:true});
+
+/* MOBILE MENU */
 function toggleMenu(){
   var m=document.getElementById('mmenu'),b=document.getElementById('burgerBtn');
-  var o=m.classList.toggle('open');b.textContent=o?'✕':'☰';
+  var o=m.classList.toggle('open');b.classList.toggle('open',o);
 }
 document.querySelectorAll('.mmenu a').forEach(function(a){
-  a.addEventListener('click',function(){document.getElementById('mmenu').classList.remove('open');document.getElementById('burgerBtn').textContent='☰';});
+  a.addEventListener('click',function(){document.getElementById('mmenu').classList.remove('open');document.getElementById('burgerBtn').classList.remove('open');});
 });
 
+/* TOAST */
 function showToast(msg,ok){
   var t=document.getElementById('toast');
   t.textContent=msg;t.className='toast show '+(ok===false?'err':'ok');
-  setTimeout(function(){t.className='toast';},3000);
+  clearTimeout(t._to);t._to=setTimeout(function(){t.classList.remove('show');},2800);
 }
 
+/* FAQ */
 function toggleFaq(el){el.parentElement.classList.toggle('open');}
 
-// Check if already member on load
+/* COMMISSION CALCULATOR */
+function calcCommission(){
+  var price=parseFloat(document.getElementById('calcPrice').value)||0;
+  var rate=parseInt(document.getElementById('calcRate').value,10)||5;
+  document.getElementById('rateLabel').textContent=rate+'%';
+  var commission=Math.round(price*rate/100);
+  document.getElementById('calcResult').textContent=fmt(commission);
+  document.getElementById('calcSub').textContent='Sur 10 ventes : '+fmt(commission*10);
+}
+
+/* CHECK ALREADY MEMBER ON LOAD */
 window.addEventListener('load',function(){
   var saved=localStorage.getItem('embf_affilie_code');
   if(saved){
-    // Show member banner
     var banner=document.getElementById('memberBanner');
     var codeEl=document.getElementById('memberCode');
-    if(banner){banner.classList.add('show');}
-    if(codeEl){codeEl.textContent=saved;}
-    // Pre-fill login tab
+    if(banner)banner.classList.add('show');
+    if(codeEl)codeEl.textContent=saved;
     var loginInp=document.getElementById('loginCode');
     if(loginInp)loginInp.value=saved;
   }
-  // Check URL param ?tab=connexion
   var params=new URLSearchParams(location.search);
   if(params.get('tab')==='connexion')switchTab('connexion');
+  calcCommission();
 });
 
+/* TABS */
 function switchTab(tab){
   document.getElementById('sectionInscription').style.display=tab==='inscription'?'block':'none';
   document.getElementById('sectionConnexion').style.display=tab==='connexion'?'block':'none';
   document.getElementById('tabInscription').classList.toggle('act',tab==='inscription');
   document.getElementById('tabConnexion').classList.toggle('act',tab==='connexion');
-  // Scroll to tabs
   document.querySelector('.tab-switcher').scrollIntoView({behavior:'smooth',block:'center'});
 }
 
+/* GENERATE CODE */
 function generateCode(nom){
   var initials=nom.trim().toUpperCase().replace(/[^A-Z]/g,'').substring(0,3);
   if(initials.length<2)initials='AFF';
   return initials+Math.floor(100+Math.random()*900);
 }
 
+/* SUBMIT AFFILIATION */
 async function submitAffiliation(){
   var nom=document.getElementById('affNom').value.trim();
   var tel=document.getElementById('affTel').value.trim();
@@ -353,7 +457,6 @@ async function submitAffiliation(){
     document.getElementById('formSection').style.display='none';
     document.getElementById('codeDisplay').textContent=code;
     document.getElementById('successBox').style.display='block';
-    // Update banner
     var banner=document.getElementById('memberBanner');
     var codeEl=document.getElementById('memberCode');
     if(banner)banner.classList.add('show');
@@ -364,12 +467,50 @@ async function submitAffiliation(){
   }
 }
 
+/* GO TO DASHBOARD */
 function goToDashboard(){
   var code=document.getElementById('loginCode').value.trim().toUpperCase();
   if(!code){showToast('❌ Entrez votre code',false);return;}
   localStorage.setItem('embf_affilie_code',code);
   window.location.href='espace-affilie.html';
 }
+
+/* CART (shared with nav) */
+var cart=JSON.parse(localStorage.getItem("mb_cart")||"[]");
+function saveCart(){localStorage.setItem("mb_cart",JSON.stringify(cart));updateCartUI();}
+function updateCartUI(){
+  var total=cart.reduce(function(s,c){return s+c.qty;},0);
+  var el=document.getElementById("cartCount");if(el){el.textContent=total;el.style.display=total>0?'flex':'none';}
+  var list=document.getElementById("cartList");if(!list)return;
+  if(!cart.length){list.innerHTML='<div class="cart-empty-state"><div>🛒</div><p>Panier vide</p></div>';document.getElementById("cartTotal").textContent="0 FCFA";return;}
+  list.innerHTML=cart.map(function(c){
+    return "<div class='cart-item'>"+
+      (c.img?"<img class='ci-img' src='"+c.img+"' alt=''>":"<div class='ci-img-ph'>"+(CE[c.cat]||"📦")+"</div>")+
+      "<div class='ci-info'><div class='ci-name'>"+c.name+"</div><div class='ci-price'>"+fmt(c.price)+"</div>"+
+      "<div class='ci-qty'>"+
+        "<button class='qty-btn' onclick='changeQty(\""+c.id+"\",-1)'>−</button>"+
+        "<span style='font-weight:700;font-size:.9rem;min-width:18px;text-align:center;'>"+c.qty+"</span>"+
+        "<button class='qty-btn' onclick='changeQty(\""+c.id+"\",1)'>+</button>"+
+      "</div></div></div>";
+  }).join("");
+  document.getElementById("cartTotal").textContent=fmt(cart.reduce(function(s,c){return s+c.price*c.qty;},0));
+}
+function changeQty(id,d){var i=cart.find(function(c){return c.id===id;});if(!i)return;i.qty+=d;if(i.qty<=0)cart=cart.filter(function(c){return c.id!==id;});saveCart();}
+function toggleCart(){
+  var ov=document.getElementById("cartOv"),dr=document.getElementById("cartDrawer");
+  var open=dr.classList.toggle("open");
+  ov.classList.toggle("show",open);
+  document.body.style.overflow=open?"hidden":"";
+}
+function cartToWa(){
+  if(!cart.length)return;
+  var name=prompt("Votre nom ?")||"Un client";
+  var items=cart.map(function(c){return "• *"+c.name+"* x"+c.qty+" = "+fmt(c.price*c.qty);}).join("\n");
+  var total=fmt(cart.reduce(function(s,c){return s+c.price*c.qty;},0));
+  var url="https://wa.me/22655300868?text="+encodeURIComponent("Bonjour EMBF ! 👋\n\nJe suis *"+name+"* et je veux commander :\n\n"+items+"\n\n💰 *Total : "+total+"*\n\nMerci !");
+  if(/Mobi|Android/i.test(navigator.userAgent))window.location.href=url;else window.open(url,"_blank");
+}
+updateCartUI();
 </script>
 <script src="https://rachida-ia.lovable.app/widget/rachida.js" data-shop="shop-os79u9" async defer onerror="console.warn('Rachida widget indisponible')"></script>
 <script>if("serviceWorker" in navigator){navigator.serviceWorker.register("/sw.js").catch(function(){});}</script>
