@@ -3,16 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>EMBF Boutique — Tech Premium Afrique</title>
-<meta name="description" content="La meilleure boutique tech en Afrique de l'Ouest. Smartphones, ordinateurs, gadgets. Livraison rapide.">
+<title>EMBF Boutique — Electro Market BF | La meilleure boutique en ligne d'équipement électronique</title>
+<meta name="description" content="EMBF (Electro Market BF) — La meilleure boutique en ligne d'équipement électronique et divers au Burkina Faso. Smartphones, ordinateurs, gadgets. Livraison rapide.">
 <link rel="manifest" href="/manifest.json">
 <link rel="icon" type="image/png" href="/assets/icons/icon-192x192.png">
 <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png">
 <meta name="theme-color" content="#000000">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="EMBF Boutique">
-<meta property="og:title" content="EMBF Boutique — Tech Premium Afrique">
-<meta property="og:description" content="La meilleure boutique tech en Afrique de l'Ouest.">
+<meta property="og:title" content="EMBF Boutique — Electro Market BF">
+<meta property="og:description" content="La meilleure boutique en ligne d'équipement électronique et divers au Burkina Faso.">
 <meta property="og:image" content="https://embfboutik.vercel.app/assets/icons/icon-512x512.png">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-FW2C4K6SCW"></script>
@@ -20,16 +20,26 @@
 <link rel="stylesheet" href="/style.css">
 <style>
 /* ===== HERO ===== */
-.hero{min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:80px 24px 60px;position:relative;overflow:hidden;}
-.hero-glow{position:absolute;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(0,229,255,.1) 0%,transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;animation:glowPulse 6s ease infinite alternate;}
+.hero{min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:80px 24px 60px;position:relative;overflow:hidden;background:
+  radial-gradient(ellipse 80% 60% at 50% 0%,rgba(0,229,255,.12) 0%,transparent 60%),
+  linear-gradient(180deg,#050510 0%,#0a0a18 100%);}
+.hero::before{content:'';position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.35;
+  background-image:
+    linear-gradient(rgba(0,229,255,.09) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(0,229,255,.09) 1px,transparent 1px);
+  background-size:42px 42px;
+  -webkit-mask-image:radial-gradient(ellipse 70% 65% at 50% 35%,#000 0%,transparent 75%);
+  mask-image:radial-gradient(ellipse 70% 65% at 50% 35%,#000 0%,transparent 75%);}
+.hero-glow{position:absolute;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(0,229,255,.1) 0%,transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;animation:glowPulse 6s ease infinite alternate;z-index:0;}
 @keyframes glowPulse{0%{opacity:.6;transform:translate(-50%,-50%) scale(1);}100%{opacity:1;transform:translate(-50%,-50%) scale(1.1);}}
-.hero-glow-2{position:absolute;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(139,92,246,.08) 0%,transparent 70%);top:30%;right:10%;pointer-events:none;animation:glowPulse 8s ease infinite alternate-reverse;}
+.hero-glow-2{position:absolute;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(139,92,246,.08) 0%,transparent 70%);top:30%;right:10%;pointer-events:none;animation:glowPulse 8s ease infinite alternate-reverse;z-index:0;}
+.hero-tag,.hero h1,.hero-sub,.hero-cta,.hero-scroll{position:relative;z-index:1;}
 .hero-tag{font-size:.72rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:20px;animation:fadeUp .8s var(--ease) both;}
 .hero h1{font-family:var(--font-display);font-size:clamp(3.5rem,16vw,9rem);letter-spacing:-.01em;line-height:.92;margin-bottom:20px;animation:fadeUp .8s var(--ease) .1s both;}
 .hero h1 em{font-style:normal;background:linear-gradient(135deg,var(--p1),var(--s-c1));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
 .hero-sub{color:var(--muted);font-size:clamp(.9rem,2.5vw,1.05rem);line-height:1.7;max-width:380px;margin:0 auto 36px;animation:fadeUp .8s var(--ease) .2s both;}
 .hero-cta{display:flex;flex-direction:column;gap:10px;width:100%;max-width:300px;margin:0 auto;animation:fadeUp .8s var(--ease) .3s both;}
-.hero-scroll{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:6px;color:var(--muted);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;animation:bounce 2s ease infinite;}
+.hero-scroll{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:6px;color:var(--muted);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;animation:bounce 2s ease infinite;z-index:1;}
 .hero-scroll-line{width:1px;height:40px;background:linear-gradient(180deg,var(--muted),transparent);}
 @keyframes fadeUp{from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:translateY(0);}}
 
@@ -75,6 +85,7 @@
 .grid-link{color:var(--txt);font-size:.78rem;font-weight:600;opacity:.6;transition:opacity .2s;}
 .grid-link:hover{opacity:1;}
 .prod-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+@media(max-width:380px){.prod-grid{gap:8px;}}
 
 /* ===== WHY ===== */
 .why{padding:60px 16px;border-top:1px solid var(--border);}
@@ -150,9 +161,9 @@
 <div class="hero">
   <div class="hero-glow"></div>
   <div class="hero-glow-2"></div>
-  <div class="hero-tag">Afrique de l'Ouest · Tech Premium</div>
+  <div class="hero-tag">Electro Market BF · Burkina Faso</div>
   <h1>LA TECH<br>À TON <em>PRIX</em></h1>
-  <p class="hero-sub">Smartphones, laptops, gadgets. Livrés rapidement. Payés simplement.</p>
+  <p class="hero-sub">La meilleure boutique en ligne d'équipement électronique et divers. Smartphones, laptops, gadgets — livrés rapidement, payés simplement.</p>
   <div class="hero-cta">
     <a href="produits.html" class="btn btn-primary">Voir les produits</a>
     <a href="https://wa.me/22655300868" target="_blank" class="btn btn-secondary">💬 WhatsApp</a>

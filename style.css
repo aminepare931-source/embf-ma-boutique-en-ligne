@@ -319,13 +319,25 @@ footer{
 @media(min-width:900px){.pgrid{grid-template-columns:repeat(4,1fr);gap:14px;}}
 .pcard{background:var(--s1);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;cursor:pointer;transition:border-color .2s,transform .2s;}
 .pcard:hover{border-color:rgba(255,255,255,.18);}
-.pcard-img,.pcard-img-ph{width:100%;aspect-ratio:1;object-fit:cover;background:var(--s2);display:flex;align-items:center;justify-content:center;font-size:2rem;}
+.pcard-img,.pcard-img-ph{width:100%;aspect-ratio:1;object-fit:cover;background:var(--s2);display:flex;align-items:center;justify-content:center;font-size:2rem;position:relative;}
 .pcard-img img{width:100%;height:100%;object-fit:cover;display:block;}
 .pcard-body{padding:10px 12px 12px;}
-.pcard-name{font-size:.85rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:4px;}
+.pcard-name{font-size:.83rem;font-weight:600;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:2.25em;margin-bottom:4px;}
 .pcard-price{color:var(--p1);font-weight:800;font-size:.95rem;margin-bottom:8px;}
-.pcard-add{width:100%;background:var(--s2);border:1px solid var(--border);color:var(--txt);border-radius:50px;padding:8px;font-size:.78rem;font-weight:700;cursor:pointer;transition:background .2s;}
+.pcard-add{width:100%;background:var(--s2);border:1px solid var(--border);color:var(--txt);border-radius:50px;padding:9px 6px;font-size:.75rem;font-weight:700;cursor:pointer;transition:background .2s;}
 .pcard-add:hover{background:var(--p1);color:#000;border-color:var(--p1);}
+@media(max-width:380px){
+  .pgrid{gap:8px;}
+  .pcard-body{padding:8px 9px 10px;}
+  .pcard-name{font-size:.78rem;}
+  .pcard-price{font-size:.88rem;}
+  .pcard-add{font-size:.7rem;padding:8px 4px;}
+}
+.pcard-badges{position:absolute;top:8px;left:8px;display:flex;gap:5px;flex-wrap:wrap;z-index:2;}
+.pb{font-size:.62rem;font-weight:800;padding:3px 8px;border-radius:50px;letter-spacing:.02em;}
+.pb-new{background:var(--p1);color:#000;}
+.pb-hot{background:var(--a1,#f43f5e);color:#fff;}
+.pb-promo{background:var(--gold);color:#000;}
 
 /* ---------- Marquee ribbon ---------- */
 .marquee-wrap{overflow:hidden;background:var(--s1);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:10px 0;}
