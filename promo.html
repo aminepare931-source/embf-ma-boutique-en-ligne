@@ -186,12 +186,13 @@ body{background:var(--bg);color:var(--txt);font-family:'Outfit',sans-serif;min-h
 <div class="toast" id="toast"></div>
 
 <script>
+var SITE_URL=window.location.origin;
 function sharePage() {
   var text = "🔥 EMBF Boutique — Tech Premium Afrique\n\n" +
     "Smartphones, Ordinateurs, Gadgets au meilleur prix !\n" +
     "Livraison partout en Afrique de l'Ouest 🌍\n" +
     "Paiement Orange Money, Wave, Moov Money\n\n" +
-    "🔗 https://embfboutique.netlify.app/promo.html\n\n" +
+    "🔗 " + window.location.origin + "/promo.html\n\n" +
     "Commander sur WhatsApp : +22655300868";
   if (navigator.share) {
     navigator.share({title:"EMBF Boutique", text:text, url:"" + SITE_URL + "/promo.html"});
