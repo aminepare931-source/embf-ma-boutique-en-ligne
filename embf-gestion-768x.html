@@ -590,7 +590,7 @@ function renderProductList(){
   if(!list.length){el.innerHTML='<div class="empty"><div class="empty-icon">📦</div>Aucun produit</div>';return;}
   el.innerHTML=list.map(function(p){
     var imgs=[];try{imgs=JSON.parse(p.images||'[]');}catch(e){}
-    var img=imgs[0]||'';
+    var img=imgs[0]?(typeof imgs[0]==='object'?(imgs[0].url||''):imgs[0]):'';
     return '<div class="prod-item">'+
       (img?'<img class="prod-img" src="'+img+'" onerror="this.style.display=\'none\'">':'<div class="prod-img-placeholder">📦</div>')+
       '<div class="prod-info">'+
