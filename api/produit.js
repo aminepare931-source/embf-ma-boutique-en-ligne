@@ -60,6 +60,10 @@ export default async function handler(req) {
       ? product.description.substring(0, 150) 
       : `Achetez ${product.name} sur EMBF Boutique. Livraison rapide en Afrique de l'Ouest.`;
     const pageUrl = `${SITE_URL}/produit/${product.slug || slug}`;
+    const extraParams = new URLSearchParams(url.search);
+    extraParams.delete('slug');
+    const extraStr = extraParams.toString() ? '&' + extraParams.toString() : '';
+    const redirectUrl = `/produit.html?id=${productKey}${extraStr}`;
 
     // Return HTML with proper OG tags + redirect to produit.html
     const html = `<!DOCTYPE html>
@@ -81,8 +85,8 @@ export default async function handler(req) {
 <meta name="twitter:title" content="${title}">
 <meta name="twitter:description" content="${desc}">
 <meta name="twitter:image" content="${imgUrl}">
-<meta http-equiv="refresh" content="0;url=/produit.html?id=${productKey}">
-<script>window.location.replace('/produit.html?id=${productKey}');</script>
+<meta http-equiv="refresh" content="0;url=${redirectUrl}">
+<script>window.location.replace('${redirectUrl}');</script>
 </head>
 <body>
 <p>Chargement...</p>

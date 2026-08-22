@@ -290,6 +290,14 @@ var FB_KEY="AIzaSyA0UGFKeoatnMaCMAlaF3B3li9gFY4Dt0g";
 var WA="22655300868";
 var CE={"Ordinateur":"💻","Smartphone":"📱","Gadget":"🎮","Accessoires":"🎧","Autre":"📦"};
 function fmt(v){return Number(v).toLocaleString("fr-FR")+" FCFA";}
+function slugify(text){
+  return text.toString().toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+    .replace(/[^a-z0-9\s-]/g,'')
+    .trim().replace(/\s+/g,'-')
+    .replace(/-+/g,'-')
+    .substring(0,60);
+}
 function getImgs(p){
   try{
     var raw=p.images?JSON.parse(p.images):[];
@@ -421,7 +429,7 @@ async function loadProduits(){
       var img=imgs[0]||'';
       var comm=p.commission||5;
       var gain=Math.round((p.price*comm)/100);
-      var link=SITE_URL+'/produit.html?id='+p._key+'&ref='+a.code;
+      var link=SITE_URL+'/produit/'+(p.slug||slugify(p.name||''))+'?ref='+a.code;
       var waText=encodeURIComponent('🔥 *'+p.name+'*\n💰 '+Number(p.price).toLocaleString('fr-FR')+' FCFA\n\n📱 Commander ici :\n'+link+'\n\n✅ Livraison rapide toute l\'Afrique de l\'Ouest !');
       return '<div class="prod-card">'+
         '<div class="prod-top">'+
