@@ -11,16 +11,8 @@
   <meta name="apple-mobile-web-app-title" content="EMBF Boutique">
 <meta name="robots" content="noindex, nofollow">
 <title>EMBF Admin</title>
-<script>
-// Security: block access immediately if not authenticated
-(function(){
-  var ok=sessionStorage.getItem('embf_admin_ok')==='1';
-  var pw=localStorage.getItem('embf_admin_pw')||'admin123';
-  // If URL has token param, validate it
-  var params=new URLSearchParams(location.search);
-  if(params.get('lock')==='1'){sessionStorage.removeItem('embf_admin_ok');location.href='index.html';return;}
-})();
-</script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
@@ -249,9 +241,10 @@ input:checked+.tog-sl:before{transform:translateX(19px);background:var(--a1);}
   <div style="background:var(--s1);border:1px solid var(--border);border-radius:18px;padding:28px 20px;max-width:360px;width:100%;text-align:center;">
     <div style="font-size:2rem;margin-bottom:8px;">⚡</div>
     <div style="font-family:Bebas\ Neue,sans-serif;font-size:1.6rem;letter-spacing:.04em;margin-bottom:4px;">EMBF ADMIN</div>
-    <p style="color:var(--muted);font-size:.84rem;margin-bottom:18px;">Entrez le mot de passe</p>
-    <input class="finput" id="pwInput" type="password" placeholder="Mot de passe" style="margin-bottom:10px;text-align:center;" onkeydown="if(event.key==='Enter')checkPw()">
-    <button class="btn btn-grad" onclick="checkPw()">🔓 Connexion</button>
+    <p style="color:var(--muted);font-size:.84rem;margin-bottom:18px;">Connexion administrateur</p>
+    <input class="finput" id="emailInput" type="email" placeholder="Email" style="margin-bottom:10px;text-align:center;" autocomplete="username">
+    <input class="finput" id="pwInput" type="password" placeholder="Mot de passe" style="margin-bottom:10px;text-align:center;" autocomplete="current-password" onkeydown="if(event.key==='Enter')checkPw()">
+    <button class="btn btn-grad" id="loginBtn" onclick="checkPw()">🔓 Connexion</button>
   </div>
 </div>
 
@@ -402,7 +395,8 @@ input:checked+.tog-sl:before{transform:translateX(19px);background:var(--a1);}
   </div>
   <div class="card">
     <div class="card-title">🔐 Sécurité</div>
-    <div class="fg"><label>Nouveau mot de passe admin</label><input class="finput" id="newPw" type="password" placeholder="Laisser vide pour ne pas changer"></div>
+    <div class="fg"><label>Mot de passe actuel</label><input class="finput" id="curPw" type="password" placeholder="Requis pour confirmer"></div>
+    <div class="fg"><label>Nouveau mot de passe</label><input class="finput" id="newPw" type="password" placeholder="Laisser vide pour ne pas changer"></div>
     <button class="btn btn-grad btn-sm" onclick="changePw()" style="width:auto;">💾 Changer le mot de passe</button>
   </div>
   <div class="card">
@@ -487,7 +481,6 @@ var FB_DB="https://boutique-embf-default-rtdb.europe-west1.firebasedatabase.app"
 var FB_KEY="AIzaSyA0UGFKeoatnMaCMAlaF3B3li9gFY4Dt0g";
 var CLOUD_NAME="dl3qgppti";
 var CLOUD_PRESET="EMBF Boutique en ligne";
-var ADMIN_PW="admin123";
 var allProducts=[];
 var allOrders=[];
 var allAffilies=[];
@@ -497,40 +490,66 @@ var addPhotos=[];
 var editPhotos=[];
 var editKey=null;
 
-// ===== AUTH =====
+// ===== AUTH (Firebase Authentication reelle) =====
+firebase.initializeApp({apiKey:FB_KEY,databaseURL:FB_DB});
+var authIdToken=null;
+
 function checkPw(){
+  var email=document.getElementById('emailInput').value.trim();
   var pw=document.getElementById('pwInput').value;
-  var stored=localStorage.getItem('embf_admin_pw')||ADMIN_PW;
-  if(pw===stored){
-    document.getElementById('loginPage').style.display='none';
-    document.getElementById('adminArea').style.display='block';
-    document.getElementById('bottomNav').style.display='grid';
-    loadAll();
-  } else {
-    showToast('❌ Mot de passe incorrect',false);
-  }
+  if(!email||!pw){showToast('❌ Email et mot de passe requis',false);return;}
+  var btn=document.getElementById('loginBtn');
+  btn.disabled=true;btn.textContent='⏳ Connexion...';
+  firebase.auth().signInWithEmailAndPassword(email,pw).catch(function(err){
+    showToast('❌ Identifiants incorrects',false);
+  }).finally(function(){
+    btn.disabled=false;btn.textContent='🔓 Connexion';
+  });
 }
 function logout(){
-  document.getElementById('adminArea').style.display='none';
-  document.getElementById('bottomNav').style.display='none';
-  document.getElementById('loginPage').style.display='flex';
-  document.getElementById('pwInput').value='';
+  firebase.auth().signOut();
 }
 function changePw(){
+  var curPw=document.getElementById('curPw').value;
   var np=document.getElementById('newPw').value.trim();
-  if(!np){showToast('❌ Entrez un nouveau mot de passe',false);return;}
-  localStorage.setItem('embf_admin_pw',np);
-  document.getElementById('newPw').value='';
-  showToast('✅ Mot de passe changé');
+  if(!curPw){showToast('❌ Entrez votre mot de passe actuel',false);return;}
+  if(!np||np.length<6){showToast('❌ Nouveau mot de passe: 6 caractères minimum',false);return;}
+  var user=firebase.auth().currentUser;
+  if(!user){showToast('❌ Session expirée, reconnectez-vous',false);return;}
+  var cred=firebase.auth.EmailAuthProvider.credential(user.email,curPw);
+  user.reauthenticateWithCredential(cred).then(function(){
+    return user.updatePassword(np);
+  }).then(function(){
+    document.getElementById('curPw').value='';
+    document.getElementById('newPw').value='';
+    showToast('✅ Mot de passe changé');
+  }).catch(function(err){
+    showToast('❌ Mot de passe actuel incorrect',false);
+  });
 }
+firebase.auth().onAuthStateChanged(function(user){
+  if(user){
+    user.getIdToken().then(function(token){
+      authIdToken=token;
+      document.getElementById('loginPage').style.display='none';
+      document.getElementById('adminArea').style.display='block';
+      document.getElementById('bottomNav').style.display='grid';
+      loadAll();
+    });
+  } else {
+    authIdToken=null;
+    document.getElementById('adminArea').style.display='none';
+    document.getElementById('bottomNav').style.display='none';
+    document.getElementById('loginPage').style.display='flex';
+    document.getElementById('pwInput').value='';
+  }
+});
+// Rafraichit le token avant qu'il expire (validite 1h)
+setInterval(function(){
+  var u=firebase.auth().currentUser;
+  if(u)u.getIdToken(true).then(function(t){authIdToken=t;});
+},45*60*1000);
 document.getElementById('pwInput').addEventListener('keydown',function(e){if(e.key==='Enter')checkPw();});
-// Auto-login if session
-if(sessionStorage.getItem('embf_admin_ok')==='1'){
-  document.getElementById('loginPage').style.display='none';
-  document.getElementById('adminArea').style.display='block';
-  document.getElementById('bottomNav').style.display='grid';
-  setTimeout(loadAll,100);
-}
 
 // ===== NAV =====
 function showPage(id){
@@ -564,7 +583,6 @@ function showToast(msg,ok){
 
 // ===== LOAD ALL =====
 async function loadAll(){
-  sessionStorage.setItem('embf_admin_ok','1');
   await loadProducts();
   loadStats();
   loadOrders();
@@ -614,7 +632,7 @@ function renderProductList(){
 async function deleteProd(key,name){
   if(!confirm('Supprimer "'+name+'" ?'))return;
   try{
-    await fetch(FB_DB+'/products/'+key+'.json?auth='+FB_KEY,{method:'DELETE'});
+    await fetch(FB_DB+'/products/'+key+'.json?auth='+authIdToken,{method:'DELETE'});
     allProducts=allProducts.filter(function(p){return p._key!==key;});
     renderProductList();
     showToast('✅ Produit supprimé');
@@ -726,7 +744,7 @@ async function addProduct(){
     createdAt:Date.now()
   };
   try{
-    var r=await fetch(FB_DB+'/products.json?auth='+FB_KEY,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});
+    var r=await fetch(FB_DB+'/products.json?auth='+authIdToken,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});
     if(!r.ok)throw new Error('Firebase error');
     showToast('✅ Produit publié !');
     resetAddForm();
@@ -782,7 +800,7 @@ async function saveEdit(){
     trending:document.getElementById('editTrending').checked
   };
   try{
-    await fetch(FB_DB+'/products/'+editKey+'.json?auth='+FB_KEY,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});
+    await fetch(FB_DB+'/products/'+editKey+'.json?auth='+authIdToken,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});
     showToast('✅ Produit mis à jour');
     closeEdit();
     await loadProducts();
@@ -870,7 +888,7 @@ function renderOrders(){
 }
 async function setOrderStatut(key,statut){
   try{
-    await fetch(FB_DB+'/orders/'+key+'.json?auth='+FB_KEY,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({statut:statut})});
+    await fetch(FB_DB+'/orders/'+key+'.json?auth='+authIdToken,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({statut:statut})});
     var o=allOrders.find(function(o){return o._key===key;});if(o)o.statut=statut;
     renderOrders();showToast('✅ Statut mis à jour');
   }catch(e){showToast('❌ Erreur',false);}
@@ -878,7 +896,7 @@ async function setOrderStatut(key,statut){
 async function deleteOrder(key){
   if(!confirm('Supprimer cette commande ?'))return;
   try{
-    await fetch(FB_DB+'/orders/'+key+'.json?auth='+FB_KEY,{method:'DELETE'});
+    await fetch(FB_DB+'/orders/'+key+'.json?auth='+authIdToken,{method:'DELETE'});
     allOrders=allOrders.filter(function(o){return o._key!==key;});
     renderOrders();showToast('✅ Supprimé');
   }catch(e){showToast('❌ Erreur',false);}
@@ -943,7 +961,7 @@ function renderAffilies(){
 }
 async function setAffStatut(key,statut){
   try{
-    await fetch(FB_DB+'/affilies/'+key+'.json?auth='+FB_KEY,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({statut:statut})});
+    await fetch(FB_DB+'/affilies/'+key+'.json?auth='+authIdToken,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({statut:statut})});
     var a=allAffilies.find(function(a){return a._key===key;});if(a)a.statut=statut;
     renderAffilies();showToast('✅ Statut mis à jour');
   }catch(e){showToast('❌ Erreur',false);}
@@ -951,7 +969,7 @@ async function setAffStatut(key,statut){
 async function deleteAff(key,nom){
   if(!confirm('Supprimer '+nom+' ?'))return;
   try{
-    await fetch(FB_DB+'/affilies/'+key+'.json?auth='+FB_KEY,{method:'DELETE'});
+    await fetch(FB_DB+'/affilies/'+key+'.json?auth='+authIdToken,{method:'DELETE'});
     allAffilies=allAffilies.filter(function(a){return a._key!==key;});
     renderAffilies();showToast('✅ Affilié supprimé');
   }catch(e){showToast('❌ Erreur',false);}
@@ -982,7 +1000,7 @@ function updateGain(key,price,val){
 async function saveComm(key){
   var inp=document.getElementById('comm_'+key);if(!inp)return;
   try{
-    await fetch(FB_DB+'/products/'+key+'.json?auth='+FB_KEY,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({commission:parseFloat(inp.value)||5})});
+    await fetch(FB_DB+'/products/'+key+'.json?auth='+authIdToken,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({commission:parseFloat(inp.value)||5})});
     var p=allProducts.find(function(p){return p._key===key;});if(p)p.commission=parseFloat(inp.value)||5;
     showToast('✅ Commission enregistrée');
   }catch(e){showToast('❌ Erreur',false);}
@@ -1020,14 +1038,14 @@ async function loadRetraits(){
 async function setRetrait(key,statut,code,montant){
   if(!confirm((statut==='valide'?'Confirmer le paiement':'Refuser la demande')+' ?'))return;
   try{
-    await fetch(FB_DB+'/retraits/'+key+'.json?auth='+FB_KEY,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({statut:statut})});
+    await fetch(FB_DB+'/retraits/'+key+'.json?auth='+authIdToken,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({statut:statut})});
     if(statut==='valide'&&montant>0){
       var r=await fetch(FB_DB+'/affilies.json?orderBy=%22code%22&equalTo=%22'+code+'%22');
       var affData=await r.json();
       if(affData){
         var affKey=Object.keys(affData)[0];
         var cur=affData[affKey].gains||0;
-        await fetch(FB_DB+'/affilies/'+affKey+'.json?auth='+FB_KEY,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({gains:Math.max(0,cur-montant)})});
+        await fetch(FB_DB+'/affilies/'+affKey+'.json?auth='+authIdToken,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({gains:Math.max(0,cur-montant)})});
       }
     }
     showToast('✅ Statut mis à jour');loadRetraits();
