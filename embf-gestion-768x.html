@@ -491,7 +491,7 @@ var editPhotos=[];
 var editKey=null;
 
 // ===== AUTH (Firebase Authentication reelle) =====
-firebase.initializeApp({apiKey:FB_KEY,databaseURL:FB_DB});
+firebase.initializeApp({apiKey:FB_KEY,authDomain:"boutique-embf.firebaseapp.com",databaseURL:FB_DB});
 var authIdToken=null;
 
 function checkPw(){
@@ -501,7 +501,8 @@ function checkPw(){
   var btn=document.getElementById('loginBtn');
   btn.disabled=true;btn.textContent='⏳ Connexion...';
   firebase.auth().signInWithEmailAndPassword(email,pw).catch(function(err){
-    showToast('❌ Identifiants incorrects',false);
+    console.error('Erreur connexion Firebase:',err.code,err.message);
+    showToast('❌ '+(err.code||'Erreur')+': '+err.message,false);
   }).finally(function(){
     btn.disabled=false;btn.textContent='🔓 Connexion';
   });
