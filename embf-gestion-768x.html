@@ -245,6 +245,7 @@ input:checked+.tog-sl:before{transform:translateX(19px);background:var(--a1);}
     <input class="finput" id="emailInput" type="email" placeholder="Email" style="margin-bottom:10px;text-align:center;" autocomplete="username">
     <input class="finput" id="pwInput" type="password" placeholder="Mot de passe" style="margin-bottom:10px;text-align:center;" autocomplete="current-password" onkeydown="if(event.key==='Enter')checkPw()">
     <button class="btn btn-grad" id="loginBtn" onclick="checkPw()">🔓 Connexion</button>
+    <a href="#" onclick="forgotPw();return false;" style="display:block;margin-top:14px;color:var(--muted);font-size:.8rem;text-decoration:underline;">Mot de passe oublié ?</a>
   </div>
 </div>
 
@@ -509,6 +510,15 @@ function checkPw(){
 }
 function logout(){
   firebase.auth().signOut();
+}
+function forgotPw(){
+  var email=document.getElementById('emailInput').value.trim();
+  if(!email){showToast('❌ Entrez votre email d\'abord, puis cliquez sur le lien',false);return;}
+  firebase.auth().sendPasswordResetEmail(email).then(function(){
+    showToast('✅ Email de réinitialisation envoyé (vérifiez les spams)');
+  }).catch(function(err){
+    showToast('❌ '+(err.code||'Erreur')+': '+err.message,false);
+  });
 }
 function changePw(){
   var curPw=document.getElementById('curPw').value;
