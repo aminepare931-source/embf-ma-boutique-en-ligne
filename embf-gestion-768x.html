@@ -242,8 +242,10 @@ input:checked+.tog-sl:before{transform:translateX(19px);background:var(--a1);}
     <div style="font-size:2rem;margin-bottom:8px;">⚡</div>
     <div style="font-family:Bebas\ Neue,sans-serif;font-size:1.6rem;letter-spacing:.04em;margin-bottom:4px;">EMBF ADMIN</div>
     <p style="color:var(--muted);font-size:.84rem;margin-bottom:18px;">Connexion administrateur</p>
-    <input class="finput" id="emailInput" type="email" placeholder="Email" style="margin-bottom:10px;text-align:center;" autocomplete="username">
-    <input class="finput" id="pwInput" type="password" placeholder="Mot de passe" style="margin-bottom:10px;text-align:center;" autocomplete="current-password" onkeydown="if(event.key==='Enter')checkPw()">
+    <div style="position:relative;margin-bottom:10px;">
+      <input class="finput" id="pwInput" type="password" placeholder="Mot de passe" style="text-align:center;padding-right:40px;" autocomplete="current-password" onkeydown="if(event.key==='Enter')checkPw()">
+      <button type="button" onclick="togglePwVisibility()" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;font-size:1.1rem;cursor:pointer;" id="pwEye">👁️</button>
+    </div>
     <button class="btn btn-grad" id="loginBtn" onclick="checkPw()">🔓 Connexion</button>
     <a href="#" onclick="forgotPw();return false;" style="display:block;margin-top:14px;color:var(--muted);font-size:.8rem;text-decoration:underline;">Mot de passe oublié ?</a>
   </div>
@@ -495,13 +497,19 @@ var editKey=null;
 firebase.initializeApp({apiKey:FB_KEY,authDomain:"boutique-embf.firebaseapp.com",databaseURL:FB_DB});
 var authIdToken=null;
 
+var ADMIN_EMAIL="aminepare931@gmail.com";
+function togglePwVisibility(){
+  var i=document.getElementById('pwInput');
+  var isPw=i.type==='password';
+  i.type=isPw?'text':'password';
+  document.getElementById('pwEye').textContent=isPw?'🙈':'👁️';
+}
 function checkPw(){
-  var email=document.getElementById('emailInput').value.trim();
   var pw=document.getElementById('pwInput').value;
-  if(!email||!pw){showToast('❌ Email et mot de passe requis',false);return;}
+  if(!pw){showToast('❌ Mot de passe requis',false);return;}
   var btn=document.getElementById('loginBtn');
   btn.disabled=true;btn.textContent='⏳ Connexion...';
-  firebase.auth().signInWithEmailAndPassword(email,pw).catch(function(err){
+  firebase.auth().signInWithEmailAndPassword(ADMIN_EMAIL,pw).catch(function(err){
     console.error('Erreur connexion Firebase:',err.code,err.message);
     showToast('❌ '+(err.code||'Erreur')+': '+err.message,false);
   }).finally(function(){
@@ -512,10 +520,8 @@ function logout(){
   firebase.auth().signOut();
 }
 function forgotPw(){
-  var email=document.getElementById('emailInput').value.trim();
-  if(!email){showToast('❌ Entrez votre email d\'abord, puis cliquez sur le lien',false);return;}
-  firebase.auth().sendPasswordResetEmail(email).then(function(){
-    showToast('✅ Email de réinitialisation envoyé (vérifiez les spams)');
+  firebase.auth().sendPasswordResetEmail(ADMIN_EMAIL).then(function(){
+    showToast('✅ Email envoyé à '+ADMIN_EMAIL+' (vérifiez les spams)');
   }).catch(function(err){
     showToast('❌ '+(err.code||'Erreur')+': '+err.message,false);
   });
