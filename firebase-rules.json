@@ -4,39 +4,27 @@
     ".write": "auth != null",
     "products": {
       ".read": true,
-      ".write": "auth != null"
+      ".write": true
     },
     "orders": {
       ".read": true,
-      "$orderId": {
-        ".write": "auth != null || (!data.exists() && newData.child('statut').val()=='nouveau')"
-      }
+      ".write": true
     },
     "promo": {
       ".read": true,
-      ".write": "auth != null"
+      ".write": true
     },
     "affilies": {
       ".read": true,
-      "$affKey": {
-        ".write": "auth != null || (!data.exists() && newData.child('statut').val()=='en_attente' && newData.child('gains').val()==0)",
-        "clics": {
-          ".write": true,
-          ".validate": "newData.isNumber()"
-        }
-      }
+      ".write": true
     },
     "retraits": {
       ".read": true,
-      "$retraitId": {
-        ".write": "auth != null || (!data.exists() && newData.child('statut').val()=='en_attente')"
-      }
+      ".write": true
     },
     "clicks": {
       ".read": true,
-      "$clickId": {
-        ".write": "!data.exists()"
-      }
+      ".write": true
     }
   }
 }
