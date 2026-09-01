@@ -585,6 +585,10 @@ function getImgs(p){
   }catch(e){return[];}
 }
 function getImgUrl(item){return typeof item==='object'?item.url:item;}
+function cldOpt(url,w){
+  if(!url||url.indexOf('/image/upload/')===-1)return url;
+  return url.replace('/image/upload/','/image/upload/w_'+w+',q_auto,f_auto,c_limit/');
+}
 function isVideo(item){
   if(typeof item==='object'&&item.type==='video')return true;
   var url=typeof item==='string'?item:item.url||'';
@@ -770,7 +774,7 @@ function renderAll(p){
   document.getElementById("prodDesc").textContent=p.description||"Aucune description disponible.";
   renderSpecs(p);renderSocial(p);checkPromo();
   var imgs=getImgs(p);
-  var imgUrl=getImgUrl(imgs[0])||'https://embfboutik.vercel.app/assets/icons/icon-512x512.png';
+  var imgUrl=cldOpt(getImgUrl(imgs[0]),1200)||'https://embfboutik.vercel.app/assets/icons/icon-512x512.png';
   var pageUrl=getProductUrl(p);
   var desc=p.description?(p.description.substring(0,120)+'...'):('Achetez '+p.name+' sur EMBF Boutique. Livraison rapide en Afrique de l\'Ouest.');
   var priceText=p.price?(' — '+Number(p.price).toLocaleString('fr-FR')+' FCFA'):'';
@@ -785,7 +789,7 @@ function renderAll(p){
   var canonical=document.querySelector('link[rel="canonical"]');
   if(!canonical){canonical=document.createElement('link');canonical.rel='canonical';document.head.appendChild(canonical);}
   canonical.href=pageUrl;
-  var waImgUrl=getImgUrl(imgs[0]);
+  var waImgUrl=cldOpt(getImgUrl(imgs[0]),90);
   document.getElementById("waProdPrev").innerHTML=
     (waImgUrl?"<img src='"+waImgUrl+"' style='width:44px;height:44px;border-radius:8px;object-fit:cover;flex-shrink:0;' alt=''>":"<div style='width:44px;height:44px;border-radius:8px;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0;'>"+(CE[p.category]||"📦")+"</div>")+
     "<div><div style='font-weight:700;font-size:.85rem;'>"+p.name+"</div><div style='color:var(--gold);font-weight:700;font-size:.88rem;'>"+fmt(p.price)+"</div></div>";
@@ -804,7 +808,7 @@ function renderGallery(p){
       var url=getImgUrl(item);
       var vid=isVideo(item);
       var thumb=typeof item==='object'&&item.thumbnail?item.thumbnail:url;
-      return "<div class='gthumb "+(i===0?"on":"")+"' onclick='showImg("+i+")' id='gt"+i+"'>"+(vid?"<div style='width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:rgba(139,92,246,.15);border-radius:6px;font-size:1.2rem;'>🎬</div>":"<img src='"+thumb+"' alt=''>"+"</div>");
+      return "<div class='gthumb "+(i===0?"on":"")+"' onclick='showImg("+i+")' id='gt"+i+"'>"+(vid?"<div style='width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:rgba(139,92,246,.15);border-radius:6px;font-size:1.2rem;'>🎬</div>":"<img src='"+cldOpt(thumb,120)+"' alt=''>"+"</div>");
     }).join("");
   }
 }
@@ -822,7 +826,7 @@ function showImg(idx){
     el.style.cssText="width:100%;height:100%;object-fit:contain;position:absolute;inset:0;background:#000;border-radius:12px;";
     gm.insertBefore(el,gm.firstChild);
   }else{
-    var el=document.createElement("img");el.src=url;el.className="gmi";
+    var el=document.createElement("img");el.src=cldOpt(url,900);el.className="gmi";
     el.style.cssText="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;";
     gm.insertBefore(el,gm.firstChild);
   }
@@ -1102,7 +1106,7 @@ function sendProof(){
 function doAddToCart(){
   if(!cur)return;
   var imgs=getImgs(cur);
-  addToCart(cur._key||cur.id,cur.name,cur.price,getImgUrl(imgs[0])||"",cur.category);
+  addToCart(cur._key||cur.id,cur.name,cur.price,cldOpt(getImgUrl(imgs[0]),110)||"",cur.category);
   var btn=document.getElementById("cartBtn");btn.textContent="✅ Ajouté !";
   setTimeout(function(){btn.textContent="🛒 Ajouter au panier";},1500);
 }
@@ -1126,7 +1130,7 @@ function renderSimilar(){
   var sec=document.getElementById("simSec");if(!sim.length)return;sec.style.display="block";
   document.getElementById("simGrid").innerHTML=sim.map(function(p){
     var imgs=getImgs(p);
-    var imgUrl=getImgUrl(imgs[0])||'';
+    var imgUrl=cldOpt(getImgUrl(imgs[0]),300)||'';
     var imgHtml=imgUrl
       ?"<img src='"+imgUrl+"' alt='' style='width:100%;height:100%;object-fit:cover;' onerror=\"this.outerHTML='<span style=\\'font-size:2rem;display:flex;align-items:center;justify-content:center;width:100%;height:100%;\\'>'"+(CE[p.category]||"📦")+"'</span>'\">"
       :"<span style='font-size:2rem;'>"+(CE[p.category]||"📦")+"</span>";
@@ -1143,7 +1147,7 @@ function trackView(p){
   var rec=JSON.parse(localStorage.getItem("mb_recent")||"[]");
   var imgs=getImgs(p);
   rec=rec.filter(function(x){return x.id!==(p._key||p.id);});
-  rec.unshift({id:p._key||p.id,name:p.name,price:p.price,cat:p.category,img:getImgUrl(imgs[0])||""});
+  rec.unshift({id:p._key||p.id,name:p.name,price:p.price,cat:p.category,img:cldOpt(getImgUrl(imgs[0]),220)||""});
   localStorage.setItem("mb_recent",JSON.stringify(rec.slice(0,8)));
 }
 function renderRecent(){

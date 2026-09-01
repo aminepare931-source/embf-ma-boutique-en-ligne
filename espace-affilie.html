@@ -291,6 +291,10 @@ function slugify(text){
     .replace(/-+/g,'-')
     .substring(0,60);
 }
+function cldOpt(url,w){
+  if(!url||url.indexOf('/image/upload/')===-1)return url;
+  return url.replace('/image/upload/','/image/upload/w_'+w+',q_auto,f_auto,c_limit/');
+}
 function getImgs(p){
   try{
     var raw=p.images?JSON.parse(p.images):[];
@@ -419,7 +423,7 @@ async function loadProduits(){
     var a=currentAffilie;
     document.getElementById('prodListArea').innerHTML=allProducts.map(function(p){
       var imgs=getImgs(p);
-      var img=imgs[0]||'';
+      var img=cldOpt(imgs[0],200)||'';
       var comm=p.commission||5;
       var gain=Math.round((p.price*comm)/100);
       var link=SITE_URL+'/produit/'+(p.slug||slugify(p.name||''))+'?ref='+a.code;

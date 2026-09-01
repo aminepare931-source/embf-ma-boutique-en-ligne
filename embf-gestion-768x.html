@@ -468,6 +468,10 @@ input:checked+.tog-sl:before{transform:translateX(19px);background:var(--a1);}
 
 <script>
 // ===== SLUG =====
+function cldOpt(url,w){
+  if(!url||url.indexOf('/image/upload/')===-1)return url;
+  return url.replace('/image/upload/','/image/upload/w_'+w+',q_auto,f_auto,c_limit/');
+}
 function slugify(text){
   return text.toString().toLowerCase()
     .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
@@ -596,7 +600,7 @@ function renderProductList(){
     var imgs=[];try{imgs=JSON.parse(p.images||'[]');}catch(e){}
     var img=imgs[0]?(typeof imgs[0]==='object'?(imgs[0].url||''):imgs[0]):'';
     return '<div class="prod-item">'+
-      (img?'<img class="prod-img" src="'+img+'" onerror="this.style.display=\'none\'">':'<div class="prod-img-placeholder">📦</div>')+
+      (img?'<img class="prod-img" src="'+cldOpt(img,120)+'" onerror="this.style.display=\'none\'">':'<div class="prod-img-placeholder">📦</div>')+
       '<div class="prod-info">'+
         '<div class="prod-name">'+p.name+'</div>'+
         '<div class="prod-price">'+Number(p.price||0).toLocaleString('fr-FR')+' FCFA</div>'+
