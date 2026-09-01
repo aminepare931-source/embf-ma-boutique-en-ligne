@@ -956,7 +956,7 @@ function checkPromo(){
 
 function openZoom(idx){
   if(!prodImgs.length)return;
-  document.getElementById("zoomImg").src=prodImgs[idx];
+  document.getElementById("zoomImg").src=cldOpt(getImgUrl(prodImgs[idx]),1200);
   document.getElementById("zoomCtr").textContent=(idx+1)+" / "+prodImgs.length;
   document.getElementById("zoomOv").classList.add("open");
   document.body.style.overflow="hidden";
@@ -964,7 +964,7 @@ function openZoom(idx){
 function closeZoom(){document.getElementById("zoomOv").classList.remove("open");document.body.style.overflow="";}
 function zoomNav(dir){
   curImgIdx=(curImgIdx+dir+prodImgs.length)%prodImgs.length;
-  document.getElementById("zoomImg").src=prodImgs[curImgIdx];
+  document.getElementById("zoomImg").src=cldOpt(getImgUrl(prodImgs[curImgIdx]),1200);
   document.getElementById("zoomCtr").textContent=(curImgIdx+1)+" / "+prodImgs.length;
 }
 
