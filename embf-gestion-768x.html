@@ -203,6 +203,31 @@ input:checked+.tog-sl:before{transform:translateX(19px);background:var(--a1);}
 .sd-item:hover{color:var(--txt);background:rgba(255,255,255,.04);}
 .sd-item.act{color:var(--a1);background:rgba(0,229,255,.07);}
 .sd-badge{background:var(--a3);color:#fff;font-size:.58rem;font-weight:800;padding:1px 5px;border-radius:50px;margin-left:auto;}
+/* ===== ASSISTANT IA ===== */
+.ai-fab{position:fixed;bottom:80px;right:16px;width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--a1),var(--a2));border:none;color:#fff;font-size:1.5rem;box-shadow:0 6px 20px rgba(0,229,255,.4);cursor:pointer;z-index:900;display:flex;align-items:center;justify-content:center;}
+@media(min-width:900px){.ai-fab{bottom:24px;}}
+.ai-panel{position:fixed;bottom:0;right:0;left:0;top:0;background:var(--bg);z-index:2000;display:none;flex-direction:column;}
+.ai-panel.open{display:flex;}
+@media(min-width:600px){.ai-panel{top:auto;left:auto;bottom:100px;right:16px;width:380px;height:560px;border-radius:18px;border:1px solid var(--border);box-shadow:0 20px 60px rgba(0,0,0,.6);}}
+.ai-hdr{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--border);background:var(--s1);}
+.ai-hdr-title{font-weight:800;font-size:.95rem;display:flex;align-items:center;gap:8px;}
+.ai-close{background:none;border:none;color:var(--txt);font-size:1.3rem;cursor:pointer;}
+.ai-msgs{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px;}
+.ai-msg{max-width:85%;padding:10px 13px;border-radius:14px;font-size:.86rem;line-height:1.5;white-space:pre-wrap;}
+.ai-msg.user{align-self:flex-end;background:linear-gradient(135deg,var(--a1),var(--a2));color:#000;font-weight:600;border-bottom-right-radius:4px;}
+.ai-msg.bot{align-self:flex-start;background:var(--s1);border:1px solid var(--border);border-bottom-left-radius:4px;}
+.ai-msg.actions{align-self:flex-start;background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.25);font-size:.78rem;color:var(--green);}
+.ai-msg.error{align-self:flex-start;background:rgba(244,63,94,.08);border:1px solid rgba(244,63,94,.25);color:#f43f5e;}
+.ai-typing{align-self:flex-start;background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:10px 14px;display:flex;gap:4px;}
+.ai-typing span{width:6px;height:6px;border-radius:50%;background:var(--muted);animation:aiDot 1.2s infinite;}
+.ai-typing span:nth-child(2){animation-delay:.2s;}
+.ai-typing span:nth-child(3){animation-delay:.4s;}
+@keyframes aiDot{0%,60%,100%{opacity:.3;}30%{opacity:1;}}
+.ai-input-bar{display:flex;gap:8px;padding:12px;border-top:1px solid var(--border);background:var(--s1);}
+.ai-input-bar input{flex:1;background:var(--s2);border:1px solid var(--border);border-radius:50px;padding:10px 16px;color:var(--txt);font-size:.86rem;}
+.ai-input-bar input:focus{outline:none;border-color:var(--a1);}
+.ai-send{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--a1),var(--a2));border:none;color:#000;font-size:1.1rem;cursor:pointer;flex-shrink:0;}
+.ai-send:disabled{opacity:.5;}
 </style>
 </head>
 <body>
@@ -374,6 +399,9 @@ input:checked+.tog-sl:before{transform:translateX(19px);background:var(--a1);}
     <div class="card-title" style="color:var(--gold);">✨ Produit en vedette</div>
     <div class="fg"><label>ID du produit vedette</label><input class="finput" id="promoFeatId" type="text" placeholder="ID Firebase du produit"></div>
     <div class="fg"><label>Message promo</label><input class="finput" id="promoMsg" type="text" placeholder="Ex: 🔥 Offre limitée !"></div>
+    <div class="fg"><label>Réduction (%)</label><input class="finput" id="promoDiscount" type="number" placeholder="Ex: 20"></div>
+    <div class="fg"><label>Fin de la promo</label><input class="finput" id="promoEndDate" type="datetime-local"></div>
+    <div class="fg" style="display:flex;align-items:center;gap:8px;"><input type="checkbox" id="promoActive" style="width:auto;"><label style="margin:0;">Promo active</label></div>
     <button class="btn btn-gold" onclick="savePromo()">💾 Enregistrer</button>
   </div>
   <div class="card">
@@ -510,6 +538,7 @@ function checkPw(){
     document.getElementById('loginPage').style.display='none';
     document.getElementById('adminArea').style.display='block';
     document.getElementById('bottomNav').style.display='grid';
+    document.getElementById('aiFab').style.display='flex';
     loadAll();
   } else {
     showToast('❌ Mot de passe incorrect',false);
@@ -519,6 +548,8 @@ function logout(){
   sessionStorage.removeItem('embf_admin_ok');
   document.getElementById('adminArea').style.display='none';
   document.getElementById('bottomNav').style.display='none';
+  document.getElementById('aiFab').style.display='none';
+  document.getElementById('aiPanel').classList.remove('open');
   document.getElementById('loginPage').style.display='flex';
   document.getElementById('pwInput').value='';
 }
@@ -538,6 +569,7 @@ if(sessionStorage.getItem('embf_admin_ok')==='1'){
   document.getElementById('loginPage').style.display='none';
   document.getElementById('adminArea').style.display='block';
   document.getElementById('bottomNav').style.display='grid';
+  document.getElementById('aiFab').style.display='flex';
   setTimeout(loadAll,100);
 }
 
@@ -558,6 +590,7 @@ function showPage(id){
   if(id==='orders')loadOrders();
   if(id==='affilies')loadAffilies();
   if(id==='stats')loadStats();
+  if(id==='promo')loadPromo();
   if(id==='produits')renderProductList();
   if(id==='add'){renderPhotoGrid('addPhotoGrid',addPhotos,'add');}
   // Scroll to top
@@ -1065,12 +1098,127 @@ async function loadStats(){
 
 // ===== PROMO =====
 async function savePromo(){
-  showToast('✅ Paramètres promo sauvegardés');
+  var data={
+    active:document.getElementById('promoActive').checked,
+    featuredProductId:document.getElementById('promoFeatId').value.trim()||null,
+    message:document.getElementById('promoMsg').value.trim()||null,
+    discountPercent:parseFloat(document.getElementById('promoDiscount').value)||null,
+    endDate:document.getElementById('promoEndDate').value?new Date(document.getElementById('promoEndDate').value).toISOString():null,
+    updatedAt:Date.now()
+  };
+  try{
+    var r=await fetch(FB_DB+'/promo.json?auth='+FB_KEY,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});
+    if(!r.ok)throw new Error('Firebase error');
+    showToast('✅ Promo sauvegardée');
+  }catch(e){showToast('❌ '+e.message,false);}
+}
+async function loadPromo(){
+  try{
+    var r=await fetch(FB_DB+'/promo.json');
+    var d=await r.json();
+    if(!d)return;
+    document.getElementById('promoFeatId').value=d.featuredProductId||'';
+    document.getElementById('promoMsg').value=d.message||'';
+    document.getElementById('promoDiscount').value=d.discountPercent||'';
+    document.getElementById('promoActive').checked=!!d.active;
+    if(d.endDate){
+      var dt=new Date(d.endDate);
+      document.getElementById('promoEndDate').value=dt.toISOString().slice(0,16);
+    }
+  }catch(e){}
+}
+
+// ===== ASSISTANT IA =====
+var aiHistory=[];
+var aiBusy=false;
+function toggleAiPanel(){
+  document.getElementById('aiPanel').classList.toggle('open');
+  if(document.getElementById('aiPanel').classList.contains('open')){
+    setTimeout(function(){document.getElementById('aiInput').focus();},100);
+  }
+}
+function aiAppendMsg(text,cls){
+  var box=document.getElementById('aiMsgs');
+  var div=document.createElement('div');
+  div.className='ai-msg '+cls;
+  div.textContent=text;
+  box.appendChild(div);
+  box.scrollTop=box.scrollHeight;
+  return div;
+}
+function aiShowTyping(){
+  var box=document.getElementById('aiMsgs');
+  var div=document.createElement('div');
+  div.className='ai-typing';
+  div.id='aiTyping';
+  div.innerHTML='<span></span><span></span><span></span>';
+  box.appendChild(div);
+  box.scrollTop=box.scrollHeight;
+}
+function aiHideTyping(){
+  var t=document.getElementById('aiTyping');
+  if(t)t.remove();
+}
+async function aiSend(){
+  if(aiBusy)return;
+  var input=document.getElementById('aiInput');
+  var msg=input.value.trim();
+  if(!msg)return;
+  input.value='';
+  aiAppendMsg(msg,'user');
+  aiShowTyping();
+  aiBusy=true;
+  document.getElementById('aiSendBtn').disabled=true;
+  try{
+    var r=await fetch('/api/assistant',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({message:msg,history:aiHistory})
+    });
+    var data=await r.json();
+    aiHideTyping();
+    if(!r.ok||data.error){
+      aiAppendMsg('❌ '+(data.error||'Erreur inconnue'),'error');
+    } else {
+      aiHistory=data.history||aiHistory;
+      if(data.actions&&data.actions.length){
+        var summary=data.actions.map(function(a){
+          if(a.error)return '❌ '+a.tool+' a échoué: '+a.error;
+          return '✅ '+a.tool;
+        }).join(', ');
+        aiAppendMsg(summary,'actions');
+        var refreshed=data.actions.some(function(a){return ['create_product','update_product','delete_product'].indexOf(a.tool)!==-1;});
+        var promoChanged=data.actions.some(function(a){return a.tool==='set_promo';});
+        if(refreshed)loadProducts();
+        if(promoChanged&&document.getElementById('page-promo').classList.contains('act'))loadPromo();
+      }
+      if(data.reply)aiAppendMsg(data.reply,'bot');
+    }
+  }catch(e){
+    aiHideTyping();
+    aiAppendMsg('❌ Erreur de connexion: '+e.message,'error');
+  }
+  aiBusy=false;
+  document.getElementById('aiSendBtn').disabled=false;
 }
 
 // Init photo grids
 renderPhotoGrid('addPhotoGrid',addPhotos,'add');
 </script>
 <script>if("serviceWorker" in navigator){navigator.serviceWorker.register("/sw.js").catch(function(){});}</script>
+<!-- ASSISTANT IA -->
+<button class="ai-fab" id="aiFab" onclick="toggleAiPanel()" style="display:none;">🤖</button>
+<div class="ai-panel" id="aiPanel">
+  <div class="ai-hdr">
+    <div class="ai-hdr-title">🤖 Assistante EMBF</div>
+    <button class="ai-close" onclick="toggleAiPanel()">✕</button>
+  </div>
+  <div class="ai-msgs" id="aiMsgs">
+    <div class="ai-msg bot">Salut ! Je peux créer ou modifier des produits, gérer les promos... Dis-moi ce qu'il te faut.</div>
+  </div>
+  <div class="ai-input-bar">
+    <input type="text" id="aiInput" placeholder="Ex: crée un iPhone 15 à 450000 FCFA" onkeydown="if(event.key==='Enter')aiSend()">
+    <button class="ai-send" id="aiSendBtn" onclick="aiSend()">➤</button>
+  </div>
+</div>
 </body>
 </html>

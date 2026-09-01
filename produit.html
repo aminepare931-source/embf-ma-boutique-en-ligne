@@ -339,7 +339,7 @@
             <span id="stockTxt"></span>
           </div>
           <div class="cd-block" id="cdBlock">
-            <div class="cd-title">🔥 Offre limitée — se termine dans</div>
+            <div class="cd-title" id="cdMsg">🔥 Offre limitée — se termine dans</div>
             <div class="cd-units">
               <div class="cd-unit"><span class="cd-num" id="cdJ">00</span><div class="cd-lbl">Jours</div></div>
               <span class="cd-sep">:</span>
@@ -772,7 +772,7 @@ function renderAll(p){
   document.getElementById("prodCat").textContent=(CE[p.category]||"")+" "+p.category;
   document.getElementById("prodName").textContent=p.name;
   document.getElementById("prodDesc").textContent=p.description||"Aucune description disponible.";
-  renderSpecs(p);renderSocial(p);checkPromo();
+  renderSpecs(p);renderSocial(p);checkPromo(p);
   var imgs=getImgs(p);
   var imgUrl=cldOpt(getImgUrl(imgs[0]),1200)||'https://embfboutik.vercel.app/assets/icons/icon-512x512.png';
   var pageUrl=getProductUrl(p);
@@ -939,19 +939,27 @@ function calcDeliv(){
   }
 }
 
-function checkPromo(){
-  var promo=JSON.parse(localStorage.getItem("mb_promo")||"null");
-  if(!promo||!promo.active||!promo.endDate)return;
-  var end=new Date(promo.endDate);if(end<=new Date())return;
-  document.getElementById("cdBlock").style.display="block";
-  function tick(){
-    var diff=end-new Date();if(diff<=0){document.getElementById("cdBlock").style.display="none";return;}
-    document.getElementById("cdJ").textContent=String(Math.floor(diff/86400000)).padStart(2,"0");
-    document.getElementById("cdH").textContent=String(Math.floor((diff%86400000)/3600000)).padStart(2,"0");
-    document.getElementById("cdM").textContent=String(Math.floor((diff%3600000)/60000)).padStart(2,"0");
-    document.getElementById("cdS").textContent=String(Math.floor((diff%60000)/1000)).padStart(2,"0");
-  }
-  tick();setInterval(tick,1000);
+async function checkPromo(p){
+  try{
+    var r=await fetch(FB_DB+"/promo.json");
+    var promo=await r.json();
+    if(!promo||!promo.active||!promo.endDate)return;
+    if(promo.featuredProductId&&p&&(p._key||p.id)!==promo.featuredProductId)return;
+    var end=new Date(promo.endDate);if(end<=new Date())return;
+    if(promo.message){
+      var mEl=document.getElementById("cdMsg");
+      if(mEl)mEl.textContent=promo.message;
+    }
+    document.getElementById("cdBlock").style.display="block";
+    function tick(){
+      var diff=end-new Date();if(diff<=0){document.getElementById("cdBlock").style.display="none";return;}
+      document.getElementById("cdJ").textContent=String(Math.floor(diff/86400000)).padStart(2,"0");
+      document.getElementById("cdH").textContent=String(Math.floor((diff%86400000)/3600000)).padStart(2,"0");
+      document.getElementById("cdM").textContent=String(Math.floor((diff%3600000)/60000)).padStart(2,"0");
+      document.getElementById("cdS").textContent=String(Math.floor((diff%60000)/1000)).padStart(2,"0");
+    }
+    tick();setInterval(tick,1000);
+  }catch(e){}
 }
 
 function openZoom(idx){
