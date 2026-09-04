@@ -333,6 +333,14 @@ input:checked+.tog-sl:before{transform:translateX(19px);background:var(--a1);}
       </div>
       <div class="fg"><label>Stock</label><input class="finput" id="addStock" type="number" placeholder="0"></div>
     </div>
+    <div class="fg">
+      <label>Disponibilité</label>
+      <select class="finput" id="addAvail" onchange="toggleAvailFields('add')">
+        <option value="stock">📦 En stock — livraison rapide 24-72H</option>
+        <option value="commande">✈️ Sur commande — import 10-20 jours</option>
+      </select>
+    </div>
+    <div class="fg" id="addDelayWrap" style="display:none;"><label>Délai de livraison affiché</label><input class="finput" id="addDelay" type="text" placeholder="Ex: 10-20 jours" value="10-20 jours"></div>
     <div class="fg"><label>Description</label><textarea class="finput" id="addDesc" placeholder="Description du produit..."></textarea></div>
     <div class="fg"><label>Spécifications</label><textarea class="finput" id="addSpecs" placeholder="RAM: 8GB&#10;Stockage: 256GB&#10;..."></textarea></div>
     <div class="fg"><label>Commission affilié (%)</label><input class="finput" id="addComm" type="number" value="5" min="0" max="50"></div>
@@ -483,6 +491,14 @@ input:checked+.tog-sl:before{transform:translateX(19px);background:var(--a1);}
       </div>
       <div class="fg"><label>Stock</label><input class="finput" id="editStock" type="number"></div>
     </div>
+    <div class="fg">
+      <label>Disponibilité</label>
+      <select class="finput" id="editAvail" onchange="toggleAvailFields('edit')">
+        <option value="stock">📦 En stock — livraison rapide 24-72H</option>
+        <option value="commande">✈️ Sur commande — import 10-20 jours</option>
+      </select>
+    </div>
+    <div class="fg" id="editDelayWrap" style="display:none;"><label>Délai de livraison affiché</label><input class="finput" id="editDelay" type="text" placeholder="Ex: 10-20 jours"></div>
     <div class="fg"><label>Description</label><textarea class="finput" id="editDesc"></textarea></div>
     <div class="fg"><label>Spécifications</label><textarea class="finput" id="editSpecs"></textarea></div>
     <div class="fg"><label>Commission (%)</label><input class="finput" id="editComm" type="number" min="0" max="50"></div>
@@ -745,6 +761,11 @@ function editAddUrl(){
 }
 
 // ===== ADD PRODUCT =====
+function toggleAvailFields(prefix){
+  var wrap=document.getElementById(prefix+'DelayWrap');
+  var isCommande=document.getElementById(prefix+'Avail').value==='commande';
+  wrap.style.display=isCommande?'block':'none';
+}
 async function addProduct(){
   var name=document.getElementById('addName').value.trim();
   var price=parseFloat(document.getElementById('addPrice').value)||0;
@@ -757,7 +778,9 @@ async function addProduct(){
     slug:slugify(name),
     old_price:parseFloat(document.getElementById('addOldPrice').value)||null,
     category:document.getElementById('addCat').value,
-    stock:parseInt(document.getElementById('addStock').value)||0,
+    stock:document.getElementById('addAvail').value==='stock'?(parseInt(document.getElementById('addStock').value)||0):0,
+    availability:document.getElementById('addAvail').value,
+    delayDays:document.getElementById('addAvail').value==='commande'?(document.getElementById('addDelay').value.trim()||'10-20 jours'):null,
     description:document.getElementById('addDesc').value.trim(),
     specs:document.getElementById('addSpecs').value.trim(),
     commission:parseFloat(document.getElementById('addComm').value)||5,
@@ -779,6 +802,9 @@ async function addProduct(){
 function resetAddForm(){
   ['addName','addPrice','addOldPrice','addStock','addDesc','addSpecs'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});
   document.getElementById('addComm').value='5';
+  document.getElementById('addAvail').value='stock';
+  document.getElementById('addDelay').value='10-20 jours';
+  document.getElementById('addDelayWrap').style.display='none';
   document.getElementById('addIsNew').checked=false;
   document.getElementById('addTrending').checked=false;
   addPhotos=[];renderPhotoGrid('addPhotoGrid',addPhotos,'add');
@@ -795,6 +821,9 @@ function openEdit(key){
   document.getElementById('editOldPrice').value=p.old_price||'';
   document.getElementById('editCat').value=p.category||'Autre';
   document.getElementById('editStock').value=p.stock||0;
+  document.getElementById('editAvail').value=p.availability||'stock';
+  document.getElementById('editDelay').value=p.delayDays||'10-20 jours';
+  document.getElementById('editDelayWrap').style.display=(p.availability==='commande')?'block':'none';
   document.getElementById('editDesc').value=p.description||'';
   document.getElementById('editSpecs').value=p.specs||'';
   document.getElementById('editComm').value=p.commission||5;
@@ -814,7 +843,9 @@ async function saveEdit(){
     price:parseFloat(document.getElementById('editPrice').value)||0,
     old_price:parseFloat(document.getElementById('editOldPrice').value)||null,
     category:document.getElementById('editCat').value,
-    stock:parseInt(document.getElementById('editStock').value)||0,
+    stock:document.getElementById('editAvail').value==='stock'?(parseInt(document.getElementById('editStock').value)||0):0,
+    availability:document.getElementById('editAvail').value,
+    delayDays:document.getElementById('editAvail').value==='commande'?(document.getElementById('editDelay').value.trim()||'10-20 jours'):null,
     description:document.getElementById('editDesc').value.trim(),
     specs:document.getElementById('editSpecs').value.trim(),
     commission:parseFloat(document.getElementById('editComm').value)||5,

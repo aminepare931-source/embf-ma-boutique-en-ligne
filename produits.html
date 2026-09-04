@@ -81,6 +81,7 @@
 .pcard-stock.ok{color:var(--green);}
 .pcard-stock.low{color:var(--a1);}
 .pcard-stock.out{color:var(--muted);}
+.pcard-stock.cmd{color:var(--gold);}
 .pcard-fav{
   position:absolute;top:7px;right:7px;
   background:rgba(0,0,0,.5);border:none;color:#fff;
@@ -206,6 +207,11 @@
       <option value="price_desc">Prix ↓</option>
       <option value="name">Nom A-Z</option>
       <option value="promo">En promo</option>
+    </select>
+    <select class="sort-sel" id="availSel" onchange="renderGrid()">
+      <option value="">Tous les produits</option>
+      <option value="stock">📦 Disponible (livraison rapide)</option>
+      <option value="commande">✈️ Sur commande</option>
     </select>
   </div>
 </div>
@@ -412,8 +418,10 @@ function setCat(cat,btn){
 function renderGrid(){
   var q=document.getElementById("searchInput").value.toLowerCase();
   var sort=document.getElementById("sortSel").value;
+  var avail=document.getElementById("availSel").value;
   var prods=allProds.slice();
   if(curCat!=="Tous")prods=prods.filter(function(p){return p.category===curCat;});
+  if(avail)prods=prods.filter(function(p){return (p.availability||"stock")===avail;});
   if(q)prods=prods.filter(function(p){return p.name.toLowerCase().includes(q)||(p.description||"").toLowerCase().includes(q);});
   if(sort==="price_asc")prods.sort(function(a,b){return a.price-b.price;});
   else if(sort==="price_desc")prods.sort(function(a,b){return b.price-a.price;});
@@ -437,10 +445,12 @@ function renderGrid(){
       badges+="<span class='pb pb-promo'>-"+pct+"%</span>";
     }
     var stock="";
-    if(p.stock!==null&&p.stock!==undefined){
+    if(p.availability==="commande"){
+      stock="<div class='pcard-stock cmd'>✈️ Sur commande ("+(p.delayDays||"10-20 jours")+")</div>";
+    } else if(p.stock!==null&&p.stock!==undefined){
       if(p.stock<=0)stock="<div class='pcard-stock out'>❌ Rupture</div>";
       else if(p.stock<=3)stock="<div class='pcard-stock low'>⚠️ Plus que "+p.stock+"</div>";
-      else stock="<div class='pcard-stock ok'>✅ En stock</div>";
+      else stock="<div class='pcard-stock ok'>✅ En stock — livraison rapide</div>";
     }
     var key=p._key||p.id;
     return "<div class='pcard' onclick='goTo(\""+key+"\")'>"+

@@ -80,10 +80,12 @@
 .stock-block.ok{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.2);color:var(--green);}
 .stock-block.low{background:rgba(244,63,94,.08);border:1px solid rgba(244,63,94,.2);color:var(--a1);}
 .stock-block.out{background:var(--s2);border:1px solid var(--border);color:var(--muted);}
+.stock-block.cmd{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.25);color:var(--gold);}
 .stock-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
 .sdot-ok{background:var(--green);}
 .sdot-low{background:var(--a1);animation:pulse 1.5s ease infinite;}
 .sdot-out{background:var(--muted);}
+.sdot-cmd{background:var(--gold);}
 
 /* COUNTDOWN */
 .cd-block{background:linear-gradient(135deg,rgba(244,63,94,.1),rgba(249,115,22,.08));border:1px solid rgba(244,63,94,.2);border-radius:14px;padding:12px 14px;margin-bottom:14px;display:none;}
@@ -861,16 +863,21 @@ function renderStock(p){
   var sb=document.getElementById("stockBlock");
   var dot=document.getElementById("stockDot");
   var txt=document.getElementById("stockTxt");
+  if(p.availability==="commande"){
+    sb.className="stock-block cmd";dot.className="stock-dot sdot-cmd";
+    txt.textContent="✈️ Produit sur commande — livraison en "+(p.delayDays||"10-20 jours");
+    return;
+  }
   if(p.stock===null||p.stock===undefined){sb.style.display="none";return;}
   if(Number(p.stock)<=0){
     sb.className="stock-block out";dot.className="stock-dot sdot-out";txt.textContent="Rupture de stock";
     var cb=document.getElementById("cartBtn");if(cb){cb.disabled=true;}
   }else if(Number(p.stock)<=5){
     sb.className="stock-block low";dot.className="stock-dot sdot-low";
-    txt.textContent="Plus que "+p.stock+" en stock — commandez vite !";
+    txt.textContent="Plus que "+p.stock+" en stock — livraison rapide 24-72H";
   }else{
     sb.className="stock-block ok";dot.className="stock-dot sdot-ok";
-    txt.textContent="En stock ("+p.stock+" disponibles)";
+    txt.textContent="En stock ("+p.stock+" disponibles) — livraison rapide 24-72H";
   }
 }
 function renderSocial(p){
