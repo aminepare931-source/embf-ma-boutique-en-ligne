@@ -521,7 +521,7 @@ input:checked+.tog-sl:before{transform:translateX(19px);background:var(--a1);}
 // ===== SLUG =====
 function cldOpt(url,w){
   if(!url||url.indexOf('/image/upload/')===-1)return url;
-  return url.replace('/image/upload/','/image/upload/w_'+w+',q_auto,f_auto,c_limit/');
+  return url.replace('/image/upload/','/image/upload/w_'+w+',q_auto:good,f_auto,dpr_auto,c_limit/');
 }
 function slugify(text){
   return text.toString().toLowerCase()

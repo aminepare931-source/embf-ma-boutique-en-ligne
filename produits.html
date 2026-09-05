@@ -328,7 +328,7 @@ var CE={"Ordinateur":"💻","Smartphone":"📱","Gadget":"🎮","Accessoires":"�
 function fmt(v){return Number(v).toLocaleString("fr-FR")+" FCFA";}
 function cldOpt(url,w){
   if(!url||url.indexOf('/image/upload/')===-1)return url;
-  return url.replace('/image/upload/','/image/upload/w_'+w+',q_auto,f_auto,c_limit/');
+  return url.replace('/image/upload/','/image/upload/w_'+w+',q_auto:good,f_auto,dpr_auto,c_limit/');
 }
 function getImgs(p){
   try{
@@ -435,7 +435,7 @@ function renderGrid(){
   }
   g.innerHTML=prods.map(function(p){
     var imgs=getImgs(p);
-    var img=imgs[0]?"<img src='"+cldOpt(imgs[0],400)+"' alt='"+p.name+"' loading='lazy' onerror=\"this.style.display='none'\">":"<span>"+(CE[p.category]||"📦")+"</span>";
+    var img=imgs[0]?"<img src='"+cldOpt(imgs[0],600)+"' alt='"+p.name+"' loading='lazy' onerror=\"this.style.display='none'\">":"<span>"+(CE[p.category]||"📦")+"</span>";
     var isFav=favs.indexOf(String(p._key||p.id))>-1;
     var badges="";
     if(p.is_new===true||p.is_new==="true")badges+="<span class='pb pb-new'>NEW</span>";
