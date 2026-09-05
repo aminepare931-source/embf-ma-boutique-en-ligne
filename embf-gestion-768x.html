@@ -223,6 +223,13 @@ input:checked+.tog-sl:before{transform:translateX(19px);background:var(--a1);}
 .ai-typing span:nth-child(2){animation-delay:.2s;}
 .ai-typing span:nth-child(3){animation-delay:.4s;}
 @keyframes aiDot{0%,60%,100%{opacity:.3;}30%{opacity:1;}}
+.ai-attach-preview{display:flex;gap:6px;padding:0 12px;overflow-x:auto;}
+.ai-attach-preview:not(:empty){padding-top:8px;}
+.ai-attach-chip{position:relative;width:52px;height:52px;border-radius:8px;overflow:hidden;flex-shrink:0;background:var(--s2);border:1px solid var(--border);}
+.ai-attach-chip img{width:100%;height:100%;object-fit:cover;}
+.ai-attach-chip .rm{position:absolute;top:1px;right:1px;background:rgba(0,0,0,.7);color:#fff;border:none;border-radius:50%;width:16px;height:16px;font-size:.6rem;cursor:pointer;line-height:1;}
+.ai-attach-chip .up{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.5);font-size:.7rem;}
+.ai-attach-btn{width:40px;height:40px;border-radius:50%;background:var(--s2);border:1px solid var(--border);color:var(--txt);font-size:1.1rem;cursor:pointer;flex-shrink:0;}
 .ai-input-bar{display:flex;gap:8px;padding:12px;border-top:1px solid var(--border);background:var(--s1);}
 .ai-input-bar input{flex:1;background:var(--s2);border:1px solid var(--border);border-radius:50px;padding:10px 16px;color:var(--txt);font-size:.86rem;}
 .ai-input-bar input:focus{outline:none;border-color:var(--a1);}
@@ -1161,6 +1168,7 @@ async function loadPromo(){
 
 // ===== ASSISTANT IA =====
 var aiHistory=[];
+var aiAttachments=[];
 var aiBusy=false;
 function toggleAiPanel(){
   document.getElementById('aiPanel').classList.toggle('open');
@@ -1190,20 +1198,64 @@ function aiHideTyping(){
   var t=document.getElementById('aiTyping');
   if(t)t.remove();
 }
+function renderAiAttachPreview(){
+  var box=document.getElementById('aiAttachPreview');
+  box.innerHTML=aiAttachments.map(function(a,i){
+    if(a.uploading){
+      return '<div class="ai-attach-chip"><div class="up">⏳</div></div>';
+    }
+    var thumb=a.type==='video'?(a.thumbnail||''):a.url;
+    return '<div class="ai-attach-chip">'+
+      (thumb?'<img src="'+thumb+'" alt="">':'<div class="up">🎬</div>')+
+      '<button class="rm" onclick="removeAiAttach('+i+')">✕</button>'+
+    '</div>';
+  }).join('');
+}
+function removeAiAttach(i){
+  aiAttachments.splice(i,1);
+  renderAiAttachPreview();
+}
+async function handleAiAttach(e){
+  var files=Array.from(e.target.files).slice(0,8-aiAttachments.length);
+  e.target.value='';
+  if(!files.length)return;
+  for(var i=0;i<files.length;i++){
+    var placeholder={uploading:true};
+    aiAttachments.push(placeholder);
+    renderAiAttachPreview();
+    try{
+      var res=await uploadToCloudinary(files[i]);
+      var idx=aiAttachments.indexOf(placeholder);
+      if(idx>-1)aiAttachments[idx]=res;
+    }catch(err){
+      var idx2=aiAttachments.indexOf(placeholder);
+      if(idx2>-1)aiAttachments.splice(idx2,1);
+      showToast('❌ '+err.message,false);
+    }
+    renderAiAttachPreview();
+  }
+}
 async function aiSend(){
   if(aiBusy)return;
   var input=document.getElementById('aiInput');
   var msg=input.value.trim();
   if(!msg)return;
+  if(aiAttachments.some(function(a){return a.uploading;})){
+    showToast('⏳ Attends la fin de l\'upload des photos/vidéos',false);
+    return;
+  }
+  var attachmentsToSend=aiAttachments.slice();
   input.value='';
-  aiAppendMsg(msg,'user');
+  aiAppendMsg(msg+(attachmentsToSend.length?' 📎'+attachmentsToSend.length:''),'user');
+  aiAttachments=[];
+  renderAiAttachPreview();
   aiShowTyping();
   aiBusy=true;
   document.getElementById('aiSendBtn').disabled=true;
   try{
     var r=await fetch('/api/assistant',{
       method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({message:msg,history:aiHistory})
+      body:JSON.stringify({message:msg,history:aiHistory,attachments:attachmentsToSend})
     });
     var data=await r.json();
     aiHideTyping();
@@ -1244,9 +1296,12 @@ renderPhotoGrid('addPhotoGrid',addPhotos,'add');
     <button class="ai-close" onclick="toggleAiPanel()">✕</button>
   </div>
   <div class="ai-msgs" id="aiMsgs">
-    <div class="ai-msg bot">Salut ! Je peux créer ou modifier des produits, gérer les promos... Dis-moi ce qu'il te faut.</div>
+    <div class="ai-msg bot">Salut ! Je peux créer ou modifier des produits, gérer les promos... Envoie-moi aussi des photos/vidéos si besoin, je les rattache automatiquement. Dis-moi ce qu'il te faut.</div>
   </div>
+  <div class="ai-attach-preview" id="aiAttachPreview"></div>
   <div class="ai-input-bar">
+    <button class="ai-attach-btn" id="aiAttachBtn" onclick="document.getElementById('aiFileInput').click()">📎</button>
+    <input type="file" id="aiFileInput" accept="image/*,video/*" multiple style="display:none;" onchange="handleAiAttach(event)">
     <input type="text" id="aiInput" placeholder="Ex: crée un iPhone 15 à 450000 FCFA" onkeydown="if(event.key==='Enter')aiSend()">
     <button class="ai-send" id="aiSendBtn" onclick="aiSend()">➤</button>
   </div>

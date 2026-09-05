@@ -34,7 +34,7 @@ const TOOLS = [
     type: 'function',
     function: {
       name: 'create_product',
-      description: "Cree un nouveau produit dans la boutique. Le produit est cree SANS PHOTO (l'assistant ne peut pas fournir de vraies photos) - previens toujours l'utilisateur qu'il doit ajouter des photos depuis l'onglet Produits ensuite. IMPORTANT: demande toujours si le produit est en stock (livraison rapide) ou sur commande (10-20 jours, generalement moins cher) si ce n'est pas precise.",
+      description: "Cree un nouveau produit dans la boutique. Si l'utilisateur a joint des photos/videos a son message, elles seront automatiquement rattachees au produit cree - ne demande jamais a l'utilisateur de fournir des images toi-meme, tu ne peux pas en generer ni en trouver. IMPORTANT: demande toujours si le produit est en stock (livraison rapide) ou sur commande (10-20 jours, generalement moins cher) si ce n'est pas precise.",
       parameters: {
         type: 'object',
         properties: {
@@ -59,7 +59,7 @@ const TOOLS = [
     type: 'function',
     function: {
       name: 'update_product',
-      description: "Modifie un produit existant. Utilise list_products d'abord si tu n'as pas l'ID exact. Ne fournis que les champs a changer.",
+      description: "Modifie un produit existant. Utilise list_products d'abord si tu n'as pas l'ID exact. Ne fournis que les champs a changer. Si l'utilisateur a joint des photos/videos a son message, elles seront automatiquement ajoutees a ce produit.",
       parameters: {
         type: 'object',
         properties: {
@@ -130,7 +130,7 @@ async function fbFetch(path, opts){
   return r.json();
 }
 
-async function execTool(name, input){
+async function execTool(name, input, pendingMedia){
   if(name === 'list_products'){
     const data = await fbFetch('/products.json');
     if(!data) return { products: [] };
@@ -147,6 +147,7 @@ async function execTool(name, input){
 
   if(name === 'create_product'){
     const avail = input.availability === 'commande' ? 'commande' : 'stock';
+    const media = (pendingMedia && pendingMedia.length) ? pendingMedia : [];
     const data = {
       name: input.name,
       price: input.price,
@@ -159,13 +160,13 @@ async function execTool(name, input){
       description: input.description || '',
       specs: input.specs || '',
       commission: input.commission != null ? input.commission : 5,
-      images: '[]',
+      images: JSON.stringify(media),
       is_new: !!input.is_new,
       trending: !!input.trending,
       createdAt: Date.now()
     };
     const res = await fbFetch('/products.json', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(data) });
-    return { success: true, product_id: res.name, note: 'Produit cree sans photo - a ajouter manuellement dans Produits.' };
+    return { success: true, product_id: res.name, photos_attached: media.length, note: media.length ? undefined : 'Produit cree sans photo - a ajouter manuellement dans Produits.' };
   }
 
   if(name === 'update_product'){
@@ -186,8 +187,16 @@ async function execTool(name, input){
       patch.delayDays = fields.delay_days;
     }
     if(patch.name) patch.slug = slugify(patch.name);
+    let photosAttached = 0;
+    if(pendingMedia && pendingMedia.length){
+      const current = await fbFetch('/products/' + product_id + '/images.json');
+      let existing = [];
+      try{ existing = current ? JSON.parse(current) : []; }catch(e){ existing = []; }
+      patch.images = JSON.stringify(existing.concat(pendingMedia));
+      photosAttached = pendingMedia.length;
+    }
     await fbFetch('/products/' + product_id + '.json', { method: 'PATCH', headers: {'Content-Type':'application/json'}, body: JSON.stringify(patch) });
-    return { success: true };
+    return { success: true, photos_attached: photosAttached };
   }
 
   if(name === 'delete_product'){
@@ -232,6 +241,7 @@ export default async function handler(req){
 
   const history = Array.isArray(body.history) ? body.history : [];
   const userMessage = body.message || '';
+  const attachments = Array.isArray(body.attachments) ? body.attachments.filter(a => a && a.url) : [];
   if(!userMessage.trim()){
     return new Response(JSON.stringify({ error: 'Message vide' }), { status: 400 });
   }
@@ -239,8 +249,13 @@ export default async function handler(req){
   const SYSTEM = `Tu es l'assistante IA de gestion de EMBF Boutique (Electro Market BF), une boutique en ligne au Burkina Faso. Tu aides l'administrateur a gerer sa boutique: creer/modifier/supprimer des produits, configurer des promotions. La boutique vend des produits de deux facons: "stock" (disponible immediatement, livraison rapide 24-72H) et "commande" (importe sur commande, delai 10-20 jours, generalement moins cher). Demande toujours laquelle des deux si l'utilisateur ne le precise pas en creant un produit. Sois concise, parle en francais, confirme toujours clairement ce que tu as fait a la fin. Si une demande est ambigue (prix, categorie manquants), demande une precision au lieu de deviner. N'invente jamais d'ID de produit - utilise toujours list_products pour les retrouver.`;
 
   let messages = history.length ? history : [{ role: 'system', content: SYSTEM }];
-  messages.push({ role: 'user', content: userMessage });
+  let userContent = userMessage;
+  if(attachments.length){
+    userContent += `\n\n[${attachments.length} photo(s)/video(s) joint(e)s a ce message - elles seront automatiquement rattachees au produit que tu vas creer ou modifier, tu n'as rien a faire de plus a ce sujet]`;
+  }
+  messages.push({ role: 'user', content: userContent });
   const actionsLog = [];
+  let mediaAvailable = attachments;
 
   try{
     for(let iter = 0; iter < 6; iter++){
@@ -283,7 +298,9 @@ export default async function handler(req){
         let input = {};
         try{ input = JSON.parse(tc.function.arguments || '{}'); }catch(e){}
         try{
-          const result = await execTool(tc.function.name, input);
+          const useMedia = (tc.function.name === 'create_product' || tc.function.name === 'update_product') ? mediaAvailable : [];
+          const result = await execTool(tc.function.name, input, useMedia);
+          if(useMedia.length) mediaAvailable = [];
           actionsLog.push({ tool: tc.function.name, input: input, result: result });
           messages.push({ role: 'tool', tool_call_id: tc.id, content: JSON.stringify(result) });
         }catch(e){
