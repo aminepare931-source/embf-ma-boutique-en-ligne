@@ -8,7 +8,10 @@ const GROQ_API_KEY = process.env.GROQ_API_KEY;
 const NVIDIA_API_KEY = process.env.NVIDIA_API_KEY;
 
 const PROVIDERS = [
-  { name: 'groq', url: 'https://api.groq.com/openai/v1/chat/completions', key: GROQ_API_KEY, model: 'openai/gpt-oss-120b' },
+  { name: 'groq-gptoss120b', url: 'https://api.groq.com/openai/v1/chat/completions', key: GROQ_API_KEY, model: 'openai/gpt-oss-120b' },
+  { name: 'groq-llama70b', url: 'https://api.groq.com/openai/v1/chat/completions', key: GROQ_API_KEY, model: 'llama-3.3-70b-versatile' },
+  { name: 'groq-gptoss20b', url: 'https://api.groq.com/openai/v1/chat/completions', key: GROQ_API_KEY, model: 'openai/gpt-oss-20b' },
+  { name: 'groq-llama8b', url: 'https://api.groq.com/openai/v1/chat/completions', key: GROQ_API_KEY, model: 'llama-3.1-8b-instant' },
   { name: 'nvidia', url: 'https://integrate.api.nvidia.com/v1/chat/completions', key: NVIDIA_API_KEY, model: 'meta/llama-3.3-70b-instruct' }
 ].filter(p => !!p.key);
 
