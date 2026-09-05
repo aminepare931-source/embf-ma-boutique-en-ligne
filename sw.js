@@ -1,4 +1,4 @@
-var CACHE = 'embf-v2';
+var CACHE = 'embf-v3';
 var ASSETS = [
   '/', '/index.html', '/produits.html', '/produit.html',
   '/contact.html', '/demande.html', '/affiliation.html',
@@ -19,8 +19,12 @@ self.addEventListener('activate', function(e){
 
 self.addEventListener('fetch', function(e){
   if(e.request.method!=='GET')return;
-  // Jamais de cache pour l'admin: toujours servir la version la plus recente
-  if(e.request.url.indexOf('embf-gestion-768x.html')!==-1||e.request.url.indexOf('admin.html')!==-1){
+  var url=e.request.url;
+  // Jamais de cache pour l'admin, ni pour les appels vers des services externes
+  // (Firebase, Cloudinary...) - toujours les donnees les plus fraiches, jamais figees
+  var isExternal=url.indexOf(self.location.origin)!==0;
+  var isAdmin=url.indexOf('embf-gestion-768x.html')!==-1||url.indexOf('admin.html')!==-1;
+  if(isExternal||isAdmin){
     e.respondWith(fetch(e.request));
     return;
   }
