@@ -5,7 +5,46 @@ export const config = { runtime: 'edge' };
 const FB_DB = 'https://boutique-embf-default-rtdb.europe-west1.firebasedatabase.app';
 const FB_KEY = 'AIzaSyA0UGFKeoatnMaCMAlaF3B3li9gFY4Dt0g';
 const GROQ_API_KEY = process.env.GROQ_API_KEY;
-const MODEL = 'openai/gpt-oss-120b';
+const NVIDIA_API_KEY = process.env.NVIDIA_API_KEY;
+
+const PROVIDERS = [
+  { name: 'groq', url: 'https://api.groq.com/openai/v1/chat/completions', key: GROQ_API_KEY, model: 'openai/gpt-oss-120b' },
+  { name: 'nvidia', url: 'https://integrate.api.nvidia.com/v1/chat/completions', key: NVIDIA_API_KEY, model: 'meta/llama-3.3-70b-instruct' }
+].filter(p => !!p.key);
+
+async function callLLM(messages, tools){
+  let lastErr = null;
+  for(const provider of PROVIDERS){
+    try{
+      const resp = await fetch(provider.url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + provider.key
+        },
+        body: JSON.stringify({
+          model: provider.model,
+          messages: messages,
+          tools: tools,
+          tool_choice: 'auto',
+          max_tokens: 1500
+        })
+      });
+      if(!resp.ok){
+        const errText = await resp.text();
+        lastErr = provider.name + ': ' + errText;
+        continue;
+      }
+      const data = await resp.json();
+      const choice = data.choices && data.choices[0];
+      if(!choice){ lastErr = provider.name + ': reponse vide'; continue; }
+      return choice.message;
+    }catch(e){
+      lastErr = provider.name + ': ' + e.message;
+    }
+  }
+  throw new Error('Tous les fournisseurs IA ont echoue - ' + (lastErr || 'aucun fournisseur configure'));
+}
 
 function slugify(t){
   return t.toString().toLowerCase()
@@ -230,8 +269,8 @@ export default async function handler(req){
   if(req.method !== 'POST'){
     return new Response(JSON.stringify({ error: 'Methode non supportee' }), { status: 405 });
   }
-  if(!GROQ_API_KEY){
-    return new Response(JSON.stringify({ error: "GROQ_API_KEY non configuree sur Vercel" }), { status: 500 });
+  if(PROVIDERS.length===0){
+    return new Response(JSON.stringify({ error: "Aucune cle IA configuree sur Vercel (GROQ_API_KEY ou NVIDIA_API_KEY)" }), { status: 500 });
   }
 
   let body;
@@ -259,32 +298,12 @@ export default async function handler(req){
 
   try{
     for(let iter = 0; iter < 6; iter++){
-      const resp = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + GROQ_API_KEY
-        },
-        body: JSON.stringify({
-          model: MODEL,
-          messages: messages,
-          tools: TOOLS,
-          tool_choice: 'auto',
-          max_completion_tokens: 1500
-        })
-      });
-
-      if(!resp.ok){
-        const errText = await resp.text();
-        return new Response(JSON.stringify({ error: 'Erreur API Groq: ' + errText }), { status: 502 });
+      let msg;
+      try{
+        msg = await callLLM(messages, TOOLS);
+      }catch(e){
+        return new Response(JSON.stringify({ error: e.message }), { status: 502 });
       }
-
-      const data = await resp.json();
-      const choice = data.choices && data.choices[0];
-      if(!choice){
-        return new Response(JSON.stringify({ error: 'Reponse Groq vide' }), { status: 502 });
-      }
-      const msg = choice.message;
       messages.push(msg);
 
       const toolCalls = msg.tool_calls || [];
