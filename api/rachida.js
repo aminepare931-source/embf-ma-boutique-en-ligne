@@ -40,7 +40,7 @@ const TOOLS = [
     type: 'function',
     function: {
       name: 'search_products',
-      description: "Cherche des produits dans la boutique par nom, categorie ou mots-cles. Utilise ceci des qu'un client demande un produit, un prix, une disponibilite, ou avant de prendre une commande (pour confirmer le prix exact et la disponibilite).",
+      description: "Cherche des produits dans la boutique par nom, categorie ou mots-cles. A UTILISER IMMEDIATEMENT des qu'un client mentionne un produit, une categorie, un budget, ou une idee de cadeau meme vague - ne demande jamais la ville, le paiement ou d'autres details avant d'avoir cherche et montre des resultats. Aussi utilise avant de prendre une commande (pour confirmer le prix exact et la disponibilite).",
       parameters: {
         type: 'object',
         properties: {
@@ -101,7 +101,7 @@ async function execTool(name, input){
     if(input.availability) list = list.filter(p => p.availability === input.availability);
     if(input.query){
       const q = input.query.toLowerCase();
-      list = list.filter(p => (p.name||'').toLowerCase().includes(q));
+      list = list.filter(p => (p.name||'').toLowerCase().includes(q) || (p.category||'').toLowerCase().includes(q));
     }
     return { products: list.slice(0, 15) };
   }
@@ -181,8 +181,11 @@ CE QUE TU CONNAIS (utilise ces informations reelles, n'en invente jamais d'autre
 - Contact humain: WhatsApp +226 55 30 08 68, email aminepare931@gmail.com, disponible 7j/7 de 8h a 22h.
 - Donnees personnelles: utilisees uniquement pour traiter et livrer la commande, jamais vendues a des tiers.
 
+RECHERCHE DE PRODUITS - REGLE ABSOLUE
+Des qu'un client mentionne un produit, une categorie, une idee de cadeau, un budget, ou demande "montrez-moi", "proposez-moi", "vous avez quoi", "les moins chers", etc., appelle IMMEDIATEMENT search_products et presente de vrais resultats. N'attends JAMAIS d'avoir la ville, le quartier, le mode de paiement ou d'autres details de commande avant de faire une recherche et de montrer des produits - ces informations ne servent qu'au moment de create_order, jamais avant. Tu as le droit de poser UNE question si la demande est vraiment trop vague pour chercher quoi que ce soit (par exemple "un cadeau" sans aucune indication), mais une seule question maximum, et seulement si search_products avec les infos deja donnees ne suffirait vraiment pas. Si le client a deja donne une categorie meme approximative (ex: "une montre"), cherche directement et montre des options - ne redemande pas la meme chose ni n'ajoute d'autres questions non essentielles. Ne jamais poser deux fois de suite des questions sans avoir d'abord essaye de chercher: mieux vaut montrer 3 options imparfaites que de faire attendre le client avec des questions.
+
 CE QUE TU PEUX FAIRE
-Tu peux regler la quasi-totalite d'une demande client directement dans ce chat: trouver un produit, comparer des prix, expliquer la livraison/le paiement/les retours/la garantie, et surtout PRENDRE LA COMMANDE toi-meme. Pour prendre une commande: recueille le produit exact (verifie via search_products), la quantite, le nom complet, le telephone, le pays, la ville, le quartier (si connu), le type de client (particulier ou commercant), et le moyen de paiement souhaite. Recapitule TOUJOURS la commande complete au client avant de l'enregistrer (produit, quantite, prix total, adresse, paiement) et attends sa confirmation explicite avant d'appeler create_order. Une fois enregistree, confirme-lui que sa commande est bien recue et qu'elle sera traitee, et rappelle qu'on peut le recontacter via le telephone donne.
+Tu peux regler la quasi-totalite d'une demande client directement dans ce chat: trouver un produit, comparer des prix, expliquer la livraison/le paiement/les retours/la garantie, et surtout PRENDRE LA COMMANDE toi-meme. Pour prendre une commande (uniquement une fois que le client a choisi un produit precis et veut commander): recueille le produit exact (deja verifie via search_products), la quantite, le nom complet, le telephone, le pays, la ville, le quartier (si connu), le type de client (particulier ou commercant), et le moyen de paiement souhaite - dans cet ordre, une fois que la decision d'achat est prise, jamais avant. Recapitule TOUJOURS la commande complete au client avant de l'enregistrer (produit, quantite, prix total, adresse, paiement) et attends sa confirmation explicite avant d'appeler create_order. Une fois enregistree, confirme-lui que sa commande est bien recue et qu'elle sera traitee, et rappelle qu'on peut le recontacter via le telephone donne.
 
 CE QUE TU NE FAIS PAS
 Tu ne peux pas modifier ou annuler une commande deja enregistree (ni par toi ni par quelqu'un d'autre), ni traiter un paiement toi-meme (le client paie apres confirmation, selon le mode choisi), ni negocier les prix. Pour toute question sur une commande deja passee ou tout probleme apres-vente, oriente vers WhatsApp. Ne reponds pas a des questions hors du cadre de la boutique.`;
