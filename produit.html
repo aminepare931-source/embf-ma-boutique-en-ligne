@@ -1262,11 +1262,37 @@ function toggleRcPanel(){
     setTimeout(function(){document.getElementById('rcInput').focus();},100);
   }
 }
+function rcEscapeHtml(s){
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+function rcCleanText(raw){
+  var lines=raw.split('\n');
+  var out=[];
+  for(var i=0;i<lines.length;i++){
+    var line=lines[i];
+    var trimmed=line.trim();
+    if(/^\|?[\s:|-]+\|?$/.test(trimmed)&&trimmed.indexOf('-')!==-1)continue;
+    if(/^\|.*\|$/.test(trimmed)){
+      var cells=trimmed.split('|').map(function(c){return c.trim();});
+      cells=cells.filter(function(c,idx){return !((idx===0||idx===cells.length-1)&&c==='');});
+      line=cells.join(' — ');
+    }
+    line=line.replace(/\*\*(.*?)\*\*/g,'$1').replace(/\*(.*?)\*/g,'$1').replace(/^#{1,6}\s*/,'');
+    out.push(line);
+  }
+  var text=out.join('\n').trim();
+  text=rcEscapeHtml(text);
+  text=text.replace(/&lt;(https?:\/\/[^\s&]+)&gt;/g,'$1');
+  text=text.replace(/(https?:\/\/[^\s<]+)/g,'<a href="$1" target="_blank" style="color:inherit;text-decoration:underline;">$1</a>');
+  text=text.replace(/\n/g,'<br>');
+  return text;
+}
 function rcAppendMsg(text,cls){
   var box=document.getElementById('rcMsgs');
   var div=document.createElement('div');
   div.className='rc-msg '+cls;
-  div.textContent=text;
+  if(cls==='user')div.textContent=text;
+  else div.innerHTML=rcCleanText(text);
   box.appendChild(div);
   box.scrollTop=box.scrollHeight;
 }
