@@ -230,6 +230,8 @@ input:checked+.tog-sl:before{transform:translateX(19px);background:var(--a1);}
 .sd-badge{background:var(--a3);color:#fff;font-size:.58rem;font-weight:800;padding:1px 5px;border-radius:50px;margin-left:auto;}
 /* ===== ASSISTANT IA ===== */
 .ai-fab{position:fixed;bottom:80px;right:16px;width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--a1),var(--a2));border:none;color:#fff;font-size:1.5rem;box-shadow:0 6px 20px rgba(0,229,255,.4);cursor:pointer;z-index:900;display:flex;align-items:center;justify-content:center;}
+.ai-fab img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
+.ai-hdr-title img{width:26px;height:26px;object-fit:cover;border-radius:50%;}
 @media(min-width:900px){.ai-fab{bottom:24px;}}
 .ai-panel{position:fixed;bottom:0;right:0;left:0;top:0;background:var(--bg);z-index:2000;display:none;flex-direction:column;}
 .ai-panel.open{display:flex;}
@@ -1432,10 +1434,10 @@ renderPhotoGrid('addPhotoGrid',addPhotos,'add');
 </script>
 <script>if("serviceWorker" in navigator){navigator.serviceWorker.register("/sw.js").catch(function(){});}</script>
 <!-- ASSISTANT IA -->
-<button class="ai-fab" id="aiFab" onclick="toggleAiPanel()" style="display:none;">🤖</button>
+<button class="ai-fab" id="aiFab" onclick="toggleAiPanel()" style="display:none;"><img src="/assets/img/rachida.jpg" alt="Rachida"></button>
 <div class="ai-panel" id="aiPanel">
   <div class="ai-hdr">
-    <div class="ai-hdr-title">🤖 Rachida — Assistante EMBF</div>
+    <div class="ai-hdr-title"><img src="/assets/img/rachida.jpg" alt=""> Rachida — Assistante EMBF</div>
     <button class="ai-close" onclick="toggleAiPanel()">✕</button>
   </div>
   <div class="ai-msgs" id="aiMsgs">
