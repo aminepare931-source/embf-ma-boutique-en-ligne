@@ -1,8 +1,10 @@
-// Vercel Edge Function - Rachida, assistante d'achat cote client (LECTURE SEULE)
-// Aucune capacite de creation/modification/suppression - uniquement pour aider les visiteurs
+// Vercel Edge Function - Rachida, assistante d'achat cote client
+// Peut chercher des produits, repondre sur les politiques du site, et PRENDRE une commande
+// (creation seule dans /orders - jamais de modification/suppression de donnees existantes)
 export const config = { runtime: 'edge' };
 
 const FB_DB = 'https://boutique-embf-default-rtdb.europe-west1.firebasedatabase.app';
+const FB_KEY = 'AIzaSyA0UGFKeoatnMaCMAlaF3B3li9gFY4Dt0g';
 const GROQ_API_KEY = process.env.GROQ_API_KEY;
 const NVIDIA_API_KEY = process.env.NVIDIA_API_KEY;
 
@@ -21,7 +23,7 @@ async function callLLM(messages, tools){
       const resp = await fetch(provider.url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + provider.key },
-        body: JSON.stringify({ model: provider.model, messages, tools, tool_choice: 'auto', max_tokens: 800 })
+        body: JSON.stringify({ model: provider.model, messages, tools, tool_choice: 'auto', max_tokens: 900 })
       });
       if(!resp.ok){ lastErr = provider.name + ': ' + await resp.text(); continue; }
       const data = await resp.json();
@@ -33,17 +35,12 @@ async function callLLM(messages, tools){
   throw new Error('IA indisponible - ' + (lastErr || 'aucun fournisseur configure'));
 }
 
-function getImgUrl(item){
-  if(!item) return null;
-  return typeof item === 'object' ? item.url : item;
-}
-
 const TOOLS = [
   {
     type: 'function',
     function: {
       name: 'search_products',
-      description: "Cherche des produits dans la boutique par nom, categorie ou mots-cles. Utilise ceci des qu'un client demande un produit, un prix, ou une comparaison.",
+      description: "Cherche des produits dans la boutique par nom, categorie ou mots-cles. Utilise ceci des qu'un client demande un produit, un prix, une disponibilite, ou avant de prendre une commande (pour confirmer le prix exact et la disponibilite).",
       parameters: {
         type: 'object',
         properties: {
@@ -60,6 +57,31 @@ const TOOLS = [
       name: 'get_promo',
       description: "Verifie s'il y a une promotion active en ce moment sur la boutique.",
       parameters: { type: 'object', properties: {} }
+    }
+  },
+  {
+    type: 'function',
+    function: {
+      name: 'create_order',
+      description: "Enregistre une commande dans le systeme de la boutique, qui apparaitra immediatement dans l'admin pour traitement. N'appelle CET OUTIL QU'UNE FOIS que tu as recapitule la commande complete au client (produit, quantite, prix, adresse, moyen de paiement) et qu'il a confirme. Utilise search_products juste avant pour verifier le prix exact et l'ID du produit.",
+      parameters: {
+        type: 'object',
+        properties: {
+          product_id: { type: 'string', description: 'ID Firebase exact du produit (obtenu via search_products)' },
+          product_name: { type: 'string', description: 'Nom du produit (pour le recap)' },
+          price: { type: 'number', description: 'Prix unitaire exact (obtenu via search_products)' },
+          quantity: { type: 'number', description: 'Quantite commandee' },
+          customer_name: { type: 'string', description: 'Nom complet du client' },
+          phone: { type: 'string', description: 'Numero de telephone du client' },
+          country: { type: 'string', description: 'Pays de livraison' },
+          city: { type: 'string', description: 'Ville de livraison' },
+          neighborhood: { type: 'string', description: 'Quartier (optionnel)' },
+          customer_type: { type: 'string', enum: ['Particulier','Commerçant'], description: "Type de client" },
+          payment_method: { type: 'string', description: "Moyen de paiement choisi: Orange Money, Moov Money, Wave, Virement bancaire, ou Especes (Bobo-Dioulasso uniquement)" },
+          note: { type: 'string', description: 'Note ou precision supplementaire du client (optionnel)' }
+        },
+        required: ['product_id','product_name','price','quantity','customer_name','phone','country','city','payment_method']
+      }
     }
   }
 ];
@@ -88,6 +110,39 @@ async function execTool(name, input){
     const data = await r.json();
     return data || { active: false };
   }
+  if(name === 'create_order'){
+    const required = ['product_id','product_name','price','quantity','customer_name','phone','country','city','payment_method'];
+    for(const k of required){
+      if(input[k] === undefined || input[k] === null || input[k] === ''){
+        throw new Error('Champ manquant: ' + k);
+      }
+    }
+    const orderData = {
+      produit: input.product_name,
+      produitId: input.product_id,
+      prix: input.price,
+      quantite: input.quantity,
+      client: {
+        nom: input.customer_name,
+        tel: input.phone,
+        pays: input.country,
+        ville: input.city,
+        quartier: input.neighborhood || '',
+        type: input.customer_type === 'Commerçant' ? 'Commerçant' : 'Particulier'
+      },
+      paiement: input.payment_method,
+      message: (input.note || '') + ' [Commande prise par Rachida]',
+      ref: null,
+      statut: 'nouveau',
+      ts: Date.now()
+    };
+    const r = await fetch(FB_DB + '/orders.json?auth=' + FB_KEY, {
+      method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(orderData)
+    });
+    if(!r.ok) throw new Error('Erreur enregistrement commande');
+    const res = await r.json();
+    return { success: true, order_id: res.name, total: input.price * input.quantity };
+  }
   throw new Error('Outil inconnu: ' + name);
 }
 
@@ -110,13 +165,30 @@ export default async function handler(req){
     return new Response(JSON.stringify({ error: 'Message vide' }), { status: 400 });
   }
 
-  const SYSTEM = `Tu es Rachida, l'assistante d'achat de EMBF Boutique (Electro Market BF), une boutique en ligne d'equipement electronique et divers au Burkina Faso. Tu aides les visiteurs a trouver des produits, comparer des prix, comprendre les modes de livraison (stock = livraison rapide 24-72H, commande = import 10-20 jours generalement moins cher) et les moyens de paiement (Orange Money, Wave, Moov Money, ou especes a la livraison selon la zone). Pour commander, oriente toujours le client vers la page du produit (donne le lien) ou vers WhatsApp au +226 55 30 08 68. Sois chaleureuse, concise, et parle en francais. Tu ne peux ni creer ni modifier ni annuler de commande toi-meme - pour toute question sur une commande deja passee, oriente vers WhatsApp. Utilise toujours search_products pour verifier prix et disponibilite reels avant de repondre - n'invente jamais un prix ou un stock.`;
+  const SYSTEM = `Tu es Rachida, l'assistante de EMBF Boutique (Electro Market BF), boutique en ligne d'equipement electronique et divers a Bobo-Dioulasso, Burkina Faso.
+
+TON ET STYLE
+Tu es professionnelle et tres accueillante, comme une vraie conseillere de vente chaleureuse qui connait bien la maison - pas un robot. Parle simplement, avec des phrases naturelles. N'utilise pas d'emojis de maniere systematique ou decorative - seulement si ca vient vraiment naturellement, avec parcimonie. Tutoiement ou vouvoiement selon comment le client s'adresse a toi. Sois concise: des reponses utiles, pas des pavés.
+
+CE QUE TU CONNAIS (utilise ces informations reelles, n'en invente jamais d'autres)
+- Livraison: Bobo-Dioulasso 24H, Ouagadougou 24-48H, autres villes du Burkina Faso 48-72H, Afrique de l'Ouest (Côte d'Ivoire, Sénégal, Mali) 3-7 jours. Ces delais s'appliquent aux produits deja en stock. Les produits "sur commande" (import) prennent 10-20 jours - verifie toujours via search_products si un produit est en stock ou sur commande avant d'annoncer un delai.
+- Paiement: Orange Money, Moov Money, Wave, virement bancaire, ou especes (uniquement a Bobo-Dioulasso). Paiement integral requis avant expedition.
+- Retours: produit defectueux -> contact sous 48h avec photos via WhatsApp, echange ou remboursement selon le cas. Retractation possible sous 7 jours apres reception si le produit est non utilise et dans son emballage d'origine (frais de retour a la charge de l'acheteur).
+- Garantie: tous les produits sont 100% authentiques, garantie constructeur de 6 a 12 mois selon le produit (ne couvre pas la mauvaise utilisation).
+- Contact humain: WhatsApp +226 55 30 08 68, email aminepare931@gmail.com, disponible 7j/7 de 8h a 22h.
+- Donnees personnelles: utilisees uniquement pour traiter et livrer la commande, jamais vendues a des tiers.
+
+CE QUE TU PEUX FAIRE
+Tu peux regler la quasi-totalite d'une demande client directement dans ce chat: trouver un produit, comparer des prix, expliquer la livraison/le paiement/les retours/la garantie, et surtout PRENDRE LA COMMANDE toi-meme. Pour prendre une commande: recueille le produit exact (verifie via search_products), la quantite, le nom complet, le telephone, le pays, la ville, le quartier (si connu), le type de client (particulier ou commercant), et le moyen de paiement souhaite. Recapitule TOUJOURS la commande complete au client avant de l'enregistrer (produit, quantite, prix total, adresse, paiement) et attends sa confirmation explicite avant d'appeler create_order. Une fois enregistree, confirme-lui que sa commande est bien recue et qu'elle sera traitee, et rappelle qu'on peut le recontacter via le telephone donne.
+
+CE QUE TU NE FAIS PAS
+Tu ne peux pas modifier ou annuler une commande deja enregistree (ni par toi ni par quelqu'un d'autre), ni traiter un paiement toi-meme (le client paie apres confirmation, selon le mode choisi), ni negocier les prix. Pour toute question sur une commande deja passee ou tout probleme apres-vente, oriente vers WhatsApp. Ne reponds pas a des questions hors du cadre de la boutique.`;
 
   let messages = history.length ? history : [{ role: 'system', content: SYSTEM }];
   messages.push({ role: 'user', content: userMessage });
 
   try{
-    for(let iter = 0; iter < 4; iter++){
+    for(let iter = 0; iter < 6; iter++){
       let msg;
       try{ msg = await callLLM(messages, TOOLS); }
       catch(e){ return new Response(JSON.stringify({ error: e.message }), { status: 502 }); }
@@ -147,3 +219,4 @@ export default async function handler(req){
     return new Response(JSON.stringify({ error: e.message }), { status: 500 });
   }
 }
+
