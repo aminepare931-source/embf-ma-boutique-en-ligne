@@ -293,7 +293,7 @@ export default async function handler(req){
   let messages = history.length ? history : [{ role: 'system', content: SYSTEM }];
   let userContent = userMessage;
   if(attachments.length){
-    userContent += `\n\n[${attachments.length} photo(s)/video(s) joint(e)s a ce message - elles seront automatiquement rattachees au produit que tu vas creer ou modifier, tu n'as rien a faire de plus a ce sujet]`;
+    userContent += `\n\n[${attachments.length} photo(s)/video(s) joint(e)s a ce message - elles resteront disponibles et seront automatiquement rattachees des que tu appelleras create_product ou update_product, meme si c'est dans un message suivant (par exemple si tu dois d'abord demander le nom ou le prix du produit). Tu n'as rien a faire de plus a ce sujet, ne redemande jamais les photos.]`;
   }
   messages.push({ role: 'user', content: userContent });
   const actionsLog = [];

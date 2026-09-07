@@ -258,7 +258,7 @@ input:checked+.tog-sl:before{transform:translateX(19px);background:var(--a1);}
 .ai-attach-chip .up{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.5);font-size:.7rem;}
 .ai-attach-btn{width:40px;height:40px;border-radius:50%;background:var(--s2);border:1px solid var(--border);color:var(--txt);font-size:1.1rem;cursor:pointer;flex-shrink:0;}
 .ai-input-bar{display:flex;gap:8px;padding:12px;border-top:1px solid var(--border);background:var(--s1);}
-.ai-input-bar input{flex:1;background:var(--s2);border:1px solid var(--border);border-radius:50px;padding:10px 16px;color:var(--txt);font-size:.86rem;}
+.ai-input-bar input,.ai-input-bar textarea{flex:1;background:var(--s2);border:1px solid var(--border);border-radius:20px;padding:10px 16px;color:var(--txt);font-size:.86rem;font-family:inherit;resize:none;max-height:110px;line-height:1.4;}
 .ai-input-bar input:focus{outline:none;border-color:var(--a1);}
 .ai-send{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--a1),var(--a2));border:none;color:#000;font-size:1.1rem;cursor:pointer;flex-shrink:0;}
 .ai-send:disabled{opacity:.5;}
@@ -695,7 +695,8 @@ async function loadProducts(){
 
 function renderProductList(){
   var el=document.getElementById('prodList');if(!el)return;
-  var q=(document.getElementById('searchProd').value||'').toLowerCase();
+  var spEl=document.getElementById('searchProd');
+  var q=(spEl?spEl.value:'').toLowerCase();
   var list=q?allProducts.filter(function(p){return p.name&&p.name.toLowerCase().includes(q);}):allProducts;
   if(!list.length){el.innerHTML='<div class="empty"><div class="empty-icon">📦</div>Aucun produit</div>';return;}
   el.innerHTML=list.map(function(p){
@@ -715,7 +716,7 @@ function renderProductList(){
       '</div>'+
       '<div class="prod-actions">'+
         '<button class="btn btn-ghost btn-sm" onclick="openEdit(\''+p._key+'\')">✏️</button>'+
-        '<button class="btn btn-red btn-sm" onclick="deleteProd(\''+p._key+'\',\''+p.name.replace(/'/g,'')+'\')"">🗑️</button>'+
+        '<button class="btn btn-red btn-sm" onclick="deleteProd(\''+p._key+'\',\''+(p.name||'').replace(/'/g,'')+'\')"">🗑️</button>'+
       '</div>'+
     '</div>';
   }).join('');
@@ -1417,9 +1418,8 @@ async function aiSend(){
   }
   var attachmentsToSend=aiAttachments.slice();
   input.value='';
+  input.style.height='auto';
   aiAppendMsg(msg+(attachmentsToSend.length?' 📎'+attachmentsToSend.length:''),'user');
-  aiAttachments=[];
-  renderAiAttachPreview();
   aiShowTyping();
   aiBusy=true;
   document.getElementById('aiSendBtn').disabled=true;
@@ -1434,6 +1434,7 @@ async function aiSend(){
       aiAppendMsg('❌ '+(data.error||'Erreur inconnue'),'error');
     } else {
       aiHistory=data.history||aiHistory;
+      var mediaConsumed=false;
       if(data.actions&&data.actions.length){
         var summary=data.actions.map(function(a){
           if(a.error)return '❌ '+a.tool+' a échoué: '+a.error;
@@ -1442,8 +1443,15 @@ async function aiSend(){
         aiAppendMsg(summary,'actions');
         var refreshed=data.actions.some(function(a){return ['create_product','update_product','delete_product'].indexOf(a.tool)!==-1;});
         var promoChanged=data.actions.some(function(a){return a.tool==='set_promo';});
-        if(refreshed)loadProducts();
+        mediaConsumed=data.actions.some(function(a){return a.result&&a.result.photos_attached>0;});
+        if(refreshed){var sp=document.getElementById('searchProd');if(sp)sp.value='';loadProducts();}
         if(promoChanged&&document.getElementById('page-promo').classList.contains('act'))loadPromo();
+      }
+      if(mediaConsumed){
+        aiAttachments=[];
+        renderAiAttachPreview();
+      } else if(attachmentsToSend.length){
+        aiAppendMsg('(Les photos jointes n\'ont pas encore été utilisées — je les garde pour le prochain message.)','actions');
       }
       if(data.reply)aiAppendMsg(data.reply,'bot');
     }
@@ -1473,7 +1481,7 @@ renderPhotoGrid('addPhotoGrid',addPhotos,'add');
   <div class="ai-input-bar">
     <button class="ai-attach-btn" id="aiAttachBtn" onclick="document.getElementById('aiFileInput').click()">📎</button>
     <input type="file" id="aiFileInput" accept="image/*,video/*" multiple style="display:none;" onchange="handleAiAttach(event)">
-    <input type="text" id="aiInput" placeholder="Ex: crée un iPhone 15 à 450000 FCFA" onkeydown="if(event.key==='Enter')aiSend()">
+    <textarea id="aiInput" placeholder="Ex: crée un iPhone 15 à 450000 FCFA" rows="1" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();aiSend();}" oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,110)+'px';"></textarea>
     <button class="ai-send" id="aiSendBtn" onclick="aiSend()">➤</button>
   </div>
 </div>

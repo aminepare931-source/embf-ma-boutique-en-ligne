@@ -142,8 +142,8 @@
 .rc-typing span:nth-child(3){animation-delay:.4s;}
 @keyframes rcDot{0%,60%,100%{opacity:.3;}30%{opacity:1;}}
 .rc-input-bar{display:flex;gap:8px;padding:12px;border-top:1px solid var(--border);background:var(--s1);}
-.rc-input-bar input{flex:1;background:var(--s2);border:1px solid var(--border);border-radius:50px;padding:10px 16px;color:var(--txt);font-size:.86rem;}
-.rc-input-bar input:focus{outline:none;border-color:var(--p1);}
+.rc-input-bar input,.rc-input-bar textarea{flex:1;background:var(--s2);border:1px solid var(--border);border-radius:20px;padding:10px 16px;color:var(--txt);font-size:.86rem;font-family:inherit;resize:none;max-height:110px;line-height:1.4;}
+.rc-input-bar input:focus,.rc-input-bar textarea:focus{outline:none;border-color:var(--p1);}
 .rc-send{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--p1),var(--s-c1));border:none;color:#000;font-size:1.1rem;cursor:pointer;flex-shrink:0;}
 .rc-send:disabled{opacity:.5;}
 </style>
@@ -501,7 +501,7 @@ loadProducts();
     <div class="rc-msg bot">Bonjour, je suis Rachida. Je peux vous aider à trouver un produit, répondre à vos questions sur la livraison ou le paiement, et même prendre votre commande directement ici. Que puis-je faire pour vous ?</div>
   </div>
   <div class="rc-input-bar">
-    <input type="text" id="rcInput" placeholder="Ex: avez-vous des iPhone ?" onkeydown="if(event.key==='Enter')rcSend()">
+    <textarea id="rcInput" placeholder="Ex: avez-vous des iPhone ?" rows="1" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();rcSend();}" oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,110)+'px';"></textarea>
     <button class="rc-send" id="rcSendBtn" onclick="rcSend()">➤</button>
   </div>
 </div>
@@ -562,6 +562,7 @@ async function rcSend(){
   var msg=input.value.trim();
   if(!msg)return;
   input.value='';
+  input.style.height='auto';
   rcAppendMsg(msg,'user');
   rcShowTyping();
   rcBusy=true;
