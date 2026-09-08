@@ -15,7 +15,7 @@ const PROVIDERS = [
   { name: 'nvidia', url: 'https://integrate.api.nvidia.com/v1/chat/completions', key: NVIDIA_API_KEY, model: 'meta/llama-3.3-70b-instruct' }
 ].filter(p => !!p.key);
 
-async function callLLM(messages, tools){
+async function tryAllProviders(messages, tools){
   let lastErr = null;
   for(const provider of PROVIDERS){
     try{
@@ -35,18 +35,26 @@ async function callLLM(messages, tools){
       });
       if(!resp.ok){
         const errText = await resp.text();
-        lastErr = provider.name + ': ' + errText;
+        lastErr = provider.name + ' (HTTP ' + resp.status + '): ' + errText.slice(0,300);
         continue;
       }
       const data = await resp.json();
       const choice = data.choices && data.choices[0];
       if(!choice){ lastErr = provider.name + ': reponse vide'; continue; }
-      return choice.message;
+      return { message: choice.message };
     }catch(e){
       lastErr = provider.name + ': ' + e.message;
     }
   }
-  throw new Error('Tous les fournisseurs IA ont echoue - ' + (lastErr || 'aucun fournisseur configure'));
+  return { error: lastErr || 'aucun fournisseur configure' };
+}
+async function callLLM(messages, tools){
+  let result = await tryAllProviders(messages, tools);
+  if(result.message) return result.message;
+  await new Promise(r => setTimeout(r, 800));
+  result = await tryAllProviders(messages, tools);
+  if(result.message) return result.message;
+  throw new Error('Tous les fournisseurs IA ont echoue apres 2 tentatives - ' + result.error);
 }
 
 function slugify(t){

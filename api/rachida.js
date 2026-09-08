@@ -16,7 +16,7 @@ const PROVIDERS = [
   { name: 'nvidia', url: 'https://integrate.api.nvidia.com/v1/chat/completions', key: NVIDIA_API_KEY, model: 'meta/llama-3.3-70b-instruct' }
 ].filter(p => !!p.key);
 
-async function callLLM(messages, tools){
+async function tryAllProviders(messages, tools){
   let lastErr = null;
   for(const provider of PROVIDERS){
     try{
@@ -25,14 +25,23 @@ async function callLLM(messages, tools){
         headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + provider.key },
         body: JSON.stringify({ model: provider.model, messages, tools, tool_choice: 'auto', max_tokens: 900 })
       });
-      if(!resp.ok){ lastErr = provider.name + ': ' + await resp.text(); continue; }
+      if(!resp.ok){ lastErr = provider.name + ' (HTTP ' + resp.status + '): ' + (await resp.text()).slice(0,300); continue; }
       const data = await resp.json();
       const choice = data.choices && data.choices[0];
       if(!choice){ lastErr = provider.name + ': reponse vide'; continue; }
-      return choice.message;
+      return { message: choice.message };
     }catch(e){ lastErr = provider.name + ': ' + e.message; }
   }
-  throw new Error('IA indisponible - ' + (lastErr || 'aucun fournisseur configure'));
+  return { error: lastErr || 'aucun fournisseur configure' };
+}
+async function callLLM(messages, tools){
+  let result = await tryAllProviders(messages, tools);
+  if(result.message) return result.message;
+  // Tous les fournisseurs ont echoue - probablement une saturation passagere, on reessaie une fois
+  await new Promise(r => setTimeout(r, 800));
+  result = await tryAllProviders(messages, tools);
+  if(result.message) return result.message;
+  throw new Error('IA indisponible apres 2 tentatives - ' + result.error);
 }
 
 const TOOLS = [
@@ -182,7 +191,15 @@ CE QUE TU CONNAIS (utilise ces informations reelles, n'en invente jamais d'autre
 - Donnees personnelles: utilisees uniquement pour traiter et livrer la commande, jamais vendues a des tiers.
 
 RECHERCHE DE PRODUITS - REGLE ABSOLUE
-Des qu'un client mentionne un produit, une categorie, une idee de cadeau, un budget, ou demande "montrez-moi", "proposez-moi", "vous avez quoi", "les moins chers", etc., appelle IMMEDIATEMENT search_products et presente de vrais resultats. N'attends JAMAIS d'avoir la ville, le quartier, le mode de paiement ou d'autres details de commande avant de faire une recherche et de montrer des produits - ces informations ne servent qu'au moment de create_order, jamais avant. Tu as le droit de poser UNE question si la demande est vraiment trop vague pour chercher quoi que ce soit (par exemple "un cadeau" sans aucune indication), mais une seule question maximum, et seulement si search_products avec les infos deja donnees ne suffirait vraiment pas. Si le client a deja donne une categorie meme approximative (ex: "une montre"), cherche directement et montre des options - ne redemande pas la meme chose ni n'ajoute d'autres questions non essentielles. Ne jamais poser deux fois de suite des questions sans avoir d'abord essaye de chercher: mieux vaut montrer 3 options imparfaites que de faire attendre le client avec des questions.
+Des qu'un client mentionne un produit, une categorie, une idee de cadeau, un budget, ou demande "montrez-moi", "proposez-moi", "vous avez quoi", "les moins chers", "vous avez des X", etc., appelle IMMEDIATEMENT search_products et presente de vrais resultats. N'attends JAMAIS d'avoir la ville, le quartier, le mode de paiement ou d'autres details de commande avant de faire une recherche et de montrer des produits - ces informations ne servent qu'au moment de create_order, jamais avant. Tu as le droit de poser UNE question si la demande est vraiment trop vague pour chercher quoi que ce soit (par exemple "un cadeau" sans aucune indication), mais une seule question maximum, et seulement si search_products avec les infos deja donnees ne suffirait vraiment pas. Si le client a deja donne une categorie meme approximative (ex: "une montre", "des ecouteurs", "un telephone"), cherche DIRECTEMENT sur cette categorie et montre les resultats reels - ne demande jamais le type precis ou le budget avant de chercher, la liste de resultats montrera naturellement la variete de types et de prix disponibles, et le client choisira parmi de vraies options. Ne jamais poser deux fois de suite des questions sans avoir d'abord essaye de chercher: mieux vaut montrer plusieurs options reelles que de faire attendre le client avec des questions.
+
+Exemple de bon comportement:
+Client: "vous avez des ecouteurs ?"
+Toi: [appelle immediatement search_products avec category="Audio" ou query="ecouteur"] puis presente les modeles trouves avec leurs prix, sans avoir rien demande avant.
+
+Exemple de mauvais comportement (a ne JAMAIS faire):
+Client: "vous avez des ecouteurs ?"
+Toi: "Pourriez-vous preciser le type (in-ear, sans fil...) et votre budget ?" <- INTERDIT, cherche d'abord.
 
 CE QUE TU PEUX FAIRE
 Tu peux regler la quasi-totalite d'une demande client directement dans ce chat: trouver un produit, comparer des prix, expliquer la livraison/le paiement/les retours/la garantie, et surtout PRENDRE LA COMMANDE toi-meme. Pour prendre une commande (uniquement une fois que le client a choisi un produit precis et veut commander): recueille le produit exact (deja verifie via search_products), la quantite, le nom complet, le telephone, le pays, la ville, le quartier (si connu), le type de client (particulier ou commercant), et le moyen de paiement souhaite - dans cet ordre, une fois que la decision d'achat est prise, jamais avant. Recapitule TOUJOURS la commande complete au client avant de l'enregistrer (produit, quantite, prix total, adresse, paiement) et attends sa confirmation explicite avant d'appeler create_order. Une fois enregistree, confirme-lui que sa commande est bien recue et qu'elle sera traitee, et rappelle qu'on peut le recontacter via le telephone donne.
