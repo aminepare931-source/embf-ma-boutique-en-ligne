@@ -95,23 +95,44 @@ const TOOLS = [
   }
 ];
 
+function normalizeText(s){
+  return (s||'').toString().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+}
+const CATEGORY_SYNONYMS = {
+  'audio': ['ecouteur','ecouteurs','casque','casques','airpods','airpod','enceinte','enceintes','haut-parleur','hautparleur','bluetooth','oreillette','oreillettes','earbuds','headphone','headphones','micro','microphone','wireless','sans fil'],
+  'smartphones': ['telephone','telephones','smartphone','smartphones','portable','iphone','samsung','android','gsm'],
+  'ordinateurs': ['ordinateur','ordinateurs','laptop','pc','notebook','portable'],
+  'montres': ['montre','montres','smartwatch','watch','connectee'],
+  'gadgets': ['gadget','gadgets']
+};
+
 async function execTool(name, input){
   if(name === 'search_products'){
     const r = await fetch(FB_DB + '/products.json');
     const data = await r.json();
     if(!data) return { products: [] };
-    let list = Object.entries(data).map(([key,p]) => ({
-      id: key, name: p.name, price: p.price, old_price: p.old_price || null,
-      category: p.category, availability: p.availability || 'stock',
-      delayDays: p.delayDays || null, stock: p.stock,
-      url: 'https://embfboutik.vercel.app/produit/' + (p.slug || key)
-    }));
+    let list = Object.entries(data).map(([key,p]) => {
+      const searchText = normalizeText([p.name, p.category, p.description, p.specs].filter(Boolean).join(' '));
+      return {
+        id: key, name: p.name, price: p.price, old_price: p.old_price || null,
+        category: p.category, availability: p.availability || 'stock',
+        delayDays: p.delayDays || null, stock: p.stock,
+        url: 'https://embfboutik.vercel.app/produit/' + (p.slug || key),
+        _search: searchText
+      };
+    });
     if(input.category) list = list.filter(p => p.category === input.category);
     if(input.availability) list = list.filter(p => p.availability === input.availability);
     if(input.query){
-      const q = input.query.toLowerCase();
-      list = list.filter(p => (p.name||'').toLowerCase().includes(q) || (p.category||'').toLowerCase().includes(q));
+      const q = normalizeText(input.query);
+      const matchedCatWords = [];
+      for(const syns of Object.values(CATEGORY_SYNONYMS)){
+        if(syns.some(s => q.includes(normalizeText(s)))) matchedCatWords.push(...syns);
+      }
+      const words = q.split(/\s+/).filter(w => w.length >= 3).concat(matchedCatWords.map(normalizeText));
+      list = list.filter(p => words.some(w => p._search.includes(w)));
     }
+    list = list.map(({_search, ...rest}) => rest);
     return { products: list.slice(0, 15) };
   }
   if(name === 'get_promo'){
