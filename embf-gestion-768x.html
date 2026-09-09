@@ -644,13 +644,15 @@ function changePw(){
   showToast('✅ Mot de passe changé');
 }
 document.getElementById('pwInput').addEventListener('keydown',function(e){if(e.key==='Enter')checkPw();});
-if(sessionStorage.getItem('embf_admin_ok')==='1'){
-  document.getElementById('loginPage').style.display='none';
-  document.getElementById('adminArea').style.display='block';
-  document.getElementById('bottomNav').style.display='grid';
-  document.getElementById('aiFab').style.display='flex';
-  setTimeout(loadAll,100);
-}
+document.addEventListener('DOMContentLoaded',function(){
+  if(sessionStorage.getItem('embf_admin_ok')==='1'){
+    document.getElementById('loginPage').style.display='none';
+    document.getElementById('adminArea').style.display='block';
+    document.getElementById('bottomNav').style.display='grid';
+    document.getElementById('aiFab').style.display='flex';
+    setTimeout(loadAll,100);
+  }
+});
 
 // ===== NAV =====
 function showPage(id){
