@@ -11,6 +11,15 @@
   <meta name="apple-mobile-web-app-title" content="EMBF Boutique">
 <meta name="robots" content="noindex, nofollow">
 <title>EMBF Admin</title>
+<script>
+window.onerror=function(msg,url,line,col){
+  var box=document.createElement('div');
+  box.style.cssText='position:fixed;top:0;left:0;right:0;z-index:99999;background:#f43f5e;color:#fff;padding:14px;font-family:monospace;font-size:12px;max-height:50vh;overflow:auto;white-space:pre-wrap;';
+  box.textContent='ERREUR JS (ligne '+line+'): '+msg;
+  document.body?document.body.appendChild(box):window.addEventListener('DOMContentLoaded',function(){document.body.appendChild(box);});
+  return false;
+};
+</script>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
@@ -677,9 +686,9 @@ function showToast(msg,ok){
 // ===== LOAD ALL =====
 async function loadAll(){
   await loadProducts();
+  await loadOrders();
+  await loadAffilies();
   loadStats();
-  loadOrders();
-  loadAffilies();
 }
 
 // ===== PRODUCTS =====
